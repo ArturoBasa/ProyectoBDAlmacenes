@@ -6,7 +6,7 @@ package proyectobd2;
 
 /**
  *
- * @author endri
+ * @author basa2
  */
 public class ProyectoBD2 {
 
