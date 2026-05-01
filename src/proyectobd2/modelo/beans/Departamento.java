@@ -12,6 +12,7 @@ public class Departamento {
 
     private int idDepartamento;
     private String nombreDepartamento;
+    private int idSucursal;
     private int idEncargado;
 
     public Departamento() {
@@ -33,6 +34,14 @@ public class Departamento {
         this.nombreDepartamento = nombreDepartamento;
     }
 
+    public int getIdSucursal() {
+        return idSucursal;
+    }
+
+    public void setIdSucursal(int idSucursal) {
+        this.idSucursal = idSucursal;
+    }
+
     public int getIdEncargado() {
         return idEncargado;
     }
@@ -40,5 +49,7 @@ public class Departamento {
     public void setIdEncargado(int idEncargado) {
         this.idEncargado = idEncargado;
     }
+
+    
 
 }

@@ -14,7 +14,7 @@ public class Empleado {
 
     private int idEmpleado;
     private String nombre;
-    private String apellido;
+    private String apellidos;
     private String correoElectronico;
     private String telefonoFijo;
     private String telefonoCelular;
@@ -40,12 +40,12 @@ public class Empleado {
         this.nombre = nombre;
     }
 
-    public String getApellido() {
-        return apellido;
+    public String getApellidos() {
+        return apellidos;
     }
 
-    public void setApellido(String apellido) {
-        this.apellido = apellido;
+    public void setApellidos(String apellidos) {
+        this.apellidos = apellidos;
     }
 
     public String getCorreoElectronico() {
