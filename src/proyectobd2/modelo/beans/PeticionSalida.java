@@ -5,6 +5,7 @@
 package proyectobd2.modelo.beans;
 
 import java.time.LocalDate;
+import java.util.Date;
 
 /**
  *
@@ -13,7 +14,7 @@ import java.time.LocalDate;
 public class PeticionSalida {
 
     private Integer idPeticionSalida;
-    private LocalDate fecha;
+    private Date fecha;
     private Empleado empleado;
 
     public PeticionSalida() {
@@ -27,11 +28,11 @@ public class PeticionSalida {
         this.idPeticionSalida = idPeticionSalida;
     }
 
-    public LocalDate getFecha() {
+    public Date getFecha() {
         return fecha;
     }
 
-    public void setFecha(LocalDate fecha) {
+    public void setFecha(Date fecha) {
         this.fecha = fecha;
     }
 
