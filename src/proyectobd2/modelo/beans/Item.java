@@ -10,49 +10,49 @@ package proyectobd2.modelo.beans;
  */
 public class Item {
 
-    private Integer idItem;
-    private Integer existencias;
-    private Integer StockMinimo;
-    private Integer StockMaximo;
+    private int idItem;
+    private int existencias;
+    private int StockMinimo;
+    private int StockMaximo;
     private String nombreItem;
     private Double precioUnitario;
-    private Integer idPartidaPresupuestal;
-    private Integer idSucursal;
+    private int idPartidaPresupuestal;
+    private int idSucursal;
     private String estado;
     private String descripcion;
 
     public Item() {
     }
 
-    public Integer getIdItem() {
+    public int getIdItem() {
         return idItem;
     }
 
-    public void setIdItem(Integer idItem) {
+    public void setIdItem(int idItem) {
         this.idItem = idItem;
     }
 
-    public Integer getExistencias() {
+    public int getExistencias() {
         return existencias;
     }
 
-    public void setExistencias(Integer existencias) {
+    public void setExistencias(int existencias) {
         this.existencias = existencias;
     }
 
-    public Integer getStockMinimo() {
+    public int getStockMinimo() {
         return StockMinimo;
     }
 
-    public void setStockMinimo(Integer StockMinimo) {
+    public void setStockMinimo(int StockMinimo) {
         this.StockMinimo = StockMinimo;
     }
 
-    public Integer getStockMaximo() {
+    public int getStockMaximo() {
         return StockMaximo;
     }
 
-    public void setStockMaximo(Integer StockMaximo) {
+    public void setStockMaximo(int StockMaximo) {
         this.StockMaximo = StockMaximo;
     }
 
@@ -72,19 +72,19 @@ public class Item {
         this.precioUnitario = precioUnitario;
     }
 
-    public Integer getIdPartidaPresupuestal() {
+    public int getIdPartidaPresupuestal() {
         return idPartidaPresupuestal;
     }
 
-    public void setIdPartidaPresupuestal(Integer idPartidaPresupuestal) {
+    public void setIdPartidaPresupuestal(int idPartidaPresupuestal) {
         this.idPartidaPresupuestal = idPartidaPresupuestal;
     }
 
-    public Integer getIdSucursal() {
+    public int getIdSucursal() {
         return idSucursal;
     }
 
-    public void setIdSucursal(Integer idSucursal) {
+    public void setIdSucursal(int idSucursal) {
         this.idSucursal = idSucursal;
     }
 

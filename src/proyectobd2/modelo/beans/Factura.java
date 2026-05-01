@@ -4,7 +4,7 @@
  */
 package proyectobd2.modelo.beans;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 /**
  *
@@ -12,20 +12,20 @@ import java.time.LocalDate;
  */
 public class Factura {
 
-    private Integer idFactura;
+    private int idFactura;
     private String folioFactura;
-    private LocalDate fechaFactura;
+    private Date fechaFactura;
     private Double precioTotal;
-    private Integer idProveedor;
+    private int idProveedor;
 
     public Factura() {
     }
 
-    public Integer getIdFactura() {
+    public int getIdFactura() {
         return idFactura;
     }
 
-    public void setIdFactura(Integer idFactura) {
+    public void setIdFactura(int idFactura) {
         this.idFactura = idFactura;
     }
 
@@ -37,11 +37,11 @@ public class Factura {
         this.folioFactura = folioFactura;
     }
 
-    public LocalDate getFechaFactura() {
+    public Date getFechaFactura() {
         return fechaFactura;
     }
 
-    public void setFechaFactura(LocalDate fechaFactura) {
+    public void setFechaFactura(Date fechaFactura) {
         this.fechaFactura = fechaFactura;
     }
 
@@ -53,11 +53,11 @@ public class Factura {
         this.precioTotal = precioTotal;
     }
 
-    public Integer getIdProveedor() {
+    public int getIdProveedor() {
         return idProveedor;
     }
 
-    public void setIdProveedor(Integer idProveedor) {
+    public void setIdProveedor(int idProveedor) {
         this.idProveedor = idProveedor;
     }
 

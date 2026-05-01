@@ -4,7 +4,7 @@
  */
 package proyectobd2.modelo.beans;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 /**
  *
@@ -12,44 +12,44 @@ import java.time.LocalDate;
  */
 public class BitacoraPedidos {
 
-    private Integer idBitacoraPedidos;
-    private LocalDate fecha;
-    private Integer cantidadPedir;
-    private Item itemPedir;
+    private int idBitacoraPedidos;
+    private Date fecha;
+    private int cantidadPedir;
+    private int idItem;
 
     public BitacoraPedidos() {
     }
 
-    public Integer getIdBitacoraPedidos() {
+    public int getIdBitacoraPedidos() {
         return idBitacoraPedidos;
     }
 
-    public void setIdBitacoraPedidos(Integer idBitacoraPedidos) {
+    public void setIdBitacoraPedidos(int idBitacoraPedidos) {
         this.idBitacoraPedidos = idBitacoraPedidos;
     }
 
-    public LocalDate getFecha() {
+    public Date getFecha() {
         return fecha;
     }
 
-    public void setFecha(LocalDate fecha) {
+    public void setFecha(Date fecha) {
         this.fecha = fecha;
     }
 
-    public Integer getCantidadPedir() {
+    public int getCantidadPedir() {
         return cantidadPedir;
     }
 
-    public void setCantidadPedir(Integer cantidadPedir) {
+    public void setCantidadPedir(int cantidadPedir) {
         this.cantidadPedir = cantidadPedir;
     }
 
-    public Item getItemPedir() {
-        return itemPedir;
+    public int getIdItem() {
+        return idItem;
     }
 
-    public void setItemPedir(Item itemPedir) {
-        this.itemPedir = itemPedir;
+    public void setIdItem(int idItem) {
+        this.idItem = idItem;
     }
 
 }

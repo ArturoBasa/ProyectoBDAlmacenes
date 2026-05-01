@@ -4,7 +4,7 @@
  */
 package proyectobd2.modelo.beans;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 /**
  *
@@ -12,23 +12,23 @@ import java.time.LocalDate;
  */
 public class Empleado {
 
-    private Integer idEmpleado;
+    private int idEmpleado;
     private String nombre;
     private String apellido;
     private String correoElectronico;
     private String telefonoFijo;
     private String telefonoCelular;
-    private LocalDate fechaRegistro;
+    private Date fechaRegistro;
     private String contrasenia;
 
     public Empleado() {
     }
 
-    public Integer getIdEmpleado() {
+    public int getIdEmpleado() {
         return idEmpleado;
     }
 
-    public void setIdEmpleado(Integer idEmpleado) {
+    public void setIdEmpleado(int idEmpleado) {
         this.idEmpleado = idEmpleado;
     }
 
@@ -72,11 +72,11 @@ public class Empleado {
         this.telefonoCelular = telefonoCelular;
     }
 
-    public LocalDate getFechaRegistro() {
+    public Date getFechaRegistro() {
         return fechaRegistro;
     }
 
-    public void setFechaRegistro(LocalDate fechaRegistro) {
+    public void setFechaRegistro(Date fechaRegistro) {
         this.fechaRegistro = fechaRegistro;
     }
 

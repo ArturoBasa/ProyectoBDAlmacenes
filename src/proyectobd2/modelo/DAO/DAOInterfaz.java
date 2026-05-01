@@ -17,9 +17,9 @@ public interface DAOInterfaz<T> {
 
     public List<T> obtenerListaObjetos() throws SQLException;          
     
-    public T buscar(Integer id) throws SQLException;
+    public T buscar(int id) throws SQLException;
 
-    public int eliminar(Integer id);
+    public int eliminar(int id);
 
     public int modificar(T objeto);
 }

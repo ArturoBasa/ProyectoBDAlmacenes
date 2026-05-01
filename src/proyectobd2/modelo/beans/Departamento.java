@@ -10,18 +10,18 @@ package proyectobd2.modelo.beans;
  */
 public class Departamento {
 
-    private Integer idDepartamento;
+    private int idDepartamento;
     private String nombreDepartamento;
-    private Integer idEncargado;
+    private int idEncargado;
 
     public Departamento() {
     }
 
-    public Integer getIdDepartamento() {
+    public int getIdDepartamento() {
         return idDepartamento;
     }
 
-    public void setIdDepartamento(Integer idDepartamento) {
+    public void setIdDepartamento(int idDepartamento) {
         this.idDepartamento = idDepartamento;
     }
 
@@ -33,11 +33,11 @@ public class Departamento {
         this.nombreDepartamento = nombreDepartamento;
     }
 
-    public Integer getIdEncargado() {
+    public int getIdEncargado() {
         return idEncargado;
     }
 
-    public void setIdEncargado(Integer idEncargado) {
+    public void setIdEncargado(int idEncargado) {
         this.idEncargado = idEncargado;
     }
 

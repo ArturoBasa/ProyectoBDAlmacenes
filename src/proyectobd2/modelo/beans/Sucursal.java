@@ -10,7 +10,7 @@ package proyectobd2.modelo.beans;
  */
 public class Sucursal {
 
-    private Integer idSucursal;
+    private int idSucursal;
     private String nombreSucursal;
     private String ciudad;
     private String direccion;
@@ -18,11 +18,11 @@ public class Sucursal {
     public Sucursal() {
     }
 
-    public Integer getIdSucursal() {
+    public int getIdSucursal() {
         return idSucursal;
     }
 
-    public void setIdSucursal(Integer idSucursal) {
+    public void setIdSucursal(int idSucursal) {
         this.idSucursal = idSucursal;
     }
 

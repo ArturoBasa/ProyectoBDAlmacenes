@@ -10,7 +10,7 @@ package proyectobd2.modelo.beans;
  */
 public class Proveedor {
 
-    private Integer idProveedor;
+    private int idProveedor;
     private String razonSocial;
     private String RFCProveedor;
     private String domicilioFiscal;
@@ -19,11 +19,11 @@ public class Proveedor {
     public Proveedor() {
     }
 
-    public Integer getIdProveedor() {
+    public int getIdProveedor() {
         return idProveedor;
     }
 
-    public void setIdProveedor(Integer idProveedor) {
+    public void setIdProveedor(int idProveedor) {
         this.idProveedor = idProveedor;
     }
 

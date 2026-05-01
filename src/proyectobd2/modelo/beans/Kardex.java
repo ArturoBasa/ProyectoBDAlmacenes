@@ -4,7 +4,7 @@
  */
 package proyectobd2.modelo.beans;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 /**
  *
@@ -12,21 +12,21 @@ import java.time.LocalDate;
  */
 public class Kardex {
 
-    private Integer idKardex;
+    private int idKardex;
     private Double costo;
-    private LocalDate fecha;
+    private Date fecha;
     private Double costoPromedio;
-    private Item item;
-    private Factura factura;
+    private int idItem;
+    private int idFactura;
 
     public Kardex() {
     }
 
-    public Integer getIdKardex() {
+    public int getIdKardex() {
         return idKardex;
     }
 
-    public void setIdKardex(Integer idKardex) {
+    public void setIdKardex(int idKardex) {
         this.idKardex = idKardex;
     }
 
@@ -38,11 +38,11 @@ public class Kardex {
         this.costo = costo;
     }
 
-    public LocalDate getFecha() {
+    public Date getFecha() {
         return fecha;
     }
 
-    public void setFecha(LocalDate fecha) {
+    public void setFecha(Date fecha) {
         this.fecha = fecha;
     }
 
@@ -54,20 +54,20 @@ public class Kardex {
         this.costoPromedio = costoPromedio;
     }
 
-    public Item getItem() {
-        return item;
+    public int getIdItem() {
+        return idItem;
     }
 
-    public void setItem(Item item) {
-        this.item = item;
+    public void setIdItem(int idItem) {
+        this.idItem = idItem;
     }
 
-    public Factura getFactura() {
-        return factura;
+    public int getIdFactura() {
+        return idFactura;
     }
 
-    public void setFactura(Factura factura) {
-        this.factura = factura;
+    public void setIdFactura(int idFactura) {
+        this.idFactura = idFactura;
     }
 
 }

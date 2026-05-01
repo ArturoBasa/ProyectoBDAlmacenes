@@ -4,7 +4,7 @@
  */
 package proyectobd2.modelo.beans;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 /**
  *
@@ -12,29 +12,29 @@ import java.time.LocalDate;
  */
 public class BitacoraOperacionesBaja {
 
-    private Integer idBitacoraOperacionesBaja;
-    private LocalDate fecha;
+    private int idBitacoraOperacionesBaja;
+    private Date fecha;
     private String razonBaja;
     private String descripcion;
-    private Integer cantidadSobrante;
-    private Item item;
+    private int cantidadSobrante;
+    private int idItem;
 
     public BitacoraOperacionesBaja() {
     }
 
-    public Integer getIdBitacoraOperacionesBaja() {
+    public int getIdBitacoraOperacionesBaja() {
         return idBitacoraOperacionesBaja;
     }
 
-    public void setIdBitacoraOperacionesBaja(Integer idBitacoraOperacionesBaja) {
+    public void setIdBitacoraOperacionesBaja(int idBitacoraOperacionesBaja) {
         this.idBitacoraOperacionesBaja = idBitacoraOperacionesBaja;
     }
 
-    public LocalDate getFecha() {
+    public Date getFecha() {
         return fecha;
     }
 
-    public void setFecha(LocalDate fecha) {
+    public void setFecha(Date fecha) {
         this.fecha = fecha;
     }
 
@@ -54,20 +54,21 @@ public class BitacoraOperacionesBaja {
         this.descripcion = descripcion;
     }
 
-    public Integer getCantidadSobrante() {
+    public int getCantidadSobrante() {
         return cantidadSobrante;
     }
 
-    public void setCantidadSobrante(Integer cantidadSobrante) {
+    public void setCantidadSobrante(int cantidadSobrante) {
         this.cantidadSobrante = cantidadSobrante;
     }
 
-    public Item getItem() {
-        return item;
+    public int getIdItem() {
+        return idItem;
     }
 
-    public void setItem(Item item) {
-        this.item = item;
+    public void setIdItem(int idItem) {
+        this.idItem = idItem;
     }
 
+    
 }

@@ -4,7 +4,6 @@
  */
 package proyectobd2.modelo.beans;
 
-import java.time.LocalDate;
 import java.util.Date;
 
 /**
@@ -13,18 +12,18 @@ import java.util.Date;
  */
 public class PeticionSalida {
 
-    private Integer idPeticionSalida;
+    private int idPeticionSalida;
     private Date fecha;
-    private Empleado empleado;
+    private int idEmpleadoAlmacen;
 
     public PeticionSalida() {
     }
 
-    public Integer getIdPeticionSalida() {
+    public int getIdPeticionSalida() {
         return idPeticionSalida;
     }
 
-    public void setIdPeticionSalida(Integer idPeticionSalida) {
+    public void setIdPeticionSalida(int idPeticionSalida) {
         this.idPeticionSalida = idPeticionSalida;
     }
 
@@ -36,12 +35,12 @@ public class PeticionSalida {
         this.fecha = fecha;
     }
 
-    public Empleado getEmpleado() {
-        return empleado;
+    public int getIdEmpleadoAlmacen() {
+        return idEmpleadoAlmacen;
     }
 
-    public void setEmpleado(Empleado empleado) {
-        this.empleado = empleado;
+    public void setIdEmpleadoAlmacen(int idEmpleadoAlmacen) {
+        this.idEmpleadoAlmacen = idEmpleadoAlmacen;
     }
 
 }

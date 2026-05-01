@@ -10,34 +10,34 @@ package proyectobd2.modelo.beans;
  */
 public class DetalleSalida {
 
-    private Item item;
-    private PeticionSalida peticionSalida;
-    private Integer cantidad;
+    private int idItem;
+    private int idPeticionSalida;
+    private int cantidad;
 
     public DetalleSalida() {
     }
 
-    public Item getItem() {
-        return item;
+    public int getIdItem() {
+        return idItem;
     }
 
-    public void setItem(Item item) {
-        this.item = item;
+    public void setIdItem(int idItem) {
+        this.idItem = idItem;
     }
 
-    public PeticionSalida getPeticionSalida() {
-        return peticionSalida;
+    public int getIdPeticionSalida() {
+        return idPeticionSalida;
     }
 
-    public void setPeticionSalida(PeticionSalida peticionSalida) {
-        this.peticionSalida = peticionSalida;
+    public void setIdPeticionSalida(int idPeticionSalida) {
+        this.idPeticionSalida = idPeticionSalida;
     }
 
-    public Integer getCantidad() {
+    public int getCantidad() {
         return cantidad;
     }
 
-    public void setCantidad(Integer cantidad) {
+    public void setCantidad(int cantidad) {
         this.cantidad = cantidad;
     }
 

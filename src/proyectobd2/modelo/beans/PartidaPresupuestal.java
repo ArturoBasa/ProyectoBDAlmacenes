@@ -10,19 +10,19 @@ package proyectobd2.modelo.beans;
  */
 public class PartidaPresupuestal {
 
-    private Integer partidaPresupuestal;
+    private int idPartidaPresupuestal;
     private String nombrePartida;
     private Double presupuesto;
 
     public PartidaPresupuestal() {
     }
 
-    public Integer getPartidaPresupuestal() {
-        return partidaPresupuestal;
+    public int getIdPartidaPresupuestal() {
+        return idPartidaPresupuestal;
     }
 
-    public void setPartidaPresupuestal(Integer partidaPresupuestal) {
-        this.partidaPresupuestal = partidaPresupuestal;
+    public void setIdPartidaPresupuestal(int idPartidaPresupuestal) {
+        this.idPartidaPresupuestal = idPartidaPresupuestal;
     }
 
     public String getNombrePartida() {
@@ -40,5 +40,7 @@ public class PartidaPresupuestal {
     public void setPresupuesto(Double presupuesto) {
         this.presupuesto = presupuesto;
     }
+
+   
 
 }
