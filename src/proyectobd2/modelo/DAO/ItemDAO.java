@@ -25,7 +25,7 @@ public class ItemDAO implements DAOInterfaz<Item> {
     public int insertar(Item item) {
         int valor = 0;
         String statement = "INSERT INTO item (existencias, stockMinimo, stockMaximo, nombreItem, precioUnitario, "
-                + "PartidaPresupuestal_idPartidaPresupuestal, Sucursal_idSucursal, estado, descripcion) "
+                + "PartidaPresupuestal_idPartidaPresupuestal, Sucursal_idSucursal, estado, descripcionUso) "
                 + "VALUES (?,?,?,?,?,?,?,?,?)";
 
         try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
@@ -38,7 +38,7 @@ public class ItemDAO implements DAOInterfaz<Item> {
             ps.setInt(6, item.getIdPartidaPresupuestal());
             ps.setInt(7, item.getIdSucursal());
             ps.setString(8, item.getEstado());
-            ps.setString(9, item.getDescripcion());
+            ps.setString(9, item.getDescripcionUso());
 
             valor = ps.executeUpdate();
         } catch (SQLException ex) {
@@ -51,7 +51,7 @@ public class ItemDAO implements DAOInterfaz<Item> {
     public List<Item> obtenerListaObjetos() throws SQLException {
         List<Item> listaItems = new ArrayList<>();
         String statement = "SELECT idItem, existencias, stockMinimo, stockMaximo, nombreItem, precioUnitario, "
-                + "PartidaPresupuestal_idPartidaPresupuestal, Sucursal_idSucursal, estado, descripcion FROM item";
+                + "PartidaPresupuestal_idPartidaPresupuestal, Sucursal_idSucursal, estado, descripcionUso FROM item";
 
         try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
 
@@ -67,7 +67,7 @@ public class ItemDAO implements DAOInterfaz<Item> {
                 item.setIdPartidaPresupuestal(rs.getInt("PartidaPresupuestal_idPartidaPresupuestal"));
                 item.setIdSucursal(rs.getInt("Sucursal_idSucursal"));
                 item.setEstado(rs.getString("estado"));
-                item.setDescripcion(rs.getString("descripcion"));
+                item.setDescripcionUso(rs.getString("descripcionUso"));
 
                 listaItems.add(item);
             }
@@ -81,7 +81,7 @@ public class ItemDAO implements DAOInterfaz<Item> {
     public Item buscar(int idItem) throws SQLException {
         Item item = null;
         String statement = "SELECT idItem, existencias, stockMinimo, stockMaximo, nombreItem, precioUnitario, "
-                + "PartidaPresupuestal_idPartidaPresupuestal, Sucursal_idSucursal, estado, descripcion "
+                + "PartidaPresupuestal_idPartidaPresupuestal, Sucursal_idSucursal, estado, descripcionUso "
                 + "FROM item WHERE idItem = ?";
 
         try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
@@ -99,7 +99,7 @@ public class ItemDAO implements DAOInterfaz<Item> {
                     item.setIdPartidaPresupuestal(rs.getInt("PartidaPresupuestal_idPartidaPresupuestal"));
                     item.setIdSucursal(rs.getInt("Sucursal_idSucursal"));
                     item.setEstado(rs.getString("estado"));
-                    item.setDescripcion(rs.getString("descripcion"));
+                    item.setDescripcionUso(rs.getString("descripcionUso"));
                 }
             }
         } catch (SQLException ex) {
@@ -126,7 +126,7 @@ public class ItemDAO implements DAOInterfaz<Item> {
         int valor = 0;
         String statement = "UPDATE item SET existencias=?, stockMinimo=?, stockMaximo=?, nombreItem=?, "
                 + "precioUnitario=?, PartidaPresupuestal_idPartidaPresupuestal=?, Sucursal_idSucursal=?, "
-                + "estado=?, descripcion=? WHERE idItem=?";
+                + "estado=?, descripcionUso=? WHERE idItem=?";
 
         try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
 
@@ -138,7 +138,7 @@ public class ItemDAO implements DAOInterfaz<Item> {
             ps.setInt(6, item.getIdPartidaPresupuestal());
             ps.setInt(7, item.getIdSucursal());
             ps.setString(8, item.getEstado());
-            ps.setString(9, item.getDescripcion());
+            ps.setString(9, item.getDescripcionUso());
             ps.setInt(10, item.getIdItem());
 
             valor = ps.executeUpdate();

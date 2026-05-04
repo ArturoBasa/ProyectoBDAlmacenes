@@ -24,7 +24,7 @@ public class KardexDAO implements DAOInterfaz<Kardex> {
     @Override
     public int insertar(Kardex kardex) {
         int valor = 0;
-        String statement = "INSERT INTO kardex (costo, fecha, costoPromedio, Item_idItem, Factura_idFactura) values (?,?,?,?,?)";
+        String statement = "INSERT INTO vistaKardex (costo, fecha, costoPromedio, Item_idItem, Factura_idFactura) values (?,?,?,?,?)";
 
         try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
 
@@ -45,7 +45,7 @@ public class KardexDAO implements DAOInterfaz<Kardex> {
     @Override
     public List<Kardex> obtenerListaObjetos() throws SQLException {
         List<Kardex> listaKardex = new ArrayList<>();
-        String statement = "SELECT idKardex, costo, fecha, costoPromedio, Item_idItem, Factura_idFactura FROM kardex";
+        String statement = "SELECT idKardex, costo, fecha, costoPromedio, Item_idItem, Factura_idFactura FROM vistaKardex";
 
         try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
             ResultSet rs = ps.executeQuery();
@@ -69,7 +69,7 @@ public class KardexDAO implements DAOInterfaz<Kardex> {
     @Override
     public Kardex buscar(int idKardex) throws SQLException {
         Kardex k = null;
-        String statement = "SELECT idKardex, costo, fecha, costoPromedio, Item_idItem, Factura_idFactura FROM kardex WHERE idKardex = ?";
+        String statement = "SELECT idKardex, costo, fecha, costoPromedio, Item_idItem, Factura_idFactura FROM vistaKardex WHERE idKardex = ?";
 
         try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
 
@@ -94,7 +94,7 @@ public class KardexDAO implements DAOInterfaz<Kardex> {
     @Override
     public int eliminar(int idKardex) {
         int valor = 0;
-        String statement = "DELETE FROM kardex WHERE idKardex = ?";
+        String statement = "DELETE FROM vistaKardex WHERE idKardex = ?";
 
         try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
 
@@ -110,7 +110,7 @@ public class KardexDAO implements DAOInterfaz<Kardex> {
     @Override
     public int modificar(Kardex k) {
         int valor = 0;
-        String statement = "UPDATE kardex SET costo=?, fecha=?, costoPromedio=?, Item_idItem=?, Factura_idFactura=? WHERE idKardex=?";
+        String statement = "UPDATE vistaKardex SET costo=?, fecha=?, costoPromedio=?, Item_idItem=?, Factura_idFactura=? WHERE idKardex=?";
 
         try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
 
