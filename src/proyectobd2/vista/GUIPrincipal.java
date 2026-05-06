@@ -32,21 +32,22 @@ public class GUIPrincipal extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 17), new java.awt.Dimension(0, 100), new java.awt.Dimension(0, 100));
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
-        jButton7 = new javax.swing.JButton();
+        btnDashboard = new javax.swing.JButton();
+        btnEntradas = new javax.swing.JButton();
+        btnSalidas = new javax.swing.JButton();
+        btnInventario = new javax.swing.JButton();
+        btnKardex = new javax.swing.JButton();
+        btnReportes = new javax.swing.JButton();
+        btnCatalogos = new javax.swing.JButton();
         filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 40), new java.awt.Dimension(0, 270), new java.awt.Dimension(0, 270));
         jSeparator1 = new javax.swing.JSeparator();
         filler3 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 10), new java.awt.Dimension(0, 10), new java.awt.Dimension(0, 10));
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
+        lblNombre = new javax.swing.JLabel();
+        lblTipoUsuario = new javax.swing.JLabel();
+        lblSucursal = new javax.swing.JLabel();
         filler4 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 10), new java.awt.Dimension(0, 10), new java.awt.Dimension(0, 10));
-        jButton8 = new javax.swing.JButton();
+        btnCerrarSesion = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(227, 227, 227));
@@ -69,95 +70,113 @@ public class GUIPrincipal extends javax.swing.JFrame {
         jPanel1.add(jLabel2);
         jPanel1.add(filler1);
 
-        jButton1.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
-        jButton1.setText("Dashboard");
-        jButton1.setAlignmentX(0.5F);
-        jButton1.setMaximumSize(new java.awt.Dimension(180, 40));
-        jButton1.addActionListener(this::jButton1ActionPerformed);
-        jPanel1.add(jButton1);
+        btnDashboard.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
+        btnDashboard.setText("Dashboard");
+        btnDashboard.setAlignmentX(0.5F);
+        btnDashboard.setMaximumSize(new java.awt.Dimension(180, 40));
+        btnDashboard.addActionListener(this::btnDashboardActionPerformed);
+        jPanel1.add(btnDashboard);
 
-        jButton2.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
-        jButton2.setText("Entradas");
-        jButton2.setAlignmentX(0.5F);
-        jButton2.setMaximumSize(new java.awt.Dimension(180, 40));
-        jButton2.addActionListener(this::jButton2ActionPerformed);
-        jPanel1.add(jButton2);
+        btnEntradas.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
+        btnEntradas.setText("Entradas");
+        btnEntradas.setAlignmentX(0.5F);
+        btnEntradas.setMaximumSize(new java.awt.Dimension(180, 40));
+        btnEntradas.addActionListener(this::btnEntradasActionPerformed);
+        jPanel1.add(btnEntradas);
 
-        jButton3.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
-        jButton3.setText("Salidas");
-        jButton3.setAlignmentX(0.5F);
-        jButton3.setMaximumSize(new java.awt.Dimension(180, 40));
-        jPanel1.add(jButton3);
+        btnSalidas.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
+        btnSalidas.setText("Salidas");
+        btnSalidas.setAlignmentX(0.5F);
+        btnSalidas.setMaximumSize(new java.awt.Dimension(180, 40));
+        jPanel1.add(btnSalidas);
 
-        jButton4.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
-        jButton4.setText("Inventario");
-        jButton4.setAlignmentX(0.5F);
-        jButton4.setMaximumSize(new java.awt.Dimension(180, 40));
-        jPanel1.add(jButton4);
+        btnInventario.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
+        btnInventario.setText("Inventario");
+        btnInventario.setAlignmentX(0.5F);
+        btnInventario.setMaximumSize(new java.awt.Dimension(180, 40));
+        jPanel1.add(btnInventario);
 
-        jButton5.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
-        jButton5.setText("Kardex");
-        jButton5.setAlignmentX(0.5F);
-        jButton5.setMaximumSize(new java.awt.Dimension(180, 40));
-        jPanel1.add(jButton5);
+        btnKardex.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
+        btnKardex.setText("Kardex");
+        btnKardex.setAlignmentX(0.5F);
+        btnKardex.setMaximumSize(new java.awt.Dimension(180, 40));
+        jPanel1.add(btnKardex);
 
-        jButton6.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
-        jButton6.setText("Reportes");
-        jButton6.setAlignmentX(0.5F);
-        jButton6.setMaximumSize(new java.awt.Dimension(180, 40));
-        jPanel1.add(jButton6);
+        btnReportes.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
+        btnReportes.setText("Reportes");
+        btnReportes.setAlignmentX(0.5F);
+        btnReportes.setMaximumSize(new java.awt.Dimension(180, 40));
+        btnReportes.addActionListener(this::btnReportesActionPerformed);
+        jPanel1.add(btnReportes);
 
-        jButton7.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
-        jButton7.setText("Catálogos");
-        jButton7.setAlignmentX(0.5F);
-        jButton7.setMaximumSize(new java.awt.Dimension(180, 40));
-        jPanel1.add(jButton7);
+        btnCatalogos.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
+        btnCatalogos.setText("Catálogos");
+        btnCatalogos.setAlignmentX(0.5F);
+        btnCatalogos.setMaximumSize(new java.awt.Dimension(180, 40));
+        jPanel1.add(btnCatalogos);
         jPanel1.add(filler2);
         jPanel1.add(jSeparator1);
         jPanel1.add(filler3);
 
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
-        jLabel3.setText("Nombre");
-        jLabel3.setAlignmentX(0.5F);
-        jPanel1.add(jLabel3);
+        lblNombre.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
+        lblNombre.setText("Nombre");
+        lblNombre.setAlignmentX(0.5F);
+        jPanel1.add(lblNombre);
 
-        jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
-        jLabel4.setText("tipoUsuario");
-        jLabel4.setAlignmentX(0.5F);
-        jPanel1.add(jLabel4);
+        lblTipoUsuario.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
+        lblTipoUsuario.setText("tipoUsuario");
+        lblTipoUsuario.setAlignmentX(0.5F);
+        jPanel1.add(lblTipoUsuario);
 
-        jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
-        jLabel5.setText("sucursal");
-        jLabel5.setAlignmentX(0.5F);
-        jPanel1.add(jLabel5);
+        lblSucursal.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
+        lblSucursal.setText("sucursal");
+        lblSucursal.setAlignmentX(0.5F);
+        jPanel1.add(lblSucursal);
         jPanel1.add(filler4);
 
-        jButton8.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
-        jButton8.setForeground(new java.awt.Color(183, 0, 0));
-        jButton8.setText("Cerrar Sesión");
-        jButton8.setAlignmentX(0.5F);
-        jButton8.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(199, 2, 2), 2, true));
-        jButton8.setMaximumSize(new java.awt.Dimension(180, 40));
-        jButton8.addActionListener(this::jButton8ActionPerformed);
-        jPanel1.add(jButton8);
-        jButton8.getAccessibleContext().setAccessibleDescription("");
+        btnCerrarSesion.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
+        btnCerrarSesion.setForeground(new java.awt.Color(183, 0, 0));
+        btnCerrarSesion.setText("Cerrar Sesión");
+        btnCerrarSesion.setAlignmentX(0.5F);
+        btnCerrarSesion.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(199, 2, 2), 2, true));
+        btnCerrarSesion.setMaximumSize(new java.awt.Dimension(180, 40));
+        btnCerrarSesion.addActionListener(this::btnCerrarSesionActionPerformed);
+        jPanel1.add(btnCerrarSesion);
+        btnCerrarSesion.getAccessibleContext().setAccessibleDescription("");
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.LINE_START);
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 484, Short.MAX_VALUE)
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 574, Short.MAX_VALUE)
+        );
+
+        getContentPane().add(jPanel2, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+    private void btnCerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarSesionActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton8ActionPerformed
+    }//GEN-LAST:event_btnCerrarSesionActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnDashboardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDashboardActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnDashboardActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void btnEntradasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEntradasActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_btnEntradasActionPerformed
+
+    private void btnReportesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReportesActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnReportesActionPerformed
 
     /**
      * @param args the command line arguments
@@ -185,24 +204,25 @@ public class GUIPrincipal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnCatalogos;
+    private javax.swing.JButton btnCerrarSesion;
+    private javax.swing.JButton btnDashboard;
+    private javax.swing.JButton btnEntradas;
+    private javax.swing.JButton btnInventario;
+    private javax.swing.JButton btnKardex;
+    private javax.swing.JButton btnReportes;
+    private javax.swing.JButton btnSalidas;
     private javax.swing.Box.Filler filler1;
     private javax.swing.Box.Filler filler2;
     private javax.swing.Box.Filler filler3;
     private javax.swing.Box.Filler filler4;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
-    private javax.swing.JButton jButton7;
-    private javax.swing.JButton jButton8;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JLabel lblNombre;
+    private javax.swing.JLabel lblSucursal;
+    private javax.swing.JLabel lblTipoUsuario;
     // End of variables declaration//GEN-END:variables
 }
