@@ -26,19 +26,68 @@ public class GUIEntradas extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
-        );
+        jTextField1 = new javax.swing.JTextField();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        txt_folio = new javax.swing.JTextField();
+        btn_nuevaEntrada = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tb_entradas = new javax.swing.JTable();
+
+        jTextField1.setText("jTextField1");
+
+        jTextArea1.setColumns(20);
+        jTextArea1.setRows(5);
+        jScrollPane1.setViewportView(jTextArea1);
+
+        setLayout(new java.awt.BorderLayout());
+
+        jLabel1.setText("Buscar por folio de factura:");
+        jPanel1.add(jLabel1);
+
+        txt_folio.setMinimumSize(new java.awt.Dimension(150, 22));
+        txt_folio.setPreferredSize(new java.awt.Dimension(150, 22));
+        jPanel1.add(txt_folio);
+
+        btn_nuevaEntrada.setText("Nueva entrada");
+        btn_nuevaEntrada.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_nuevaEntradaActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btn_nuevaEntrada);
+
+        add(jPanel1, java.awt.BorderLayout.PAGE_START);
+
+        tb_entradas.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "FOLIO", "FECHA", "PROVEEDOR", "RFC", "ARTICULOS", "TOTAL"
+            }
+        ));
+        jScrollPane2.setViewportView(tb_entradas);
+
+        add(jScrollPane2, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btn_nuevaEntradaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_nuevaEntradaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btn_nuevaEntradaActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btn_nuevaEntrada;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTable tb_entradas;
+    private javax.swing.JTextField txt_folio;
     // End of variables declaration//GEN-END:variables
 }
