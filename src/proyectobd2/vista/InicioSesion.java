@@ -18,15 +18,16 @@ import proyectobd2.modelo.beans.Empleado;
  */
 public class InicioSesion extends javax.swing.JFrame {
 
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(InicioSesion.class.getName());
-
     /**
      * Creates new form InicioSesion
      */
     public InicioSesion() {
         initComponents();
+        
+        this.pack();
         this.setLocationRelativeTo(null);
         this.setResizable(false);
+
     }
 
     /**
@@ -54,9 +55,10 @@ public class InicioSesion extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Inicio de sesión - Global Finance");
-        setPreferredSize(new java.awt.Dimension(650, 500));
+        setMaximumSize(new java.awt.Dimension(600, 700));
+        setPreferredSize(new java.awt.Dimension(470, 600));
 
-        jPanel1.setPreferredSize(new java.awt.Dimension(600, 700));
+        jPanel1.setPreferredSize(new java.awt.Dimension(550, 700));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel1.setText("Global Finance");
@@ -66,7 +68,7 @@ public class InicioSesion extends javax.swing.JFrame {
 
         jLabel3.setText("Nombre");
 
-        lb_usuario.setText("Ingresa tu nombre");
+        lb_usuario.setToolTipText("");
         lb_usuario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 lb_usuarioActionPerformed(evt);
@@ -75,7 +77,6 @@ public class InicioSesion extends javax.swing.JFrame {
 
         jLabel4.setText("Contraseña");
 
-        pf_contrasenia.setText("Ingresa tu contraseña");
         pf_contrasenia.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 pf_contraseniaActionPerformed(evt);
@@ -183,7 +184,7 @@ public class InicioSesion extends javax.swing.JFrame {
             EmpleadoDAO empleadodao = new EmpleadoDAO();
             try {
                 HashMap<Empleado, ArrayList<String>> empleadoRoles = empleadodao.login(nombre, contraseniaHasheada);
-                
+
                 if (empleadoRoles != null) {
                     Empleado empleado = empleadoRoles.keySet().iterator().next();
                     //Mostrar la ventana que le corresponde al usuario
@@ -220,30 +221,6 @@ public class InicioSesion extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_rb_usuarioCentralActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new InicioSesion().setVisible(true));
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_inicioSesion;

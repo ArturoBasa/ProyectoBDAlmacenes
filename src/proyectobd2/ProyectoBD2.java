@@ -4,6 +4,8 @@
  */
 package proyectobd2;
 
+import proyectobd2.vista.InicioSesion;
+
 /**
  *
  * @author basa2
@@ -14,7 +16,8 @@ public class ProyectoBD2 {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+       InicioSesion ejecutar = new InicioSesion();
+       ejecutar.setVisible(true);
     }
     
 }
