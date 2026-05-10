@@ -4,11 +4,14 @@
  */
 package proyectobd2.vista;
 
+import java.awt.CardLayout;
+
 /**
  *
  * @author basa2
  */
 public class GUIPrincipal extends javax.swing.JFrame {
+    private CardLayout cardLayout;
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(GUIPrincipal.class.getName());
 
@@ -17,6 +20,13 @@ public class GUIPrincipal extends javax.swing.JFrame {
      */
     public GUIPrincipal() {
         initComponents();
+        cardLayout = (CardLayout) pnl_contenido.getLayout();
+        
+        pnl_contenido.add(new GUIEntradas(), "CARD_ENTRADAS");
+        //pnl_contenido.add(new GUISalidas(), "CARD_SALIDAS");
+        pnl_contenido.add(new GUIReportes(), "CARD_REPORTES");
+        pnl_contenido.add(new GUIKardex(), "CARD_KARDEX");
+        pnl_contenido.add(new GUICatalogo(), "CARD_CATALOGOS");
     }
 
     /**
@@ -32,7 +42,6 @@ public class GUIPrincipal extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 17), new java.awt.Dimension(0, 100), new java.awt.Dimension(0, 100));
-        btnDashboard = new javax.swing.JButton();
         btnEntradas = new javax.swing.JButton();
         btnSalidas = new javax.swing.JButton();
         btnInventario = new javax.swing.JButton();
@@ -47,7 +56,7 @@ public class GUIPrincipal extends javax.swing.JFrame {
         lblSucursal = new javax.swing.JLabel();
         filler4 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 10), new java.awt.Dimension(0, 10), new java.awt.Dimension(0, 10));
         btnCerrarSesion = new javax.swing.JButton();
-        jPanel2 = new javax.swing.JPanel();
+        pnl_contenido = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(227, 227, 227));
@@ -70,13 +79,6 @@ public class GUIPrincipal extends javax.swing.JFrame {
         jPanel1.add(jLabel2);
         jPanel1.add(filler1);
 
-        btnDashboard.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
-        btnDashboard.setText("Dashboard");
-        btnDashboard.setAlignmentX(0.5F);
-        btnDashboard.setMaximumSize(new java.awt.Dimension(180, 40));
-        btnDashboard.addActionListener(this::btnDashboardActionPerformed);
-        jPanel1.add(btnDashboard);
-
         btnEntradas.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
         btnEntradas.setText("Entradas");
         btnEntradas.setAlignmentX(0.5F);
@@ -88,18 +90,21 @@ public class GUIPrincipal extends javax.swing.JFrame {
         btnSalidas.setText("Salidas");
         btnSalidas.setAlignmentX(0.5F);
         btnSalidas.setMaximumSize(new java.awt.Dimension(180, 40));
+        btnSalidas.addActionListener(this::btnSalidasActionPerformed);
         jPanel1.add(btnSalidas);
 
         btnInventario.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
         btnInventario.setText("Inventario");
         btnInventario.setAlignmentX(0.5F);
         btnInventario.setMaximumSize(new java.awt.Dimension(180, 40));
+        btnInventario.addActionListener(this::btnInventarioActionPerformed);
         jPanel1.add(btnInventario);
 
         btnKardex.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
         btnKardex.setText("Kardex");
         btnKardex.setAlignmentX(0.5F);
         btnKardex.setMaximumSize(new java.awt.Dimension(180, 40));
+        btnKardex.addActionListener(this::btnKardexActionPerformed);
         jPanel1.add(btnKardex);
 
         btnReportes.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
@@ -113,6 +118,7 @@ public class GUIPrincipal extends javax.swing.JFrame {
         btnCatalogos.setText("Catálogos");
         btnCatalogos.setAlignmentX(0.5F);
         btnCatalogos.setMaximumSize(new java.awt.Dimension(180, 40));
+        btnCatalogos.addActionListener(this::btnCatalogosActionPerformed);
         jPanel1.add(btnCatalogos);
         jPanel1.add(filler2);
         jPanel1.add(jSeparator1);
@@ -146,37 +152,42 @@ public class GUIPrincipal extends javax.swing.JFrame {
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.LINE_START);
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout pnl_contenidoLayout = new javax.swing.GroupLayout(pnl_contenido);
+        pnl_contenido.setLayout(pnl_contenidoLayout);
+        pnl_contenidoLayout.setHorizontalGroup(
+            pnl_contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 484, Short.MAX_VALUE)
         );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        pnl_contenidoLayout.setVerticalGroup(
+            pnl_contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 574, Short.MAX_VALUE)
         );
 
-        getContentPane().add(jPanel2, java.awt.BorderLayout.CENTER);
+        getContentPane().add(pnl_contenido, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarSesionActionPerformed
-        // TODO add your handling code here:
     }//GEN-LAST:event_btnCerrarSesionActionPerformed
 
-    private void btnDashboardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDashboardActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnDashboardActionPerformed
-
     private void btnEntradasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEntradasActionPerformed
-        // TODO add your handling code here:
     }//GEN-LAST:event_btnEntradasActionPerformed
 
     private void btnReportesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReportesActionPerformed
-        // TODO add your handling code here:
     }//GEN-LAST:event_btnReportesActionPerformed
+
+    private void btnSalidasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalidasActionPerformed
+    }//GEN-LAST:event_btnSalidasActionPerformed
+
+    private void btnInventarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInventarioActionPerformed
+    }//GEN-LAST:event_btnInventarioActionPerformed
+
+    private void btnKardexActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnKardexActionPerformed
+    }//GEN-LAST:event_btnKardexActionPerformed
+
+    private void btnCatalogosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCatalogosActionPerformed
+    }//GEN-LAST:event_btnCatalogosActionPerformed
 
     /**
      * @param args the command line arguments
@@ -202,16 +213,19 @@ public class GUIPrincipal extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> new GUIPrincipal().setVisible(true));
     }
+    
+    public void cambiarVista(String nombreCard) {
+        cardLayout.show(pnl_contenido, nombreCard);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnCatalogos;
-    private javax.swing.JButton btnCerrarSesion;
-    private javax.swing.JButton btnDashboard;
-    private javax.swing.JButton btnEntradas;
-    private javax.swing.JButton btnInventario;
-    private javax.swing.JButton btnKardex;
-    private javax.swing.JButton btnReportes;
-    private javax.swing.JButton btnSalidas;
+    public javax.swing.JButton btnCatalogos;
+    public javax.swing.JButton btnCerrarSesion;
+    public javax.swing.JButton btnEntradas;
+    public javax.swing.JButton btnInventario;
+    public javax.swing.JButton btnKardex;
+    public javax.swing.JButton btnReportes;
+    public javax.swing.JButton btnSalidas;
     private javax.swing.Box.Filler filler1;
     private javax.swing.Box.Filler filler2;
     private javax.swing.Box.Filler filler3;
@@ -219,10 +233,10 @@ public class GUIPrincipal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JLabel lblNombre;
     private javax.swing.JLabel lblSucursal;
     private javax.swing.JLabel lblTipoUsuario;
+    private javax.swing.JPanel pnl_contenido;
     // End of variables declaration//GEN-END:variables
 }
