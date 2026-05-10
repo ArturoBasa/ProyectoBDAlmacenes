@@ -183,7 +183,9 @@ public class InicioSesion extends javax.swing.JFrame {
             EmpleadoDAO empleadodao = new EmpleadoDAO();
             try {
                 HashMap<Empleado, ArrayList<String>> empleadoRoles = empleadodao.login(nombre, contraseniaHasheada);
+                
                 if (empleadoRoles != null) {
+                    Empleado empleado = empleadoRoles.keySet().iterator().next();
                     //Mostrar la ventana que le corresponde al usuario
                     //VentanaPrincipal principal = new VentanaPrincipal(empleado);
                     //principal.setVisible(true);
@@ -192,9 +194,8 @@ public class InicioSesion extends javax.swing.JFrame {
                         //Mostrar la GUI de usuario central
                         this.dispose();
                     } else if (roles.contains("Usuario sucursal") && rb_usuarioSucursal.isSelected()) {
-//                        CajeroView vistaCajero = new CajeroView();
-//                        vistaCajero.setVisible(true);
-                        //Mostrar la vista de este usuario
+                        GUIPrincipal principal = new GUIPrincipal(empleado);
+                        principal.setVisible(true);
                         this.dispose();
                     } else if (roles.contains("Usuario salidas") && rb_usuarioSalidas.isSelected()) {
                         //Mostrar el GUI de este usuario

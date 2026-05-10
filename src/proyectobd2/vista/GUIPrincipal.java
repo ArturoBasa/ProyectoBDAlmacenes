@@ -4,19 +4,31 @@
  */
 package proyectobd2.vista;
 
+import java.awt.CardLayout;
+import proyectobd2.modelo.beans.Empleado;
+
 /**
  *
  * @author basa2
  */
 public class GUIPrincipal extends javax.swing.JFrame {
-    
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(GUIPrincipal.class.getName());
 
     /**
      * Creates new form GUIPrincipal
      */
-    public GUIPrincipal() {
+    public GUIPrincipal(Empleado empleado) {
         initComponents();
+        jLabel3.setText(empleado.getNombre());
+
+        GUIEntradas panelEntradas = new GUIEntradas();
+        GUISalidas panelSalidas = new GUISalidas();
+        GUIInventario panelInventario = new GUIInventario();
+
+        pnl_cuerpo.add(panelInventario, "inventario");
+        pnl_cuerpo.add(panelEntradas, "entradas");
+        pnl_cuerpo.add(panelSalidas, "salidas");
     }
 
     /**
@@ -32,10 +44,9 @@ public class GUIPrincipal extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 17), new java.awt.Dimension(0, 100), new java.awt.Dimension(0, 100));
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        btn_entradas = new javax.swing.JButton();
+        btn_salidas = new javax.swing.JButton();
+        btn_inventario = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
         jButton7 = new javax.swing.JButton();
@@ -43,15 +54,15 @@ public class GUIPrincipal extends javax.swing.JFrame {
         jSeparator1 = new javax.swing.JSeparator();
         filler3 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 10), new java.awt.Dimension(0, 10), new java.awt.Dimension(0, 10));
         jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
+        lb_tipoUsuario = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         filler4 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 10), new java.awt.Dimension(0, 10), new java.awt.Dimension(0, 10));
         jButton8 = new javax.swing.JButton();
+        pnl_cuerpo = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(227, 227, 227));
         setMinimumSize(new java.awt.Dimension(1024, 720));
-        setPreferredSize(new java.awt.Dimension(1024, 720));
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(30, 15, 15, 15));
@@ -69,31 +80,26 @@ public class GUIPrincipal extends javax.swing.JFrame {
         jPanel1.add(jLabel2);
         jPanel1.add(filler1);
 
-        jButton1.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
-        jButton1.setText("Dashboard");
-        jButton1.setAlignmentX(0.5F);
-        jButton1.setMaximumSize(new java.awt.Dimension(180, 40));
-        jButton1.addActionListener(this::jButton1ActionPerformed);
-        jPanel1.add(jButton1);
+        btn_entradas.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
+        btn_entradas.setText("Entradas");
+        btn_entradas.setAlignmentX(0.5F);
+        btn_entradas.setMaximumSize(new java.awt.Dimension(180, 40));
+        btn_entradas.addActionListener(this::btn_entradasActionPerformed);
+        jPanel1.add(btn_entradas);
 
-        jButton2.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
-        jButton2.setText("Entradas");
-        jButton2.setAlignmentX(0.5F);
-        jButton2.setMaximumSize(new java.awt.Dimension(180, 40));
-        jButton2.addActionListener(this::jButton2ActionPerformed);
-        jPanel1.add(jButton2);
+        btn_salidas.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
+        btn_salidas.setText("Salidas");
+        btn_salidas.setAlignmentX(0.5F);
+        btn_salidas.setMaximumSize(new java.awt.Dimension(180, 40));
+        btn_salidas.addActionListener(this::btn_salidasActionPerformed);
+        jPanel1.add(btn_salidas);
 
-        jButton3.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
-        jButton3.setText("Salidas");
-        jButton3.setAlignmentX(0.5F);
-        jButton3.setMaximumSize(new java.awt.Dimension(180, 40));
-        jPanel1.add(jButton3);
-
-        jButton4.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
-        jButton4.setText("Inventario");
-        jButton4.setAlignmentX(0.5F);
-        jButton4.setMaximumSize(new java.awt.Dimension(180, 40));
-        jPanel1.add(jButton4);
+        btn_inventario.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
+        btn_inventario.setText("Inventario");
+        btn_inventario.setAlignmentX(0.5F);
+        btn_inventario.setMaximumSize(new java.awt.Dimension(180, 40));
+        btn_inventario.addActionListener(this::btn_inventarioActionPerformed);
+        jPanel1.add(btn_inventario);
 
         jButton5.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
         jButton5.setText("Kardex");
@@ -121,10 +127,10 @@ public class GUIPrincipal extends javax.swing.JFrame {
         jLabel3.setAlignmentX(0.5F);
         jPanel1.add(jLabel3);
 
-        jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
-        jLabel4.setText("tipoUsuario");
-        jLabel4.setAlignmentX(0.5F);
-        jPanel1.add(jLabel4);
+        lb_tipoUsuario.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
+        lb_tipoUsuario.setText("tipoUsuario");
+        lb_tipoUsuario.setAlignmentX(0.5F);
+        jPanel1.add(lb_tipoUsuario);
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
         jLabel5.setText("sucursal");
@@ -142,7 +148,11 @@ public class GUIPrincipal extends javax.swing.JFrame {
         jPanel1.add(jButton8);
         jButton8.getAccessibleContext().setAccessibleDescription("");
 
-        getContentPane().add(jPanel1, java.awt.BorderLayout.LINE_START);
+        getContentPane().add(jPanel1, java.awt.BorderLayout.WEST);
+
+        pnl_cuerpo.setBackground(new java.awt.Color(51, 0, 255));
+        pnl_cuerpo.setLayout(new java.awt.CardLayout());
+        getContentPane().add(pnl_cuerpo, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -151,48 +161,35 @@ public class GUIPrincipal extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton8ActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void btn_entradasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_entradasActionPerformed
+        // Obtenemos el layout del panel contenedor
+        CardLayout card = (CardLayout) pnl_cuerpo.getLayout();
+        // Le pedimos que muestre el panel con el nombre que definimos antes
+        card.show(pnl_cuerpo, "entradas");
+    }//GEN-LAST:event_btn_entradasActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
+    private void btn_salidasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_salidasActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+        CardLayout card = (CardLayout) pnl_cuerpo.getLayout();
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new GUIPrincipal().setVisible(true));
-    }
+        card.show(pnl_cuerpo, "salidas");
+    }//GEN-LAST:event_btn_salidasActionPerformed
+
+    private void btn_inventarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_inventarioActionPerformed
+        CardLayout card = (CardLayout) pnl_cuerpo.getLayout();
+
+        card.show(pnl_cuerpo, "inventario");
+    }//GEN-LAST:event_btn_inventarioActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btn_entradas;
+    private javax.swing.JButton btn_inventario;
+    private javax.swing.JButton btn_salidas;
     private javax.swing.Box.Filler filler1;
     private javax.swing.Box.Filler filler2;
     private javax.swing.Box.Filler filler3;
     private javax.swing.Box.Filler filler4;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
@@ -200,9 +197,10 @@ public class GUIPrincipal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JLabel lb_tipoUsuario;
+    private javax.swing.JPanel pnl_cuerpo;
     // End of variables declaration//GEN-END:variables
 }
