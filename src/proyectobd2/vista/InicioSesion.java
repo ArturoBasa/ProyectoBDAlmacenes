@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import javax.swing.JOptionPane;
 import proyectobd2.modelo.DAO.EmpleadoDAO;
+import proyectobd2.modelo.HasheoContrasenia;
 import proyectobd2.modelo.beans.Empleado;
 
 /**
@@ -174,13 +175,14 @@ public class InicioSesion extends javax.swing.JFrame {
 
     private void btn_inicioSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_inicioSesionActionPerformed
         String nombre = lb_usuario.getText();
-        String contrasenia = new String(pf_contrasenia.getPassword());
+        String contraseniaPlana = new String(pf_contrasenia.getPassword());
 
-        if (!nombre.isEmpty() && !contrasenia.isEmpty()) {
+        if (!nombre.isEmpty() && !contraseniaPlana.isEmpty()) {
+            String contraseniaHasheada = HasheoContrasenia.hashPassword(contraseniaPlana);
 
             EmpleadoDAO empleadodao = new EmpleadoDAO();
             try {
-                HashMap<Empleado, ArrayList<String>> empleadoRoles = empleadodao.login(nombre, contrasenia);
+                HashMap<Empleado, ArrayList<String>> empleadoRoles = empleadodao.login(nombre, contraseniaHasheada);
                 if (empleadoRoles != null) {
                     //Mostrar la ventana que le corresponde al usuario
                     //VentanaPrincipal principal = new VentanaPrincipal(empleado);
@@ -188,19 +190,19 @@ public class InicioSesion extends javax.swing.JFrame {
                     ArrayList<String> roles = empleadoRoles.values().iterator().next();
                     if (roles.contains("Usuario central") && rb_usuarioCentral.isSelected()) {
                         //Mostrar la GUI de usuario central
-                         this.dispose();
+                        this.dispose();
                     } else if (roles.contains("Usuario sucursal") && rb_usuarioSucursal.isSelected()) {
 //                        CajeroView vistaCajero = new CajeroView();
 //                        vistaCajero.setVisible(true);
                         //Mostrar la vista de este usuario
-                         this.dispose();
+                        this.dispose();
                     } else if (roles.contains("Usuario salidas") && rb_usuarioSalidas.isSelected()) {
                         //Mostrar el GUI de este usuario
-                         this.dispose();
+                        this.dispose();
                     } else {
                         JOptionPane.showMessageDialog(null, "Selecciona un rol correcto", "Aviso", 1);
                     }
-                   
+
                 } else {
                     JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrectos", "Aviso", 1);
                     pf_contrasenia.setText("");
