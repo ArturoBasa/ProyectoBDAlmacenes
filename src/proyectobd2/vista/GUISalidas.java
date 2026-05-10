@@ -52,7 +52,7 @@ public class GUISalidas extends javax.swing.JPanel {
 
             },
             new String [] {
-                "ENCARGADO", "DEPARTAMENTO", "FECHA", "ARTICULO"
+                "FECHA", "DEPARTAMENTO", "ENCARGADO", "ARTíCULOS"
             }
         ));
         jScrollPane1.setViewportView(jTable1);

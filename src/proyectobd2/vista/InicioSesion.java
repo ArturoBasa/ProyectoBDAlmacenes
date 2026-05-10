@@ -4,6 +4,13 @@
  */
 package proyectobd2.vista;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import javax.swing.JOptionPane;
+import proyectobd2.modelo.DAO.EmpleadoDAO;
+import proyectobd2.modelo.beans.Empleado;
+
 /**
  *
  * @author endri
@@ -18,6 +25,7 @@ public class InicioSesion extends javax.swing.JFrame {
     public InicioSesion() {
         initComponents();
         this.setLocationRelativeTo(null);
+        this.setResizable(false);
     }
 
     /**
@@ -29,19 +37,25 @@ public class InicioSesion extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPopupMenu1 = new javax.swing.JPopupMenu();
+        grupoUsuario = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         lb_usuario = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        pf_contraseña = new javax.swing.JPasswordField();
+        pf_contrasenia = new javax.swing.JPasswordField();
         btn_inicioSesion = new javax.swing.JButton();
+        rb_usuarioCentral = new javax.swing.JRadioButton();
+        rb_usuarioSalidas = new javax.swing.JRadioButton();
+        rb_usuarioSucursal = new javax.swing.JRadioButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(500, 500));
+        setTitle("Inicio de sesión - Global Finance");
+        setPreferredSize(new java.awt.Dimension(650, 500));
 
-        jPanel1.setPreferredSize(new java.awt.Dimension(600, 600));
+        jPanel1.setPreferredSize(new java.awt.Dimension(600, 700));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel1.setText("Global Finance");
@@ -49,9 +63,9 @@ public class InicioSesion extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel2.setText("Sistema de control de almacenes");
 
-        jLabel3.setText("Correro electrónico");
+        jLabel3.setText("Nombre");
 
-        lb_usuario.setText("Ingresa tu correo");
+        lb_usuario.setText("Ingresa tu nombre");
         lb_usuario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 lb_usuarioActionPerformed(evt);
@@ -60,10 +74,10 @@ public class InicioSesion extends javax.swing.JFrame {
 
         jLabel4.setText("Contraseña");
 
-        pf_contraseña.setText("Ingresa tu contraseña");
-        pf_contraseña.addActionListener(new java.awt.event.ActionListener() {
+        pf_contrasenia.setText("Ingresa tu contraseña");
+        pf_contrasenia.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                pf_contraseñaActionPerformed(evt);
+                pf_contraseniaActionPerformed(evt);
             }
         });
 
@@ -76,27 +90,46 @@ public class InicioSesion extends javax.swing.JFrame {
             }
         });
 
+        grupoUsuario.add(rb_usuarioCentral);
+        rb_usuarioCentral.setText("Usuario Central");
+        rb_usuarioCentral.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rb_usuarioCentralActionPerformed(evt);
+            }
+        });
+
+        grupoUsuario.add(rb_usuarioSalidas);
+        rb_usuarioSalidas.setText("Usuario Salidas");
+
+        grupoUsuario.add(rb_usuarioSucursal);
+        rb_usuarioSucursal.setText("Usuario Sucursal");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(165, 165, 165)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel2)
-                    .addComponent(lb_usuario, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(pf_contraseña, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btn_inicioSesion, javax.swing.GroupLayout.PREFERRED_SIZE, 318, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                        .addGap(2, 2, 2)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(63, 63, 63)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                        .addComponent(jLabel1)
+                        .addComponent(jLabel2)
+                        .addComponent(lb_usuario, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(pf_contrasenia, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btn_inicioSesion, javax.swing.GroupLayout.PREFERRED_SIZE, 318, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                            .addGap(2, 2, 2)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                                .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING))))
+                    .addComponent(rb_usuarioSalidas)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(rb_usuarioCentral, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(rb_usuarioSucursal, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addContainerGap(64, Short.MAX_VALUE))
         );
 
-        jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btn_inicioSesion, lb_usuario, pf_contraseña});
+        jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btn_inicioSesion, lb_usuario, pf_contrasenia});
 
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -112,13 +145,19 @@ public class InicioSesion extends javax.swing.JFrame {
                 .addGap(24, 24, 24)
                 .addComponent(jLabel4)
                 .addGap(6, 6, 6)
-                .addComponent(pf_contraseña, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(26, 26, 26)
+                .addComponent(pf_contrasenia, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(27, 27, 27)
+                .addComponent(rb_usuarioCentral)
+                .addGap(18, 18, 18)
+                .addComponent(rb_usuarioSucursal)
+                .addGap(18, 18, 18)
+                .addComponent(rb_usuarioSalidas)
+                .addGap(18, 18, 18)
                 .addComponent(btn_inicioSesion, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(64, Short.MAX_VALUE))
         );
 
-        jPanel1Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {btn_inicioSesion, lb_usuario, pf_contraseña});
+        jPanel1Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {btn_inicioSesion, lb_usuario, pf_contrasenia});
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
 
@@ -129,13 +168,54 @@ public class InicioSesion extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_lb_usuarioActionPerformed
 
-    private void pf_contraseñaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pf_contraseñaActionPerformed
+    private void pf_contraseniaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pf_contraseniaActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_pf_contraseñaActionPerformed
+    }//GEN-LAST:event_pf_contraseniaActionPerformed
 
     private void btn_inicioSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_inicioSesionActionPerformed
-        // TODO add your handling code here:
+        String nombre = lb_usuario.getText();
+        String contrasenia = new String(pf_contrasenia.getPassword());
+
+        if (!nombre.isEmpty() && !contrasenia.isEmpty()) {
+
+            EmpleadoDAO empleadodao = new EmpleadoDAO();
+            try {
+                HashMap<Empleado, ArrayList<String>> empleadoRoles = empleadodao.login(nombre, contrasenia);
+                if (empleadoRoles != null) {
+                    //Mostrar la ventana que le corresponde al usuario
+                    //VentanaPrincipal principal = new VentanaPrincipal(empleado);
+                    //principal.setVisible(true);
+                    ArrayList<String> roles = empleadoRoles.values().iterator().next();
+                    if (roles.contains("Usuario central") && rb_usuarioCentral.isSelected()) {
+                        //Mostrar la GUI de usuario central
+                         this.dispose();
+                    } else if (roles.contains("Usuario sucursal") && rb_usuarioSucursal.isSelected()) {
+//                        CajeroView vistaCajero = new CajeroView();
+//                        vistaCajero.setVisible(true);
+                        //Mostrar la vista de este usuario
+                         this.dispose();
+                    } else if (roles.contains("Usuario salidas") && rb_usuarioSalidas.isSelected()) {
+                        //Mostrar el GUI de este usuario
+                         this.dispose();
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Selecciona un rol correcto", "Aviso", 1);
+                    }
+                   
+                } else {
+                    JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrectos", "Aviso", 1);
+                    pf_contrasenia.setText("");
+                }
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(this, "Error de la conexion con la base de datos", "Error", 0);
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Los campos no pueden quedar vacíos", "Aviso", 1);
+        }
     }//GEN-LAST:event_btn_inicioSesionActionPerformed
+
+    private void rb_usuarioCentralActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rb_usuarioCentralActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rb_usuarioCentralActionPerformed
 
     /**
      * @param args the command line arguments
@@ -164,12 +244,17 @@ public class InicioSesion extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_inicioSesion;
+    private javax.swing.ButtonGroup grupoUsuario;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPopupMenu jPopupMenu1;
     private javax.swing.JTextField lb_usuario;
-    private javax.swing.JPasswordField pf_contraseña;
+    private javax.swing.JPasswordField pf_contrasenia;
+    private javax.swing.JRadioButton rb_usuarioCentral;
+    private javax.swing.JRadioButton rb_usuarioSalidas;
+    private javax.swing.JRadioButton rb_usuarioSucursal;
     // End of variables declaration//GEN-END:variables
 }
