@@ -5,28 +5,33 @@
 package proyectobd2.vista;
 
 import java.awt.CardLayout;
+import proyectobd2.modelo.beans.Empleado;
 
 /**
  *
  * @author basa2
  */
 public class GUIPrincipal extends javax.swing.JFrame {
-    private CardLayout cardLayout;
+    private CardLayout card;
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(GUIPrincipal.class.getName());
 
     /**
      * Creates new form GUIPrincipal
      */
-    public GUIPrincipal() {
+    public GUIPrincipal(Empleado empleado) {
         initComponents();
-        cardLayout = (CardLayout) pnl_contenido.getLayout();
-        
-        pnl_contenido.add(new GUIEntradas(), "CARD_ENTRADAS");
-        //pnl_contenido.add(new GUISalidas(), "CARD_SALIDAS");
-        pnl_contenido.add(new GUIReportes(), "CARD_REPORTES");
-        pnl_contenido.add(new GUIKardex(), "CARD_KARDEX");
-        pnl_contenido.add(new GUICatalogo(), "CARD_CATALOGOS");
+        card = (CardLayout) pnl_cuerpo.getLayout();
+        GUIEntradas panelEntradas = new GUIEntradas();
+        GUISalidas panelSalidas = new GUISalidas();
+        GUIInventario panelInventario = new GUIInventario();
+        pnl_cuerpo.add(panelInventario, "inventario");
+        pnl_cuerpo.add(panelEntradas, "entradas");
+        pnl_cuerpo.add(panelSalidas, "salidas");
+  
+        pnl_cuerpo.add(new GUIReportes(), "CARD_REPORTES");
+        pnl_cuerpo.add(new GUIKardex(), "CARD_KARDEX");
+        pnl_cuerpo.add(new GUICatalogo(), "CARD_CATALOGOS");
     }
 
     /**
@@ -56,16 +61,17 @@ public class GUIPrincipal extends javax.swing.JFrame {
         lblSucursal = new javax.swing.JLabel();
         filler4 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 10), new java.awt.Dimension(0, 10), new java.awt.Dimension(0, 10));
         btnCerrarSesion = new javax.swing.JButton();
-        pnl_contenido = new javax.swing.JPanel();
+        pnl_cuerpo = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(227, 227, 227));
-        setMinimumSize(new java.awt.Dimension(1024, 720));
-        setPreferredSize(new java.awt.Dimension(1024, 720));
+        setMinimumSize(new java.awt.Dimension(977, 550));
+        setPreferredSize(new java.awt.Dimension(1280, 720));
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(30, 15, 15, 15));
-        jPanel1.setPreferredSize(new java.awt.Dimension(150, 574));
+        jPanel1.setMinimumSize(new java.awt.Dimension(152, 550));
+        jPanel1.setPreferredSize(new java.awt.Dimension(200, 720));
         jPanel1.setLayout(new javax.swing.BoxLayout(jPanel1, javax.swing.BoxLayout.Y_AXIS));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -150,73 +156,60 @@ public class GUIPrincipal extends javax.swing.JFrame {
         jPanel1.add(btnCerrarSesion);
         btnCerrarSesion.getAccessibleContext().setAccessibleDescription("");
 
-        getContentPane().add(jPanel1, java.awt.BorderLayout.LINE_START);
+        getContentPane().add(jPanel1, java.awt.BorderLayout.WEST);
 
-        javax.swing.GroupLayout pnl_contenidoLayout = new javax.swing.GroupLayout(pnl_contenido);
-        pnl_contenido.setLayout(pnl_contenidoLayout);
-        pnl_contenidoLayout.setHorizontalGroup(
-            pnl_contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 484, Short.MAX_VALUE)
+        pnl_cuerpo.setMinimumSize(new java.awt.Dimension(825, 550));
+        pnl_cuerpo.setPreferredSize(new java.awt.Dimension(1080, 720));
+
+        javax.swing.GroupLayout pnl_cuerpoLayout = new javax.swing.GroupLayout(pnl_cuerpo);
+        pnl_cuerpo.setLayout(pnl_cuerpoLayout);
+        pnl_cuerpoLayout.setHorizontalGroup(
+            pnl_cuerpoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1080, Short.MAX_VALUE)
         );
-        pnl_contenidoLayout.setVerticalGroup(
-            pnl_contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 574, Short.MAX_VALUE)
+        pnl_cuerpoLayout.setVerticalGroup(
+            pnl_cuerpoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 720, Short.MAX_VALUE)
         );
 
-        getContentPane().add(pnl_contenido, java.awt.BorderLayout.CENTER);
+        getContentPane().add(pnl_cuerpo, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarSesionActionPerformed
+        this.dispose();
     }//GEN-LAST:event_btnCerrarSesionActionPerformed
 
     private void btnEntradasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEntradasActionPerformed
+        card = (CardLayout) pnl_cuerpo.getLayout();
+        card.show(pnl_cuerpo, "entradas");
     }//GEN-LAST:event_btnEntradasActionPerformed
 
     private void btnReportesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReportesActionPerformed
+        card = (CardLayout) pnl_cuerpo.getLayout();
+        card.show(pnl_cuerpo, "CARD_REPORTES");
     }//GEN-LAST:event_btnReportesActionPerformed
 
     private void btnSalidasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalidasActionPerformed
+        card = (CardLayout) pnl_cuerpo.getLayout();
+        card.show(pnl_cuerpo, "salidas");
     }//GEN-LAST:event_btnSalidasActionPerformed
 
     private void btnInventarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInventarioActionPerformed
+        card = (CardLayout) pnl_cuerpo.getLayout();
+        card.show(pnl_cuerpo, "inventario");
     }//GEN-LAST:event_btnInventarioActionPerformed
 
     private void btnKardexActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnKardexActionPerformed
+        card = (CardLayout) pnl_cuerpo.getLayout();
+        card.show(pnl_cuerpo, "CARD_kARDEX");
     }//GEN-LAST:event_btnKardexActionPerformed
 
     private void btnCatalogosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCatalogosActionPerformed
+        card = (CardLayout) pnl_cuerpo.getLayout();
+        card.show(pnl_cuerpo, "CARD_CATALOGO");
     }//GEN-LAST:event_btnCatalogosActionPerformed
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new GUIPrincipal().setVisible(true));
-    }
-    
-    public void cambiarVista(String nombreCard) {
-        cardLayout.show(pnl_contenido, nombreCard);
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JButton btnCatalogos;
@@ -237,6 +230,6 @@ public class GUIPrincipal extends javax.swing.JFrame {
     private javax.swing.JLabel lblNombre;
     private javax.swing.JLabel lblSucursal;
     private javax.swing.JLabel lblTipoUsuario;
-    private javax.swing.JPanel pnl_contenido;
+    private javax.swing.JPanel pnl_cuerpo;
     // End of variables declaration//GEN-END:variables
 }
