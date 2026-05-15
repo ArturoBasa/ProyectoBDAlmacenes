@@ -4,6 +4,7 @@
  */
 package proyectobd2;
 
+import javax.swing.UIManager;
 import proyectobd2.vista.InicioSesion;
 
 /**
@@ -16,8 +17,12 @@ public class ProyectoBD2 {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-       InicioSesion ejecutar = new InicioSesion();
-       ejecutar.setVisible(true);
+        try {
+            UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+       new InicioSesion().setVisible(true);
     }
     
 }

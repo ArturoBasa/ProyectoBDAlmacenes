@@ -4,17 +4,27 @@
  */
 package proyectobd2.vista;
 
+import java.sql.SQLException;
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
+import proyectobd2.modelo.DAO.FacturaDAO;
+import proyectobd2.modelo.beans.Factura;
+
 /**
  *
  * @author endri
  */
 public class GUIEntradas extends javax.swing.JPanel {
 
+    FacturaDAO fDAO = new FacturaDAO();
+    Factura fac = new Factura();
+
     /**
      * Creates new form Dashboard
      */
     public GUIEntradas() {
         initComponents();
+        fDAO.obtenerEntradas(tb_entradas);
     }
 
     /**
@@ -66,9 +76,22 @@ public class GUIEntradas extends javax.swing.JPanel {
 
             },
             new String [] {
-                "FOLIO", "FECHA", "PROVEEDOR", "RFC", "ARTICULOS", "TOTAL"
+                "FOLIO", "FECHA", "PROVEEDOR", "RFC", "TOTAL"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tb_entradas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tb_entradasMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(tb_entradas);
 
         add(jScrollPane2, java.awt.BorderLayout.CENTER);
@@ -77,6 +100,26 @@ public class GUIEntradas extends javax.swing.JPanel {
     private void btn_nuevaEntradaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_nuevaEntradaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btn_nuevaEntradaActionPerformed
+
+    private void tb_entradasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tb_entradasMouseClicked
+        if (evt.getClickCount() == 2) {
+            int fila = tb_entradas.getSelectedRow();
+
+            if (fila != -1) {
+                String folio = tb_entradas.getValueAt(fila, 0).toString();
+                try {
+                    fac = fDAO.buscar(folio);
+                    JFrame framePadre = (JFrame) SwingUtilities.getAncestorOfClass(JFrame.class, this);
+
+                    GUIArticulosFactura articulosFactura = new GUIArticulosFactura(framePadre, true, folio);
+                    articulosFactura.setVisible(true);
+                } catch (SQLException ex) {
+
+                }
+
+            }
+        }
+    }//GEN-LAST:event_tb_entradasMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

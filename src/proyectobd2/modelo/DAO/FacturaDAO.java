@@ -12,6 +12,8 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.sql.PreparedStatement;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 import proyectobd2.modelo.Conexion;
 import proyectobd2.modelo.beans.Factura;
 
@@ -64,13 +66,17 @@ public class FacturaDAO implements DAOInterfaz<Factura> {
     }
 
     @Override
-    public Factura buscar(int idFactura) throws SQLException {
+    public Factura buscar(int id) throws SQLException {
+        return null;
+    }
+
+    public Factura buscar(String folioFactura) throws SQLException {
         Factura f = null;
-        String statement = "SELECT idFactura, folioFactura, fechaFactura, precioTotal, Proveedor_idProveedor FROM factura WHERE idFactura = ?";
+        String statement = "SELECT * FROM factura WHERE folioFactura = ?";
 
         try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
 
-            ps.setInt(1, idFactura);
+            ps.setString(1, folioFactura);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     f = new Factura();
@@ -84,6 +90,40 @@ public class FacturaDAO implements DAOInterfaz<Factura> {
         } catch (SQLException ex) {
             Logger.getLogger(FacturaDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return f;
+    }
+
+    public List<Factura> buscarPorCriterio(String criterio) throws SQLException {
+        List<Factura> lista = new ArrayList<>();
+        // Buscar en la tabla Usuario filtrando por 'EMPLEADO'
+        String sql = """
+            SELECT * FROM factura
+            WHERE  idFactura = ?
+            AND (idFactura LIKE LOWER(?) OR LOWER(folioFactura) LIKE LOWER(?)
+                 OR fechaFactura LIKE ? OR precioTotal LIKE LOWER(?) OR Proveedor_idProveedor LIKE ?)
+            """;
+
+        String param = "%" + criterio + "%";
+        try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            for (int i = 1; i <= 4; i++) {
+                ps.setString(i, param);
+            }
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                lista.add(mapFactura(rs));
+            }
+        }
+        return lista;
+    }
+
+    private Factura mapFactura(ResultSet rs) throws SQLException {
+        Factura f = new Factura();
+        f.setIdFactura(rs.getInt("idFactura"));
+        f.setFolioFactura(rs.getString("folioFactura"));
+        f.setFechaFactura(rs.getDate("fechaFactura"));
+        f.setPrecioTotal(rs.getDouble("precioTotal"));
+        f.setIdProveedor(rs.getInt("Proveedor_idProveedor"));
+
         return f;
     }
 
@@ -120,5 +160,54 @@ public class FacturaDAO implements DAOInterfaz<Factura> {
             Logger.getLogger(FacturaDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return valor;
+    }
+
+    public void obtenerEntradas(JTable tb_entradas) {
+
+        String statement = "SELECT * FROM entradasView";
+        DefaultTableModel modelo = (DefaultTableModel) tb_entradas.getModel();
+        modelo.setRowCount(0);
+
+        try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
+            ResultSet rs = ps.executeQuery();
+            int columnas = rs.getMetaData().getColumnCount();
+            Object[] fila = new Object[columnas];
+            while (rs.next()) {
+                for (int i = 0; i < columnas; i++) {
+
+                    fila[i] = rs.getObject(i + 1);
+                }
+                modelo.addRow(fila);
+
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(FacturaDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+
+    public void obtenerArticulosFolio(JTable tb_articulosFolio, String folio) {
+        String statement = "SELECT * FROM itemPorFactura WHERE folio = ?;";
+        DefaultTableModel modelo = (DefaultTableModel) tb_articulosFolio.getModel();
+        modelo.setRowCount(0);
+
+        try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
+            ps.setString(1, folio);
+            try (ResultSet rs = ps.executeQuery()) {
+                int columnas = rs.getMetaData().getColumnCount();
+                Object[] fila = new Object[columnas];
+                while (rs.next()) {
+                    for (int i = 0; i < columnas; i++) {
+
+                        fila[i] = rs.getObject(i + 1);
+                    }
+                    modelo.addRow(fila);
+
+                }
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(FacturaDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

@@ -12,6 +12,7 @@ import proyectobd2.modelo.beans.Empleado;
  * @author basa2
  */
 public class GUIPrincipal extends javax.swing.JFrame {
+    CardLayout card = null;
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(GUIPrincipal.class.getName());
 
@@ -163,24 +164,23 @@ public class GUIPrincipal extends javax.swing.JFrame {
 
     private void btn_entradasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_entradasActionPerformed
         // Obtenemos el layout del panel contenedor
-        CardLayout card = (CardLayout) pnl_cuerpo.getLayout();
+        card = (CardLayout) pnl_cuerpo.getLayout();
         // Le pedimos que muestre el panel con el nombre que definimos antes
         card.show(pnl_cuerpo, "entradas");
     }//GEN-LAST:event_btn_entradasActionPerformed
 
     private void btn_salidasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_salidasActionPerformed
 
-        CardLayout card = (CardLayout) pnl_cuerpo.getLayout();
+        card = (CardLayout) pnl_cuerpo.getLayout();
 
         card.show(pnl_cuerpo, "salidas");
     }//GEN-LAST:event_btn_salidasActionPerformed
 
     private void btn_inventarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_inventarioActionPerformed
-        CardLayout card = (CardLayout) pnl_cuerpo.getLayout();
+        card = (CardLayout) pnl_cuerpo.getLayout();
 
         card.show(pnl_cuerpo, "inventario");
     }//GEN-LAST:event_btn_inventarioActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_entradas;

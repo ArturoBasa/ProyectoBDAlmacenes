@@ -34,6 +34,7 @@ public class Conexion {
             if (input == null) {
                 throw new RuntimeException("Unable to find database properties.");
             }
+            
             Properties prop = new Properties();
             prop.load(input);
             url = prop.getProperty("db.url");
@@ -42,6 +43,7 @@ public class Conexion {
         } catch (IOException ex) {
             throw new RuntimeException("Failed to load database properties", ex);
         }
+        
         try {
             Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
             conn = DriverManager.getConnection(url, username, password);
