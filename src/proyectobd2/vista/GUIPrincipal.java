@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package proyectobd2.vista;
 
 import java.awt.CardLayout;
@@ -12,24 +8,25 @@ import proyectobd2.modelo.beans.Empleado;
  * @author basa2
  */
 public class GUIPrincipal extends javax.swing.JFrame {
-    CardLayout card = null;
 
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(GUIPrincipal.class.getName());
+    private CardLayout card = null;
 
     /**
      * Creates new form GUIPrincipal
      */
     public GUIPrincipal(Empleado empleado) {
         initComponents();
-        jLabel3.setText(empleado.getNombre());
-
+        card = (CardLayout) pnl_cuerpo.getLayout();
         GUIEntradas panelEntradas = new GUIEntradas();
         GUISalidas panelSalidas = new GUISalidas();
         GUIInventario panelInventario = new GUIInventario();
-
         pnl_cuerpo.add(panelInventario, "inventario");
         pnl_cuerpo.add(panelEntradas, "entradas");
         pnl_cuerpo.add(panelSalidas, "salidas");
+
+        pnl_cuerpo.add(new GUIReportes(), "CARD_REPORTES");
+        pnl_cuerpo.add(new GUIKardex(), "CARD_KARDEX");
+        pnl_cuerpo.add(new GUICatalogo(), "CARD_CATALOGOS");
     }
 
     /**
@@ -45,29 +42,30 @@ public class GUIPrincipal extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 17), new java.awt.Dimension(0, 100), new java.awt.Dimension(0, 100));
-        btn_entradas = new javax.swing.JButton();
-        btn_salidas = new javax.swing.JButton();
-        btn_inventario = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
-        jButton7 = new javax.swing.JButton();
+        btnEntradas = new javax.swing.JButton();
+        btnSalidas = new javax.swing.JButton();
+        btnInventario = new javax.swing.JButton();
+        btnKardex = new javax.swing.JButton();
+        btnReportes = new javax.swing.JButton();
+        btnCatalogos = new javax.swing.JButton();
         filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 40), new java.awt.Dimension(0, 270), new java.awt.Dimension(0, 270));
         jSeparator1 = new javax.swing.JSeparator();
         filler3 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 10), new java.awt.Dimension(0, 10), new java.awt.Dimension(0, 10));
-        jLabel3 = new javax.swing.JLabel();
-        lb_tipoUsuario = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
+        lblNombre = new javax.swing.JLabel();
+        lblTipoUsuario = new javax.swing.JLabel();
+        lblSucursal = new javax.swing.JLabel();
         filler4 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 10), new java.awt.Dimension(0, 10), new java.awt.Dimension(0, 10));
-        jButton8 = new javax.swing.JButton();
+        btnCerrarSesion = new javax.swing.JButton();
         pnl_cuerpo = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(227, 227, 227));
-        setMinimumSize(new java.awt.Dimension(1024, 720));
+        setMinimumSize(new java.awt.Dimension(977, 550));
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(30, 15, 15, 15));
-        jPanel1.setPreferredSize(new java.awt.Dimension(150, 574));
+        jPanel1.setMinimumSize(new java.awt.Dimension(152, 550));
+        jPanel1.setPreferredSize(new java.awt.Dimension(200, 720));
         jPanel1.setLayout(new javax.swing.BoxLayout(jPanel1, javax.swing.BoxLayout.Y_AXIS));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -81,126 +79,153 @@ public class GUIPrincipal extends javax.swing.JFrame {
         jPanel1.add(jLabel2);
         jPanel1.add(filler1);
 
-        btn_entradas.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
-        btn_entradas.setText("Entradas");
-        btn_entradas.setAlignmentX(0.5F);
-        btn_entradas.setMaximumSize(new java.awt.Dimension(180, 40));
-        btn_entradas.addActionListener(this::btn_entradasActionPerformed);
-        jPanel1.add(btn_entradas);
+        btnEntradas.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
+        btnEntradas.setText("Entradas");
+        btnEntradas.setAlignmentX(0.5F);
+        btnEntradas.setMaximumSize(new java.awt.Dimension(180, 40));
+        btnEntradas.addActionListener(this::btnEntradasActionPerformed);
+        jPanel1.add(btnEntradas);
 
-        btn_salidas.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
-        btn_salidas.setText("Salidas");
-        btn_salidas.setAlignmentX(0.5F);
-        btn_salidas.setMaximumSize(new java.awt.Dimension(180, 40));
-        btn_salidas.addActionListener(this::btn_salidasActionPerformed);
-        jPanel1.add(btn_salidas);
+        btnSalidas.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
+        btnSalidas.setText("Salidas");
+        btnSalidas.setAlignmentX(0.5F);
+        btnSalidas.setMaximumSize(new java.awt.Dimension(180, 40));
+        btnSalidas.addActionListener(this::btnSalidasActionPerformed);
+        jPanel1.add(btnSalidas);
 
-        btn_inventario.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
-        btn_inventario.setText("Inventario");
-        btn_inventario.setAlignmentX(0.5F);
-        btn_inventario.setMaximumSize(new java.awt.Dimension(180, 40));
-        btn_inventario.addActionListener(this::btn_inventarioActionPerformed);
-        jPanel1.add(btn_inventario);
+        btnInventario.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
+        btnInventario.setText("Inventario");
+        btnInventario.setAlignmentX(0.5F);
+        btnInventario.setMaximumSize(new java.awt.Dimension(180, 40));
+        btnInventario.addActionListener(this::btnInventarioActionPerformed);
+        jPanel1.add(btnInventario);
 
-        jButton5.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
-        jButton5.setText("Kardex");
-        jButton5.setAlignmentX(0.5F);
-        jButton5.setMaximumSize(new java.awt.Dimension(180, 40));
-        jPanel1.add(jButton5);
+        btnKardex.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
+        btnKardex.setText("Kardex");
+        btnKardex.setAlignmentX(0.5F);
+        btnKardex.setMaximumSize(new java.awt.Dimension(180, 40));
+        btnKardex.addActionListener(this::btnKardexActionPerformed);
+        jPanel1.add(btnKardex);
 
-        jButton6.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
-        jButton6.setText("Reportes");
-        jButton6.setAlignmentX(0.5F);
-        jButton6.setMaximumSize(new java.awt.Dimension(180, 40));
-        jPanel1.add(jButton6);
+        btnReportes.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
+        btnReportes.setText("Reportes");
+        btnReportes.setAlignmentX(0.5F);
+        btnReportes.setMaximumSize(new java.awt.Dimension(180, 40));
+        btnReportes.addActionListener(this::btnReportesActionPerformed);
+        jPanel1.add(btnReportes);
 
-        jButton7.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
-        jButton7.setText("Catálogos");
-        jButton7.setAlignmentX(0.5F);
-        jButton7.setMaximumSize(new java.awt.Dimension(180, 40));
-        jPanel1.add(jButton7);
+        btnCatalogos.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
+        btnCatalogos.setText("Catálogos");
+        btnCatalogos.setAlignmentX(0.5F);
+        btnCatalogos.setMaximumSize(new java.awt.Dimension(180, 40));
+        btnCatalogos.addActionListener(this::btnCatalogosActionPerformed);
+        jPanel1.add(btnCatalogos);
         jPanel1.add(filler2);
         jPanel1.add(jSeparator1);
         jPanel1.add(filler3);
 
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
-        jLabel3.setText("Nombre");
-        jLabel3.setAlignmentX(0.5F);
-        jPanel1.add(jLabel3);
+        lblNombre.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
+        lblNombre.setText("Nombre");
+        lblNombre.setAlignmentX(0.5F);
+        jPanel1.add(lblNombre);
 
-        lb_tipoUsuario.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
-        lb_tipoUsuario.setText("tipoUsuario");
-        lb_tipoUsuario.setAlignmentX(0.5F);
-        jPanel1.add(lb_tipoUsuario);
+        lblTipoUsuario.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
+        lblTipoUsuario.setText("tipoUsuario");
+        lblTipoUsuario.setAlignmentX(0.5F);
+        jPanel1.add(lblTipoUsuario);
 
-        jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
-        jLabel5.setText("sucursal");
-        jLabel5.setAlignmentX(0.5F);
-        jPanel1.add(jLabel5);
+        lblSucursal.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
+        lblSucursal.setText("sucursal");
+        lblSucursal.setAlignmentX(0.5F);
+        jPanel1.add(lblSucursal);
         jPanel1.add(filler4);
 
-        jButton8.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
-        jButton8.setForeground(new java.awt.Color(183, 0, 0));
-        jButton8.setText("Cerrar Sesión");
-        jButton8.setAlignmentX(0.5F);
-        jButton8.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(199, 2, 2), 2, true));
-        jButton8.setMaximumSize(new java.awt.Dimension(180, 40));
-        jButton8.addActionListener(this::jButton8ActionPerformed);
-        jPanel1.add(jButton8);
-        jButton8.getAccessibleContext().setAccessibleDescription("");
+        btnCerrarSesion.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
+        btnCerrarSesion.setForeground(new java.awt.Color(183, 0, 0));
+        btnCerrarSesion.setText("Cerrar Sesión");
+        btnCerrarSesion.setAlignmentX(0.5F);
+        btnCerrarSesion.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(199, 2, 2), 2, true));
+        btnCerrarSesion.setMaximumSize(new java.awt.Dimension(180, 40));
+        btnCerrarSesion.addActionListener(this::btnCerrarSesionActionPerformed);
+        jPanel1.add(btnCerrarSesion);
+        btnCerrarSesion.getAccessibleContext().setAccessibleDescription("");
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.WEST);
 
-        pnl_cuerpo.setBackground(new java.awt.Color(51, 0, 255));
-        pnl_cuerpo.setLayout(new java.awt.CardLayout());
+        pnl_cuerpo.setMinimumSize(new java.awt.Dimension(825, 550));
+        pnl_cuerpo.setPreferredSize(new java.awt.Dimension(1080, 720));
+
+        javax.swing.GroupLayout pnl_cuerpoLayout = new javax.swing.GroupLayout(pnl_cuerpo);
+        pnl_cuerpo.setLayout(pnl_cuerpoLayout);
+        pnl_cuerpoLayout.setHorizontalGroup(
+            pnl_cuerpoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1080, Short.MAX_VALUE)
+        );
+        pnl_cuerpoLayout.setVerticalGroup(
+            pnl_cuerpoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 720, Short.MAX_VALUE)
+        );
+
         getContentPane().add(pnl_cuerpo, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton8ActionPerformed
+    private void btnCerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarSesionActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_btnCerrarSesionActionPerformed
 
-    private void btn_entradasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_entradasActionPerformed
-        // Obtenemos el layout del panel contenedor
+    private void btnEntradasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEntradasActionPerformed
         card = (CardLayout) pnl_cuerpo.getLayout();
         // Le pedimos que muestre el panel con el nombre que definimos antes
         card.show(pnl_cuerpo, "entradas");
-    }//GEN-LAST:event_btn_entradasActionPerformed
+    }//GEN-LAST:event_btnEntradasActionPerformed
 
-    private void btn_salidasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_salidasActionPerformed
+    private void btnReportesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReportesActionPerformed
+        card = (CardLayout) pnl_cuerpo.getLayout();
+        card.show(pnl_cuerpo, "CARD_REPORTES");
+    }//GEN-LAST:event_btnReportesActionPerformed
 
+    private void btnInventarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInventarioActionPerformed
+        card = (CardLayout) pnl_cuerpo.getLayout();
+        card.show(pnl_cuerpo, "inventario");
+    }//GEN-LAST:event_btnInventarioActionPerformed
+
+    private void btnKardexActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnKardexActionPerformed
+        card = (CardLayout) pnl_cuerpo.getLayout();
+        card.show(pnl_cuerpo, "CARD_kARDEX");
+    }//GEN-LAST:event_btnKardexActionPerformed
+
+    private void btnCatalogosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCatalogosActionPerformed
+        card = (CardLayout) pnl_cuerpo.getLayout();
+        card.show(pnl_cuerpo, "CARD_CATALOGO");
+    }//GEN-LAST:event_btnCatalogosActionPerformed
+
+    private void btnSalidasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalidasActionPerformed
         card = (CardLayout) pnl_cuerpo.getLayout();
 
         card.show(pnl_cuerpo, "salidas");
-    }//GEN-LAST:event_btn_salidasActionPerformed
-
-    private void btn_inventarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_inventarioActionPerformed
-        card = (CardLayout) pnl_cuerpo.getLayout();
-
-        card.show(pnl_cuerpo, "inventario");
-    }//GEN-LAST:event_btn_inventarioActionPerformed
+    }//GEN-LAST:event_btnSalidasActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btn_entradas;
-    private javax.swing.JButton btn_inventario;
-    private javax.swing.JButton btn_salidas;
+    public javax.swing.JButton btnCatalogos;
+    public javax.swing.JButton btnCerrarSesion;
+    public javax.swing.JButton btnEntradas;
+    public javax.swing.JButton btnInventario;
+    public javax.swing.JButton btnKardex;
+    public javax.swing.JButton btnReportes;
+    public javax.swing.JButton btnSalidas;
     private javax.swing.Box.Filler filler1;
     private javax.swing.Box.Filler filler2;
     private javax.swing.Box.Filler filler3;
     private javax.swing.Box.Filler filler4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
-    private javax.swing.JButton jButton7;
-    private javax.swing.JButton jButton8;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JLabel lb_tipoUsuario;
+    private javax.swing.JLabel lblNombre;
+    private javax.swing.JLabel lblSucursal;
+    private javax.swing.JLabel lblTipoUsuario;
     private javax.swing.JPanel pnl_cuerpo;
     // End of variables declaration//GEN-END:variables
 }
