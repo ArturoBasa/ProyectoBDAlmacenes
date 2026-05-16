@@ -18,13 +18,15 @@ public class GUIEntradas extends javax.swing.JPanel {
 
     FacturaDAO fDAO = new FacturaDAO();
     Factura fac = new Factura();
+    private int idSucursal;
 
     /**
      * Creates new form Dashboard
      */
-    public GUIEntradas() {
+    public GUIEntradas(int idSucursal) {
         initComponents();
-        fDAO.obtenerEntradas(tb_entradas);
+        this.idSucursal = idSucursal;
+        fDAO.obtenerEntradas(tb_entradas, this.idSucursal);
     }
 
     /**
@@ -42,6 +44,7 @@ public class GUIEntradas extends javax.swing.JPanel {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         txt_folio = new javax.swing.JTextField();
+        btn_buscar = new javax.swing.JButton();
         btn_nuevaEntrada = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         tb_entradas = new javax.swing.JTable();
@@ -60,6 +63,14 @@ public class GUIEntradas extends javax.swing.JPanel {
         txt_folio.setMinimumSize(new java.awt.Dimension(150, 22));
         txt_folio.setPreferredSize(new java.awt.Dimension(150, 22));
         jPanel1.add(txt_folio);
+
+        btn_buscar.setText("Buscar");
+        btn_buscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_buscarActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btn_buscar);
 
         btn_nuevaEntrada.setText("Nueva entrada");
         btn_nuevaEntrada.addActionListener(new java.awt.event.ActionListener() {
@@ -107,22 +118,39 @@ public class GUIEntradas extends javax.swing.JPanel {
 
             if (fila != -1) {
                 String folio = tb_entradas.getValueAt(fila, 0).toString();
-                try {
-                    fac = fDAO.buscar(folio);
-                    JFrame framePadre = (JFrame) SwingUtilities.getAncestorOfClass(JFrame.class, this);
+//                try {
+//                    //fac = fDAO.buscar(folio);
+//                    
+//                } catch (SQLException ex) {
+//                    
+//
+//                }
+                JFrame framePadre = (JFrame) SwingUtilities.getAncestorOfClass(JFrame.class, this);
 
-                    GUIArticulosFactura articulosFactura = new GUIArticulosFactura(framePadre, true, folio);
-                    articulosFactura.setVisible(true);
-                } catch (SQLException ex) {
-
-                }
+                GUIArticulosFactura articulosFactura = new GUIArticulosFactura(framePadre, true, folio);
+                articulosFactura.setVisible(true);
 
             }
         }
     }//GEN-LAST:event_tb_entradasMouseClicked
 
+    private void btn_buscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_buscarActionPerformed
+        String folio = txt_folio.getText();
+        if (!folio.isEmpty()) {
+            try {
+                fDAO.buscar(folio, idSucursal, tb_entradas);
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+
+        }else{
+            fDAO.obtenerEntradas(tb_entradas, this.idSucursal);
+        }
+    }//GEN-LAST:event_btn_buscarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btn_buscar;
     private javax.swing.JButton btn_nuevaEntrada;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;

@@ -70,27 +70,33 @@ public class FacturaDAO implements DAOInterfaz<Factura> {
         return null;
     }
 
-    public Factura buscar(String folioFactura) throws SQLException {
-        Factura f = null;
-        String statement = "SELECT * FROM factura WHERE folioFactura = ?";
+    public void buscar(String folioFactura, int idSucursal, JTable tb_entradas) throws SQLException {
+
+        String statement = "SELECT folio, fechaFactura, proveedor, rfc, total FROM entradasView WHERE sucursal = ? AND folio LIKE ?";
+        DefaultTableModel modelo = (DefaultTableModel) tb_entradas.getModel();
+        modelo.setRowCount(0);
 
         try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
+            ps.setInt(1, idSucursal);
+            ps.setString(2, folioFactura + "%");
 
-            ps.setString(1, folioFactura);
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    f = new Factura();
-                    f.setIdFactura(rs.getInt("idFactura"));
-                    f.setFolioFactura(rs.getString("folioFactura"));
-                    f.setFechaFactura(rs.getDate("fechaFactura"));
-                    f.setPrecioTotal(rs.getDouble("precioTotal"));
-                    f.setIdProveedor(rs.getInt("Proveedor_idProveedor"));
+            try (ResultSet rs = ps.executeQuery();) {
+                int columnas = rs.getMetaData().getColumnCount();
+
+                while (rs.next()) {
+                    Object[] fila = new Object[columnas];
+                    for (int i = 0; i < columnas; i++) {
+
+                        fila[i] = rs.getObject(i + 1);
+                    }
+                    modelo.addRow(fila);
+
                 }
             }
+
         } catch (SQLException ex) {
             Logger.getLogger(FacturaDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return f;
     }
 
     public List<Factura> buscarPorCriterio(String criterio) throws SQLException {
@@ -162,24 +168,29 @@ public class FacturaDAO implements DAOInterfaz<Factura> {
         return valor;
     }
 
-    public void obtenerEntradas(JTable tb_entradas) {
+    public void obtenerEntradas(JTable tb_entradas, int idSucursal) {
 
-        String statement = "SELECT * FROM entradasView";
+        String statement = "SELECT folio, fechaFactura, proveedor, rfc, total FROM entradasView WHERE sucursal = ?";
         DefaultTableModel modelo = (DefaultTableModel) tb_entradas.getModel();
         modelo.setRowCount(0);
 
         try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
-            ResultSet rs = ps.executeQuery();
-            int columnas = rs.getMetaData().getColumnCount();
-            Object[] fila = new Object[columnas];
-            while (rs.next()) {
-                for (int i = 0; i < columnas; i++) {
+            ps.setInt(1, idSucursal);
 
-                    fila[i] = rs.getObject(i + 1);
+            try (ResultSet rs = ps.executeQuery();) {
+                int columnas = rs.getMetaData().getColumnCount();
+
+                while (rs.next()) {
+                    Object[] fila = new Object[columnas];
+                    for (int i = 0; i < columnas; i++) {
+
+                        fila[i] = rs.getObject(i + 1);
+                    }
+                    modelo.addRow(fila);
+
                 }
-                modelo.addRow(fila);
-
             }
+
         } catch (SQLException ex) {
             Logger.getLogger(FacturaDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -187,7 +198,7 @@ public class FacturaDAO implements DAOInterfaz<Factura> {
     }
 
     public void obtenerArticulosFolio(JTable tb_articulosFolio, String folio) {
-        String statement = "SELECT * FROM itemPorFactura WHERE folio = ?;";
+        String statement = "SELECT item, cantidad, sucursal FROM itemPorFactura WHERE folio = ?";
         DefaultTableModel modelo = (DefaultTableModel) tb_articulosFolio.getModel();
         modelo.setRowCount(0);
 

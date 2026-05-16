@@ -4,17 +4,28 @@
  */
 package proyectobd2.vista;
 
+import java.sql.SQLException;
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
+import proyectobd2.modelo.DAO.PeticionSalidaDAO;
+
 /**
  *
  * @author endri
  */
 public class GUISalidas extends javax.swing.JPanel {
 
+    PeticionSalidaDAO psDAO = new PeticionSalidaDAO();
+
+    int idSucursal;
+
     /**
      * Creates new form Salidas
      */
-    public GUISalidas() {
+    public GUISalidas(int idSucursal) {
         initComponents();
+        this.idSucursal = idSucursal;
+        psDAO.obtenerSalidas(tb_salidas, idSucursal);
     }
 
     /**
@@ -29,9 +40,10 @@ public class GUISalidas extends javax.swing.JPanel {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         txt_departamento = new javax.swing.JTextField();
+        btn_buscar = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tb_salidas = new javax.swing.JTable();
 
         setPreferredSize(new java.awt.Dimension(874, 720));
         setLayout(new java.awt.BorderLayout());
@@ -42,31 +54,89 @@ public class GUISalidas extends javax.swing.JPanel {
         txt_departamento.setPreferredSize(new java.awt.Dimension(150, 22));
         jPanel1.add(txt_departamento);
 
+        btn_buscar.setText("Buscar");
+        btn_buscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_buscarActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btn_buscar);
+
         jButton1.setText("Nueva salida");
         jPanel1.add(jButton1);
 
         add(jPanel1, java.awt.BorderLayout.PAGE_START);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tb_salidas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "FECHA", "DEPARTAMENTO", "ENCARGADO"
+                "FECHA", "DEPARTAMENTO", "ENCARGADO", "ESTADO"
             }
-        ));
-        jScrollPane1.setViewportView(jTable1);
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tb_salidas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tb_salidasMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tb_salidas);
 
         add(jScrollPane1, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btn_buscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_buscarActionPerformed
+        String departamento = txt_departamento.getText();
+        if (!departamento.isEmpty()) {
+            try {
+                psDAO.buscar(departamento, idSucursal, tb_salidas);
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+
+        } else {
+            psDAO.obtenerSalidas(tb_salidas, this.idSucursal);
+        }
+    }//GEN-LAST:event_btn_buscarActionPerformed
+
+    private void tb_salidasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tb_salidasMouseClicked
+        if (evt.getClickCount() == 2) {
+            int fila = tb_salidas.getSelectedRow();
+
+            if (fila != -1) {
+                String departamento = tb_salidas.getValueAt(fila, 1).toString();
+//                try {
+//                    //fac = fDAO.buscar(folio);
+//                    
+//                } catch (SQLException ex) {
+//                    
+//
+//                }
+                JFrame framePadre = (JFrame) SwingUtilities.getAncestorOfClass(JFrame.class, this);
+
+                GUIArticulosPeticion articulosPeticion = new GUIArticulosPeticion(framePadre, true, departamento);
+                articulosPeticion.setVisible(true);
+
+            }
+        }
+    }//GEN-LAST:event_tb_salidasMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btn_buscar;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable tb_salidas;
     private javax.swing.JTextField txt_departamento;
     // End of variables declaration//GEN-END:variables
 }

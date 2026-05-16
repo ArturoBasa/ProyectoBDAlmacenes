@@ -26,10 +26,11 @@ public class EmpleadoDAO implements DAOInterfaz<Empleado> {
         Empleado e = null;
         ArrayList<String> roles = new ArrayList<>();
         String statement = """
-                    SELECT e.*, r.descripcion AS Rol 
+                    SELECT e.*, r.descripcion AS Rol, d.Sucursal_idSucursal as Sucursal
                     FROM empleado e 
                     JOIN empleado_has_rol er ON e.idEmpleado = er.empleado_idEmpleado
                     JOIN rol r ON er.rol_idRol = r.idRol
+                    JOIN departamento d on e.idDepartamentoEncargado = d.idDepartamento
                     WHERE e.nombre = ? AND e.contrasenia = ?;
                      """;
 
@@ -50,9 +51,12 @@ public class EmpleadoDAO implements DAOInterfaz<Empleado> {
                         e.setTelefonoCelular(rs.getString("telefonoCelular"));
                         e.setFechaRegistro(rs.getDate("fechaRegistro"));
                         e.setContrasenia(rs.getString("contrasenia"));
+                        e.setIdSucursal(rs.getInt("Sucursal"));
                     }
                     roles.add(rs.getString("Rol"));
                 }
+                
+                
             }
         }
         if (e != null) {

@@ -12,6 +12,8 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.sql.PreparedStatement;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 import proyectobd2.modelo.Conexion;
 import proyectobd2.modelo.beans.PeticionSalida;
 
@@ -51,22 +53,36 @@ public class PeticionSalidaDAO implements DAOInterfaz<PeticionSalida> {
 
     @Override
     public PeticionSalida buscar(int idPeticion) throws SQLException {
-        PeticionSalida p = null;
-        String statement = "SELECT idPeticionSalida, fecha, idEmpleadoAlmacen FROM peticionsalida WHERE idPeticionSalida= ?";
+        return null;
+    }
+
+    public void buscar(String departamento, int idSucursal, JTable tb_salidas) throws SQLException {
+
+        String statement = "SELECT fecha , departamento , encargado , descripcion FROM salidasView WHERE idSucursal = ? AND LOWER(departamento) LIKE LOWER(?)";
+        DefaultTableModel modelo = (DefaultTableModel) tb_salidas.getModel();
+        modelo.setRowCount(0);
+
         try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
-            ps.setInt(1, idPeticion);
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    p = new PeticionSalida();
-                    p.setIdPeticionSalida(rs.getInt("idPeticionSalida"));
-                    p.setFecha(rs.getDate("fecha"));
-                    p.setIdEmpleadoAlmacen(rs.getInt("idEmpleadoAlmacen"));
+            ps.setInt(1, idSucursal);
+            ps.setString(2, departamento + "%");
+
+            try (ResultSet rs = ps.executeQuery();) {
+                int columnas = rs.getMetaData().getColumnCount();
+
+                while (rs.next()) {
+                    Object[] fila = new Object[columnas];
+                    for (int i = 0; i < columnas; i++) {
+
+                        fila[i] = rs.getObject(i + 1);
+                    }
+                    modelo.addRow(fila);
+
                 }
             }
+
         } catch (SQLException ex) {
-            Logger.getLogger(PeticionSalidaDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FacturaDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return p;
     }
 
     @Override
@@ -95,5 +111,60 @@ public class PeticionSalidaDAO implements DAOInterfaz<PeticionSalida> {
             Logger.getLogger(PeticionSalidaDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return valor;
+    }
+
+    public void obtenerSalidas(JTable tb_salidas, int idSucursal) {
+
+        String statement = "SELECT fecha , departamento , encargado , descripcion FROM salidasView WHERE idSucursal = ? AND descripcion = ?";
+        DefaultTableModel modelo = (DefaultTableModel) tb_salidas.getModel();
+        modelo.setRowCount(0);
+
+        try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
+            ps.setInt(1, idSucursal);
+            ps.setString(2, "ACEPTADA");
+
+            try (ResultSet rs = ps.executeQuery();) {
+                int columnas = rs.getMetaData().getColumnCount();
+
+                while (rs.next()) {
+                    Object[] fila = new Object[columnas];
+                    for (int i = 0; i < columnas; i++) {
+
+                        fila[i] = rs.getObject(i + 1);
+                    }
+                    modelo.addRow(fila);
+
+                }
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(FacturaDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+
+    public void obtenerArticulosDepartamento(JTable tb_articulosDepartamento, String departamento) {
+        String statement = "SELECT item, cantidad, sucursal FROM itemPorDepartamento WHERE departamento = ?";
+        DefaultTableModel modelo = (DefaultTableModel) tb_articulosDepartamento.getModel();
+        modelo.setRowCount(0);
+
+        try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
+            ps.setString(1, departamento);
+            try (ResultSet rs = ps.executeQuery()) {
+                int columnas = rs.getMetaData().getColumnCount();
+                Object[] fila = new Object[columnas];
+                while (rs.next()) {
+                    for (int i = 0; i < columnas; i++) {
+
+                        fila[i] = rs.getObject(i + 1);
+                    }
+                    modelo.addRow(fila);
+
+                }
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(FacturaDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

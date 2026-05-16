@@ -23,7 +23,7 @@ public class InicioSesion extends javax.swing.JFrame {
      */
     public InicioSesion() {
         initComponents();
-        
+
         this.pack();
         this.setLocationRelativeTo(null);
         this.setResizable(false);
@@ -52,13 +52,15 @@ public class InicioSesion extends javax.swing.JFrame {
         rb_usuarioCentral = new javax.swing.JRadioButton();
         rb_usuarioSalidas = new javax.swing.JRadioButton();
         rb_usuarioSucursal = new javax.swing.JRadioButton();
+        jRadioButton1 = new javax.swing.JRadioButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Inicio de sesión - Global Finance");
         setMaximumSize(new java.awt.Dimension(600, 700));
-        setPreferredSize(new java.awt.Dimension(470, 600));
+        setPreferredSize(new java.awt.Dimension(470, 620));
 
-        jPanel1.setPreferredSize(new java.awt.Dimension(550, 700));
+        jPanel1.setPreferredSize(new java.awt.Dimension(540, 700));
+        jPanel1.setRequestFocusEnabled(false);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel1.setText("Global Finance");
@@ -106,6 +108,8 @@ public class InicioSesion extends javax.swing.JFrame {
         grupoUsuario.add(rb_usuarioSucursal);
         rb_usuarioSucursal.setText("Usuario Sucursal");
 
+        jRadioButton1.setText("Usuario Departamento");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -127,7 +131,8 @@ public class InicioSesion extends javax.swing.JFrame {
                     .addComponent(rb_usuarioSalidas)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addComponent(rb_usuarioCentral, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(rb_usuarioSucursal, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(rb_usuarioSucursal, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jRadioButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(64, Short.MAX_VALUE))
         );
 
@@ -155,8 +160,10 @@ public class InicioSesion extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(rb_usuarioSalidas)
                 .addGap(18, 18, 18)
+                .addComponent(jRadioButton1)
+                .addGap(18, 18, 18)
                 .addComponent(btn_inicioSesion, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(64, Short.MAX_VALUE))
+                .addContainerGap(49, Short.MAX_VALUE))
         );
 
         jPanel1Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {btn_inicioSesion, lb_usuario, pf_contrasenia});
@@ -184,7 +191,7 @@ public class InicioSesion extends javax.swing.JFrame {
             EmpleadoDAO empleadodao = new EmpleadoDAO();
             try {
                 HashMap<Empleado, ArrayList<String>> empleadoRoles = empleadodao.login(nombre, contraseniaHasheada);
-
+                
                 if (empleadoRoles != null) {
                     Empleado empleado = empleadoRoles.keySet().iterator().next();
                     //Mostrar la ventana que le corresponde al usuario
@@ -195,11 +202,21 @@ public class InicioSesion extends javax.swing.JFrame {
                         //Mostrar la GUI de usuario central
                         this.dispose();
                     } else if (roles.contains("Usuario sucursal") && rb_usuarioSucursal.isSelected()) {
-                        GUIPrincipal principal = new GUIPrincipal(empleado);
-                        principal.setVisible(true);
+                        try {
+                            
+                            GUIPrincipal principal = new GUIPrincipal(empleado);
+                            principal.setVisible(true);
+                            
+                        } catch (NumberFormatException ex) {
+                            System.out.println("No se pudo obtener correctamente la id de sucursal: ");
+                        }
+
                         this.dispose();
                     } else if (roles.contains("Usuario salidas") && rb_usuarioSalidas.isSelected()) {
                         //Mostrar el GUI de este usuario
+                        this.dispose();
+                    } else if (roles.contains("Usuario departamento") && rb_usuarioSalidas.isSelected()) {
+                        //Mostrar la GUI de este usuario
                         this.dispose();
                     } else {
                         JOptionPane.showMessageDialog(null, "Selecciona un rol correcto", "Aviso", 1);
@@ -210,6 +227,7 @@ public class InicioSesion extends javax.swing.JFrame {
                     pf_contrasenia.setText("");
                 }
             } catch (SQLException ex) {
+                ex.printStackTrace();
                 JOptionPane.showMessageDialog(this, "Error de la conexion con la base de datos", "Error", 0);
             }
         } else {
@@ -231,6 +249,7 @@ public class InicioSesion extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPopupMenu jPopupMenu1;
+    private javax.swing.JRadioButton jRadioButton1;
     private javax.swing.JTextField lb_usuario;
     private javax.swing.JPasswordField pf_contrasenia;
     private javax.swing.JRadioButton rb_usuarioCentral;

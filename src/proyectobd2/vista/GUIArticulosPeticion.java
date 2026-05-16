@@ -4,29 +4,27 @@
  */
 package proyectobd2.vista;
 
-import proyectobd2.modelo.DAO.FacturaDAO;
-import proyectobd2.modelo.beans.Factura;
+import proyectobd2.modelo.DAO.PeticionSalidaDAO;
 
 /**
  *
  * @author endri
  */
-public class GUIArticulosFactura extends javax.swing.JDialog {
+public class GUIArticulosPeticion extends javax.swing.JDialog {
 
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(GUIArticulosFactura.class.getName());
 
     /**
-     * Creates new form GUIArticulosFactura
+     * Creates new form GUIArticulosPeticion
      */
-    public GUIArticulosFactura(java.awt.Frame parent, boolean modal, String folio) {
+    public GUIArticulosPeticion(java.awt.Frame parent, boolean modal, String departamento) {
         super(parent, modal);
         initComponents();
-        lb_folio.setText(folio);
-        FacturaDAO fDAO = new FacturaDAO();
-        fDAO.obtenerArticulosFolio(tb_articulosFolio, folio);
+        lb_departamento.setText(departamento);
+        PeticionSalidaDAO psDAO = new PeticionSalidaDAO();
+        psDAO.obtenerArticulosDepartamento(tb_articulosDepartamento, departamento);
         this.pack();
         this.setLocationRelativeTo(null);
-        
+
     }
 
     /**
@@ -41,26 +39,25 @@ public class GUIArticulosFactura extends javax.swing.JDialog {
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        lb_folio = new javax.swing.JLabel();
+        lb_departamento = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tb_articulosFolio = new javax.swing.JTable();
+        tb_articulosDepartamento = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(500, 333));
 
         jPanel1.setLayout(new java.awt.BorderLayout());
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel2.setText("Folio:");
+        jLabel2.setText("Departamento");
         jPanel2.add(jLabel2);
 
-        lb_folio.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        lb_folio.setText("*");
-        jPanel2.add(lb_folio);
+        lb_departamento.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        lb_departamento.setText("*");
+        jPanel2.add(lb_departamento);
 
         jPanel1.add(jPanel2, java.awt.BorderLayout.PAGE_START);
 
-        tb_articulosFolio.setModel(new javax.swing.table.DefaultTableModel(
+        tb_articulosDepartamento.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -76,7 +73,7 @@ public class GUIArticulosFactura extends javax.swing.JDialog {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(tb_articulosFolio);
+        jScrollPane1.setViewportView(tb_articulosDepartamento);
 
         jPanel1.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
@@ -86,13 +83,12 @@ public class GUIArticulosFactura extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
 
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JLabel lb_folio;
-    private javax.swing.JTable tb_articulosFolio;
+    private javax.swing.JLabel lb_departamento;
+    private javax.swing.JTable tb_articulosDepartamento;
     // End of variables declaration//GEN-END:variables
 }

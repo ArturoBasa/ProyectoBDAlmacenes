@@ -17,8 +17,9 @@ public class GUIPrincipal extends javax.swing.JFrame {
     public GUIPrincipal(Empleado empleado) {
         initComponents();
         card = (CardLayout) pnl_cuerpo.getLayout();
-        GUIEntradas panelEntradas = new GUIEntradas();
-        GUISalidas panelSalidas = new GUISalidas();
+        int idSucursal = empleado.getIdSucursal();
+        GUIEntradas panelEntradas = new GUIEntradas(idSucursal);
+        GUISalidas panelSalidas = new GUISalidas(idSucursal);
         GUIInventario panelInventario = new GUIInventario();
         pnl_cuerpo.add(panelInventario, "inventario");
         pnl_cuerpo.add(panelEntradas, "entradas");

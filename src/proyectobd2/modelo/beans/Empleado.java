@@ -20,6 +20,7 @@ public class Empleado {
     private String telefonoCelular;
     private Date fechaRegistro;
     private String contrasenia;
+    private int idSucursal;
 
     public Empleado() {
     }
@@ -86,6 +87,14 @@ public class Empleado {
 
     public void setContrasenia(String contrasenia) {
         this.contrasenia = contrasenia;
+    }
+
+    public int getIdSucursal() {
+        return idSucursal;
+    }
+
+    public void setIdSucursal(int idSucursal) {
+        this.idSucursal = idSucursal;
     }
 
 }
