@@ -2,8 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package proyectobd2.vista;
+package proyectobd2.vista.vistassucursal.vistasalmacen;
 
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
 import proyectobd2.modelo.DAO.BitacoraOperacionesBajaDAO;
 
 /**
@@ -12,7 +14,9 @@ import proyectobd2.modelo.DAO.BitacoraOperacionesBajaDAO;
  */
 public class GUIBajasRegistradas extends javax.swing.JPanel {
 
-    BitacoraOperacionesBajaDAO bobDAO = new BitacoraOperacionesBajaDAO();
+    private JFrame framePadre = (JFrame) SwingUtilities.getAncestorOfClass(JFrame.class, this);
+    private BitacoraOperacionesBajaDAO bobDAO = new BitacoraOperacionesBajaDAO();
+
     /**
      * Creates new form GUIBajasRegistradas
      */
@@ -36,7 +40,7 @@ public class GUIBajasRegistradas extends javax.swing.JPanel {
         filler6 = new javax.swing.Box.Filler(new java.awt.Dimension(50, 20), new java.awt.Dimension(25, 20), new java.awt.Dimension(50, 20));
         jLabel1 = new javax.swing.JLabel();
         filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(150, 20), new java.awt.Dimension(100, 20), new java.awt.Dimension(150, 20));
-        btn_bajaItem = new javax.swing.JButton();
+        btn_realizarBaja = new javax.swing.JButton();
 
         setLayout(new java.awt.BorderLayout());
 
@@ -68,15 +72,25 @@ public class GUIBajasRegistradas extends javax.swing.JPanel {
         jPanel3.add(jLabel1);
         jPanel3.add(filler1);
 
-        btn_bajaItem.setText("Realizar baja");
-        jPanel3.add(btn_bajaItem);
+        btn_realizarBaja.setText("Realizar baja");
+        btn_realizarBaja.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_realizarBajaActionPerformed(evt);
+            }
+        });
+        jPanel3.add(btn_realizarBaja);
 
         add(jPanel3, java.awt.BorderLayout.PAGE_START);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btn_realizarBajaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_realizarBajaActionPerformed
+        GUINuevaBajaItem nuevaBaja = new GUINuevaBajaItem(this.framePadre, true);
+        nuevaBaja.setVisible(true);
+    }//GEN-LAST:event_btn_realizarBajaActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btn_bajaItem;
+    private javax.swing.JButton btn_realizarBaja;
     private javax.swing.Box.Filler filler1;
     private javax.swing.Box.Filler filler6;
     private javax.swing.JLabel jLabel1;

@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
  */
-package proyectobd2.vista;
+package proyectobd2.vista.vistassucursal.vistassalidas;
 
 /**
  *
@@ -49,7 +49,6 @@ public class GUINuevaSalida extends javax.swing.JDialog {
         jSeparator1 = new javax.swing.JSeparator();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(530, 580));
 
         jPanel1.setPreferredSize(new java.awt.Dimension(500, 549));
 

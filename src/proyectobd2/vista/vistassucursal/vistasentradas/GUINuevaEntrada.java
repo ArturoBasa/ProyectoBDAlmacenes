@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
  */
-package proyectobd2.vista;
+package proyectobd2.vista.vistassucursal.vistasentradas;
 
 /**
  *
@@ -57,7 +57,6 @@ public class GUINuevaEntrada extends javax.swing.JDialog {
         jLabel5.setText("jLabel5");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(500, 575));
 
         jPanel1.setPreferredSize(new java.awt.Dimension(500, 549));
 

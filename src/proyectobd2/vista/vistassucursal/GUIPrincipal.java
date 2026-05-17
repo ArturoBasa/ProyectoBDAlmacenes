@@ -1,5 +1,13 @@
-package proyectobd2.vista;
+package proyectobd2.vista.vistassucursal;
 
+import proyectobd2.vista.vistassucursal.vistasreporte.GUIReportes;
+import proyectobd2.vista.vistassucursal.vistaskardex.GUIKardex;
+import proyectobd2.vista.vistassucursal.vistascatalogos.GUICatalogo;
+import proyectobd2.vista.vistassucursal.vistasalmacen.GUIItemsStockMaximo;
+import proyectobd2.vista.vistassucursal.vistasalmacen.GUIItemsStockMinimo;
+import proyectobd2.vista.vistassucursal.vistasalmacen.GUIBajasRegistradas;
+import proyectobd2.vista.vistassucursal.vistassalidas.GUISalidas;
+import proyectobd2.vista.vistassucursal.vistasentradas.GUIEntradas;
 import java.awt.CardLayout;
 import proyectobd2.modelo.beans.Empleado;
 

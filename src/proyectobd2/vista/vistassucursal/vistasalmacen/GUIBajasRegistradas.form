@@ -93,10 +93,13 @@
             <AuxValue name="classDetails" type="java.lang.String" value="Box.Filler.RigidArea"/>
           </AuxValues>
         </Component>
-        <Component class="javax.swing.JButton" name="btn_bajaItem">
+        <Component class="javax.swing.JButton" name="btn_realizarBaja">
           <Properties>
             <Property name="text" type="java.lang.String" value="Realizar baja"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_realizarBajaActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

@@ -2,18 +2,18 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package proyectobd2.vista;
+package proyectobd2.vista.vistassucursal.vistascatalogos;
 
 /**
  *
  * @author basa2
  */
-public class GUIReportes extends javax.swing.JPanel {
+public class GUICatalogo extends javax.swing.JPanel {
 
     /**
-     * Creates new form GUIReportes
+     * Creates new form GUICatalogo
      */
-    public GUIReportes() {
+    public GUICatalogo() {
         initComponents();
     }
 

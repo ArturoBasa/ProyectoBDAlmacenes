@@ -4,6 +4,7 @@
  */
 package proyectobd2.vista;
 
+import proyectobd2.vista.vistassucursal.GUIPrincipal;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
