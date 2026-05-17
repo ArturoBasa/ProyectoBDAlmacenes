@@ -20,8 +20,13 @@ public class GUIPrincipal extends javax.swing.JFrame {
         int idSucursal = empleado.getIdSucursal();
         GUIEntradas panelEntradas = new GUIEntradas(idSucursal);
         GUISalidas panelSalidas = new GUISalidas(idSucursal);
-        GUIInventario panelInventario = new GUIInventario();
-        pnl_cuerpo.add(panelInventario, "inventario");
+        GUIItemsStockMinimo panelItemsMinimo = new GUIItemsStockMinimo(idSucursal);
+        GUIItemsStockMaximo panelItemsMaximo = new GUIItemsStockMaximo(idSucursal);
+        GUIBajasRegistradas panelBajasRegistradas = new GUIBajasRegistradas(idSucursal);
+
+        pnl_cuerpo.add(panelItemsMinimo, "itemsStockMinimo");
+        pnl_cuerpo.add(panelItemsMaximo, "itemsStockMaximo");
+        pnl_cuerpo.add(panelBajasRegistradas, "bajasRegistradas");
         pnl_cuerpo.add(panelEntradas, "entradas");
         pnl_cuerpo.add(panelSalidas, "salidas");
 
@@ -46,7 +51,10 @@ public class GUIPrincipal extends javax.swing.JFrame {
         jMenu2 = new javax.swing.JMenu();
         mi_entradas = new javax.swing.JMenuItem();
         mi_salidas = new javax.swing.JMenuItem();
-        mi_almacen = new javax.swing.JMenuItem();
+        m_almacen = new javax.swing.JMenu();
+        mi_stockMinimo = new javax.swing.JMenuItem();
+        mi_stockMaximo = new javax.swing.JMenuItem();
+        mi_bajasRegistradas = new javax.swing.JMenuItem();
         mi_kardex = new javax.swing.JMenuItem();
         mi_reportes = new javax.swing.JMenuItem();
         mi_catalogos = new javax.swing.JMenuItem();
@@ -78,9 +86,21 @@ public class GUIPrincipal extends javax.swing.JFrame {
         mi_salidas.addActionListener(this::mi_salidasActionPerformed);
         jMenu2.add(mi_salidas);
 
-        mi_almacen.setText("Almacén");
-        mi_almacen.addActionListener(this::mi_almacenActionPerformed);
-        jMenu2.add(mi_almacen);
+        m_almacen.setText("Almacén");
+
+        mi_stockMinimo.setText("Items con stock mínimo");
+        mi_stockMinimo.addActionListener(this::mi_stockMinimoActionPerformed);
+        m_almacen.add(mi_stockMinimo);
+
+        mi_stockMaximo.setText("Items con stock máximo");
+        mi_stockMaximo.addActionListener(this::mi_stockMaximoActionPerformed);
+        m_almacen.add(mi_stockMaximo);
+
+        mi_bajasRegistradas.setText("Bajas registradas");
+        mi_bajasRegistradas.addActionListener(this::mi_bajasRegistradasActionPerformed);
+        m_almacen.add(mi_bajasRegistradas);
+
+        jMenu2.add(m_almacen);
 
         mi_kardex.setText("Kardex");
         mi_kardex.addActionListener(this::mi_kardexActionPerformed);
@@ -113,11 +133,6 @@ public class GUIPrincipal extends javax.swing.JFrame {
         card.show(pnl_cuerpo, "salidas");
     }//GEN-LAST:event_mi_salidasActionPerformed
 
-    private void mi_almacenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mi_almacenActionPerformed
-        card = (CardLayout) pnl_cuerpo.getLayout();
-        card.show(pnl_cuerpo, "inventario");
-    }//GEN-LAST:event_mi_almacenActionPerformed
-
     private void mi_kardexActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mi_kardexActionPerformed
         card = (CardLayout) pnl_cuerpo.getLayout();
         card.show(pnl_cuerpo, "CARD_kARDEX");
@@ -137,17 +152,35 @@ public class GUIPrincipal extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_mi_cerrarSesionActionPerformed
 
+    private void mi_stockMinimoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mi_stockMinimoActionPerformed
+        card = (CardLayout) pnl_cuerpo.getLayout();
+        card.show(pnl_cuerpo, "itemsStockMinimo");
+    }//GEN-LAST:event_mi_stockMinimoActionPerformed
+
+    private void mi_stockMaximoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mi_stockMaximoActionPerformed
+        card = (CardLayout) pnl_cuerpo.getLayout();
+        card.show(pnl_cuerpo, "itemsStockMaximo");
+    }//GEN-LAST:event_mi_stockMaximoActionPerformed
+
+    private void mi_bajasRegistradasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mi_bajasRegistradasActionPerformed
+        card = (CardLayout) pnl_cuerpo.getLayout();
+        card.show(pnl_cuerpo, "bajasRegistradas");
+    }//GEN-LAST:event_mi_bajasRegistradasActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenu m_almacen;
     private javax.swing.JMenu mb_File;
-    private javax.swing.JMenuItem mi_almacen;
+    private javax.swing.JMenuItem mi_bajasRegistradas;
     private javax.swing.JMenuItem mi_catalogos;
     private javax.swing.JMenuItem mi_cerrarSesion;
     private javax.swing.JMenuItem mi_entradas;
     private javax.swing.JMenuItem mi_kardex;
     private javax.swing.JMenuItem mi_reportes;
     private javax.swing.JMenuItem mi_salidas;
+    private javax.swing.JMenuItem mi_stockMaximo;
+    private javax.swing.JMenuItem mi_stockMinimo;
     private javax.swing.JPanel pnl_cuerpo;
     // End of variables declaration//GEN-END:variables
 }
