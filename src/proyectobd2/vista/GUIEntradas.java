@@ -8,20 +8,20 @@ import java.sql.SQLException;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import proyectobd2.modelo.DAO.FacturaDAO;
-import proyectobd2.modelo.beans.Factura;
 
 /**
  *
  * @author endri
  */
 public class GUIEntradas extends javax.swing.JPanel {
-
-    FacturaDAO fDAO = new FacturaDAO();
-    Factura fac = new Factura();
-    private int idSucursal;
+    
+    private JFrame framePadre = (JFrame) SwingUtilities.getAncestorOfClass(JFrame.class, this);
+    private FacturaDAO fDAO = new FacturaDAO();
+    private final int idSucursal;
 
     /**
      * Creates new form Dashboard
+     * @param idSucursal
      */
     public GUIEntradas(int idSucursal) {
         initComponents();
@@ -109,7 +109,8 @@ public class GUIEntradas extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_nuevaEntradaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_nuevaEntradaActionPerformed
-        // TODO add your handling code here:
+        GUINuevaEntrada nuevaEntrada = new GUINuevaEntrada(this.framePadre, true);
+        nuevaEntrada.setVisible(true);
     }//GEN-LAST:event_btn_nuevaEntradaActionPerformed
 
     private void tb_entradasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tb_entradasMouseClicked
@@ -118,16 +119,10 @@ public class GUIEntradas extends javax.swing.JPanel {
 
             if (fila != -1) {
                 String folio = tb_entradas.getValueAt(fila, 0).toString();
-//                try {
-//                    //fac = fDAO.buscar(folio);
-//                    
-//                } catch (SQLException ex) {
-//                    
-//
-//                }
-                JFrame framePadre = (JFrame) SwingUtilities.getAncestorOfClass(JFrame.class, this);
 
-                GUIArticulosFactura articulosFactura = new GUIArticulosFactura(framePadre, true, folio);
+                
+
+                GUIArticulosFactura articulosFactura = new GUIArticulosFactura(this.framePadre, true, folio);
                 articulosFactura.setVisible(true);
 
             }

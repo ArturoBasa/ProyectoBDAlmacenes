@@ -15,6 +15,9 @@ public class GUIArticulosPeticion extends javax.swing.JDialog {
 
     /**
      * Creates new form GUIArticulosPeticion
+     * @param parent
+     * @param modal
+     * @param departamento
      */
     public GUIArticulosPeticion(java.awt.Frame parent, boolean modal, String departamento) {
         super(parent, modal);

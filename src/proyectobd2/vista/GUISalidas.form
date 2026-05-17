@@ -50,10 +50,13 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_buscarActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="jButton1">
+        <Component class="javax.swing.JButton" name="btn_nuevaSalida">
           <Properties>
             <Property name="text" type="java.lang.String" value="Nueva salida"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_nuevaSalidaActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

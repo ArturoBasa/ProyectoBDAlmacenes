@@ -99,29 +99,6 @@ public class FacturaDAO implements DAOInterfaz<Factura> {
         }
     }
 
-    public List<Factura> buscarPorCriterio(String criterio) throws SQLException {
-        List<Factura> lista = new ArrayList<>();
-        // Buscar en la tabla Usuario filtrando por 'EMPLEADO'
-        String sql = """
-            SELECT * FROM factura
-            WHERE  idFactura = ?
-            AND (idFactura LIKE LOWER(?) OR LOWER(folioFactura) LIKE LOWER(?)
-                 OR fechaFactura LIKE ? OR precioTotal LIKE LOWER(?) OR Proveedor_idProveedor LIKE ?)
-            """;
-
-        String param = "%" + criterio + "%";
-        try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-            for (int i = 1; i <= 4; i++) {
-                ps.setString(i, param);
-            }
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                lista.add(mapFactura(rs));
-            }
-        }
-        return lista;
-    }
-
     private Factura mapFactura(ResultSet rs) throws SQLException {
         Factura f = new Factura();
         f.setIdFactura(rs.getInt("idFactura"));

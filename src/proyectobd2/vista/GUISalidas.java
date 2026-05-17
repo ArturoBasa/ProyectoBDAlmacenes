@@ -14,13 +14,15 @@ import proyectobd2.modelo.DAO.PeticionSalidaDAO;
  * @author endri
  */
 public class GUISalidas extends javax.swing.JPanel {
-
-    PeticionSalidaDAO psDAO = new PeticionSalidaDAO();
+ 
+    private JFrame framePadre = (JFrame) SwingUtilities.getAncestorOfClass(JFrame.class, this);
+    private PeticionSalidaDAO psDAO = new PeticionSalidaDAO();
 
     int idSucursal;
 
     /**
      * Creates new form Salidas
+     * @param idSucursal
      */
     public GUISalidas(int idSucursal) {
         initComponents();
@@ -41,7 +43,7 @@ public class GUISalidas extends javax.swing.JPanel {
         jLabel1 = new javax.swing.JLabel();
         txt_departamento = new javax.swing.JTextField();
         btn_buscar = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        btn_nuevaSalida = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tb_salidas = new javax.swing.JTable();
 
@@ -62,8 +64,13 @@ public class GUISalidas extends javax.swing.JPanel {
         });
         jPanel1.add(btn_buscar);
 
-        jButton1.setText("Nueva salida");
-        jPanel1.add(jButton1);
+        btn_nuevaSalida.setText("Nueva salida");
+        btn_nuevaSalida.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_nuevaSalidaActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btn_nuevaSalida);
 
         add(jPanel1, java.awt.BorderLayout.PAGE_START);
 
@@ -99,7 +106,6 @@ public class GUISalidas extends javax.swing.JPanel {
             try {
                 psDAO.buscar(departamento, idSucursal, tb_salidas);
             } catch (SQLException ex) {
-                ex.printStackTrace();
             }
 
         } else {
@@ -113,26 +119,25 @@ public class GUISalidas extends javax.swing.JPanel {
 
             if (fila != -1) {
                 String departamento = tb_salidas.getValueAt(fila, 1).toString();
-//                try {
-//                    //fac = fDAO.buscar(folio);
-//                    
-//                } catch (SQLException ex) {
-//                    
-//
-//                }
-                JFrame framePadre = (JFrame) SwingUtilities.getAncestorOfClass(JFrame.class, this);
 
-                GUIArticulosPeticion articulosPeticion = new GUIArticulosPeticion(framePadre, true, departamento);
+                
+
+                GUIArticulosPeticion articulosPeticion = new GUIArticulosPeticion(this.framePadre, true, departamento);
                 articulosPeticion.setVisible(true);
 
             }
         }
     }//GEN-LAST:event_tb_salidasMouseClicked
 
+    private void btn_nuevaSalidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_nuevaSalidaActionPerformed
+        GUINuevaSalida nuevaSalida = new GUINuevaSalida(this.framePadre, true);
+        nuevaSalida.setVisible(true);
+    }//GEN-LAST:event_btn_nuevaSalidaActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_buscar;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton btn_nuevaSalida;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
