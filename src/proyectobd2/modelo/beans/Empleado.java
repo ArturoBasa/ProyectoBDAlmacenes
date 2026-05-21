@@ -20,7 +20,9 @@ public class Empleado {
     private String telefonoCelular;
     private Date fechaRegistro;
     private String contrasenia;
+
     private int idSucursal;
+    private String rol;
 
     public Empleado() {
     }
@@ -95,6 +97,14 @@ public class Empleado {
 
     public void setIdSucursal(int idSucursal) {
         this.idSucursal = idSucursal;
+    }
+
+    public String getRol() {
+        return rol;
+    }
+
+    public void setRol(String rol) {
+        this.rol = rol;
     }
 
 }

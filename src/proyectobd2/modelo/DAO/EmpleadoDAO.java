@@ -22,14 +22,13 @@ import proyectobd2.modelo.beans.Empleado;
  */
 public class EmpleadoDAO implements DAOInterfaz<Empleado> {
 
-    public HashMap<Empleado, ArrayList<String>> login(String username, String contrasenia) throws SQLException {
+    public Empleado login(String username, String contrasenia) throws SQLException {
         Empleado e = null;
-        ArrayList<String> roles = new ArrayList<>();
+
         String statement = """
                     SELECT e.*, r.descripcion AS Rol, d.Sucursal_idSucursal as Sucursal
                     FROM empleado e 
-                    JOIN empleado_has_rol er ON e.idEmpleado = er.empleado_idEmpleado
-                    JOIN rol r ON er.rol_idRol = r.idRol
+                    JOIN rol r ON e.idRol = r.idRol
                     JOIN departamento d on e.idDepartamentoEncargado = d.idDepartamento
                     WHERE e.nombre = ? AND e.contrasenia = ?;
                      """;
@@ -41,28 +40,26 @@ public class EmpleadoDAO implements DAOInterfaz<Empleado> {
 
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
-                    if (e == null) {
-                        e = new Empleado();
-                        e.setIdEmpleado(rs.getInt("idEmpleado"));
-                        e.setNombre(rs.getString("nombre"));
-                        e.setApellidos(rs.getString("apellidos"));
-                        e.setCorreoElectronico(rs.getString("correoElectronico"));
-                        e.setTelefonoFijo(rs.getString("telefonoFijo"));
-                        e.setTelefonoCelular(rs.getString("telefonoCelular"));
-                        e.setFechaRegistro(rs.getDate("fechaRegistro"));
-                        e.setContrasenia(rs.getString("contrasenia"));
-                        e.setIdSucursal(rs.getInt("Sucursal"));
-                    }
-                    roles.add(rs.getString("Rol"));
+
+                    e = new Empleado();
+                    e.setIdEmpleado(rs.getInt("idEmpleado"));
+                    e.setNombre(rs.getString("nombre"));
+                    e.setApellidos(rs.getString("apellidos"));
+                    e.setCorreoElectronico(rs.getString("correoElectronico"));
+                    e.setTelefonoFijo(rs.getString("telefonoFijo"));
+                    e.setTelefonoCelular(rs.getString("telefonoCelular"));
+                    e.setFechaRegistro(rs.getDate("fechaRegistro"));
+                    e.setContrasenia(rs.getString("contrasenia"));
+                    e.setIdSucursal(rs.getInt("Sucursal"));
+                    e.setRol(rs.getString("Rol"));
+
                 }
-                
-                
+
             }
         }
         if (e != null) {
-            HashMap<Empleado, ArrayList<String>> resultado = new HashMap<>();
-            resultado.put(e, roles);
-            return resultado;
+
+            return e;
         }
         return null;
     }

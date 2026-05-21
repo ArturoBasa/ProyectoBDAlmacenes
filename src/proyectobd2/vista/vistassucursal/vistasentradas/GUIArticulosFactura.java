@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
  */
-package proyectobd2.vista;
+package proyectobd2.vista.vistassucursal.vistasentradas;
 
 import proyectobd2.modelo.DAO.FacturaDAO;
 import proyectobd2.modelo.beans.Factura;
@@ -46,7 +46,6 @@ public class GUIArticulosFactura extends javax.swing.JDialog {
         tb_articulosFolio = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(500, 333));
 
         jPanel1.setLayout(new java.awt.BorderLayout());
 
