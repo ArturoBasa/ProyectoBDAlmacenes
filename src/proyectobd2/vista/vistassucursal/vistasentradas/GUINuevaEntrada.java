@@ -4,20 +4,75 @@
  */
 package proyectobd2.vista.vistassucursal.vistasentradas;
 
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import proyectobd2.modelo.DAO.PartidaPresupuestalDAO;
+import proyectobd2.modelo.beans.PartidaPresupuestal;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Date;
+import proyectobd2.modelo.DAO.FacturaDAO;
+import proyectobd2.modelo.DAO.ProveedorDAO;
+import proyectobd2.modelo.beans.Factura;
+import proyectobd2.modelo.beans.Item;
+import proyectobd2.modelo.beans.Proveedor;
+
 /**
  *
  * @author endri
  */
 public class GUINuevaEntrada extends javax.swing.JDialog {
-    
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(GUINuevaEntrada.class.getName());
+
+    private List<PartidaPresupuestal> listaPartidas;
+    private List<Proveedor> listaProveedores;
+    private double total = 0;
+
+    PartidaPresupuestalDAO ppDAO = new PartidaPresupuestalDAO();
+    ProveedorDAO proveedorDAO = new ProveedorDAO();
+    FacturaDAO facDAO = new FacturaDAO();
 
     /**
      * Creates new form GUINuevaEntrada
+     *
+     * @param parent
+     * @param modal
      */
     public GUINuevaEntrada(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        prepararComboBoxPartidas();
+        prepararProveedores();
+
+    }
+
+    private void prepararComboBoxPartidas() {
+
+        cbx_partidaPresupuestal.removeAllItems();
+
+        try {
+            listaPartidas = ppDAO.obtenerListaObjetos();
+
+            for (PartidaPresupuestal pp : listaPartidas) {
+                cbx_partidaPresupuestal.addItem(pp.getNombrePartida());
+            }
+            cbx_partidaPresupuestal.setSelectedIndex(-1);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void prepararProveedores() {
+        cbx_proveedores.removeAllItems();
+        try {
+            listaProveedores = proveedorDAO.obtenerListaObjetos();
+            for (Proveedor p : listaProveedores) {
+                cbx_proveedores.addItem(p.getRazonSocial());
+            }
+            cbx_proveedores.setSelectedIndex(-1);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -34,29 +89,36 @@ public class GUINuevaEntrada extends javax.swing.JDialog {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        txt_folioFactura = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        cbx_proveedores = new javax.swing.JComboBox<>();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
+        txt_descripcionArticulo = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
-        jTextField5 = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox<>();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jSpinner1 = new javax.swing.JSpinner();
+        cbx_partidaPresupuestal = new javax.swing.JComboBox<>();
+        btn_cancelar = new javax.swing.JButton();
+        btn_guardar = new javax.swing.JButton();
+        spn_cantidad = new javax.swing.JSpinner();
         jSeparator1 = new javax.swing.JSeparator();
+        spn_fecha = new javax.swing.JSpinner();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tb_articulos = new javax.swing.JTable();
+        jLabel12 = new javax.swing.JLabel();
+        btn_agregarArticulo = new javax.swing.JButton();
+        spn_costoUnitario = new javax.swing.JSpinner();
+        jLabel13 = new javax.swing.JLabel();
+        lb_precioTotal = new javax.swing.JLabel();
 
         jLabel3.setText("jLabel3");
 
         jLabel5.setText("jLabel5");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(500, 760));
 
         jPanel1.setPreferredSize(new java.awt.Dimension(500, 549));
 
@@ -65,11 +127,15 @@ public class GUINuevaEntrada extends javax.swing.JDialog {
 
         jLabel2.setText("Folio factura: ");
 
+        txt_folioFactura.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_folioFacturaActionPerformed(evt);
+            }
+        });
+
         jLabel4.setText("Fecha:");
 
         jLabel6.setText("Proveedor:");
-
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel7.setText("Agregar artículos");
@@ -82,16 +148,66 @@ public class GUINuevaEntrada extends javax.swing.JDialog {
 
         jLabel11.setText("Partida presupuestal:");
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        btn_cancelar.setBackground(new java.awt.Color(255, 0, 51));
+        btn_cancelar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btn_cancelar.setText("Cancelar");
+        btn_cancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_cancelarActionPerformed(evt);
+            }
+        });
 
-        jButton1.setBackground(new java.awt.Color(255, 0, 51));
-        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jButton1.setText("Cancelar");
+        btn_guardar.setBackground(new java.awt.Color(0, 204, 0));
+        btn_guardar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btn_guardar.setForeground(new java.awt.Color(0, 0, 0));
+        btn_guardar.setText("Guardar");
+        btn_guardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_guardarActionPerformed(evt);
+            }
+        });
 
-        jButton2.setBackground(new java.awt.Color(0, 204, 0));
-        jButton2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jButton2.setForeground(new java.awt.Color(0, 0, 0));
-        jButton2.setText("Guardar");
+        spn_cantidad.setModel(new javax.swing.SpinnerNumberModel(0, 0, null, 1));
+
+        spn_fecha.setModel(new javax.swing.SpinnerDateModel());
+        spn_fecha.setEditor(new javax.swing.JSpinner.DateEditor(spn_fecha, "dd/MM/yyyy"));
+
+        tb_articulos.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Descripción", "Cantidad", "Costo unitario", "Partida presupuestal"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(tb_articulos);
+
+        jLabel12.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel12.setText("Artículos");
+
+        btn_agregarArticulo.setBackground(new java.awt.Color(0, 204, 0));
+        btn_agregarArticulo.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btn_agregarArticulo.setForeground(new java.awt.Color(0, 0, 0));
+        btn_agregarArticulo.setText("Agregar artículo");
+        btn_agregarArticulo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_agregarArticuloActionPerformed(evt);
+            }
+        });
+
+        spn_costoUnitario.setModel(new javax.swing.SpinnerNumberModel(0.0d, 0.0d, null, 0.1d));
+
+        jLabel13.setText("Precio total:");
+
+        lb_precioTotal.setText("*");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -99,39 +215,52 @@ public class GUINuevaEntrada extends javax.swing.JDialog {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(17, 17, 17)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jButton1)
-                        .addGap(39, 39, 39)
-                        .addComponent(jButton2))
-                    .addComponent(jComboBox2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jTextField3)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jLabel9)
-                        .addComponent(jLabel7)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel6)
-                            .addComponent(jComboBox1, 0, 290, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addComponent(btn_cancelar)
+                            .addGap(39, 39, 39)
+                            .addComponent(btn_guardar))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel9)
+                                .addComponent(jLabel7)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jLabel6)
+                                    .addComponent(cbx_proveedores, 0, 290, Short.MAX_VALUE))
+                                .addComponent(jLabel11))
+                            .addGap(155, 155, 155))
+                        .addComponent(jSeparator1)
                         .addGroup(jPanel1Layout.createSequentialGroup()
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(jLabel1)
                                 .addComponent(jLabel2)
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(txt_folioFactura, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGap(18, 18, 18)
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(jLabel4)
-                                .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(spn_fecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(txt_descripcionArticulo, javax.swing.GroupLayout.PREFERRED_SIZE, 446, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGroup(jPanel1Layout.createSequentialGroup()
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(jLabel8)
-                                .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(spn_cantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGap(82, 82, 82)
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel10)))
-                        .addComponent(jLabel11))
-                    .addComponent(jSeparator1))
-                .addGap(0, 16, Short.MAX_VALUE))
+                                .addComponent(jLabel10)
+                                .addComponent(spn_costoUnitario, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addComponent(jLabel12)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btn_agregarArticulo))
+                        .addComponent(cbx_partidaPresupuestal, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel13)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lb_precioTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(0, 31, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -144,15 +273,14 @@ public class GUINuevaEntrada extends javax.swing.JDialog {
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(txt_folioFactura, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(spn_fecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel4)
                         .addGap(28, 28, 28)))
-                .addGap(18, 18, 18)
                 .addComponent(jLabel6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(cbx_proveedores, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(36, 36, 36)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(35, 35, 35)
@@ -160,23 +288,33 @@ public class GUINuevaEntrada extends javax.swing.JDialog {
                 .addGap(18, 18, 18)
                 .addComponent(jLabel9)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txt_descripcionArticulo, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
                     .addComponent(jLabel10))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(spn_cantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(spn_costoUnitario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jLabel11)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 51, Short.MAX_VALUE)
+                .addComponent(cbx_partidaPresupuestal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(28, 28, 28)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
+                    .addComponent(jLabel12)
+                    .addComponent(btn_agregarArticulo))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel13)
+                    .addComponent(lb_precioTotal))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btn_cancelar)
+                    .addComponent(btn_guardar))
                 .addGap(38, 38, 38))
         );
 
@@ -185,15 +323,148 @@ public class GUINuevaEntrada extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private boolean validarDatosArticulo() {
+        if (txt_descripcionArticulo.getText().trim().isEmpty()) {
+
+            return false;
+        }
+        if ((Integer) spn_cantidad.getValue() <= 0.0) {
+
+            return false;
+        }
+        if ((Double) spn_costoUnitario.getValue() <= 0.0) {
+
+            return false;
+        }
+        if (cbx_partidaPresupuestal.getSelectedIndex() == -1) {
+
+            return false;
+        }
+        return true;
+    }
+    private void btn_agregarArticuloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_agregarArticuloActionPerformed
+
+        if (!validarDatosArticulo()) {
+            JOptionPane.showMessageDialog(this,
+                    "Por favor completa los campos del artículo...",
+                    "Advertencia",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        DefaultTableModel modelo = (DefaultTableModel) tb_articulos.getModel();
+        Object[] fila = new Object[4];
+        fila[0] = txt_descripcionArticulo.getText();       // Columna 1
+        fila[1] = (Integer) spn_cantidad.getValue();   // Columna 2
+        fila[2] = (Double) spn_costoUnitario.getValue();             // Columna 3 (Entero)
+        fila[3] = cbx_partidaPresupuestal.getSelectedItem().toString();        // Columna 4 (Double)
+
+        //Calcular total
+        total += (Integer) spn_cantidad.getValue() * (Double) spn_costoUnitario.getValue();
+        modelo.addRow(fila);
+
+        txt_descripcionArticulo.setText("");
+        spn_cantidad.setValue(0);
+        spn_costoUnitario.setValue(0.0);
+        cbx_partidaPresupuestal.setSelectedIndex(-1);
+        lb_precioTotal.setText(String.valueOf(total));
+    }//GEN-LAST:event_btn_agregarArticuloActionPerformed
+
+    private boolean validarDatosFactura() {
+        if (txt_folioFactura.getText().trim().isEmpty()) {
+            return false;
+        }
+        if (cbx_proveedores.getSelectedIndex() == -1) {
+
+        }
+        return true;
+    }
+    private void txt_folioFacturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_folioFacturaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_folioFacturaActionPerformed
+
+    private void btn_cancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cancelarActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_btn_cancelarActionPerformed
+
+    private void btn_guardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_guardarActionPerformed
+        if (tb_articulos.getRowCount() == 0 || !validarDatosFactura()) {
+
+            JOptionPane.showMessageDialog(this,
+                    "Por favor completa los campos...",
+                    "Advertencia",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        Factura f = prepararFactura();
+        ArrayList<Item> items = new ArrayList<>();
+
+        DefaultTableModel modelo = (DefaultTableModel) tb_articulos.getModel();
+
+        for (int i = 0; i < modelo.getRowCount(); i++) {
+
+            // 3. Extraemos los datos de cada columna especificando (fila, columna)
+            // El índice 'i' representa la fila actual en el ciclo
+            String descripcion = modelo.getValueAt(i, 0).toString();
+            int cantidad = (Integer) modelo.getValueAt(i, 1);
+            double costoUnitario = (Double) modelo.getValueAt(i, 2);
+            
+            try {
+                PartidaPresupuestal partida = ppDAO.buscarPorNombre(modelo.getValueAt(i, 3).toString());
+            } catch (SQLException ex) {
+                return;
+
+            }
+
+            Item item = new Item();
+//            item.set
+        }
+    }//GEN-LAST:event_btn_guardarActionPerformed
+
+    private Factura prepararFactura() {
+
+        Factura f = new Factura();
+        f.setFolioFactura(txt_folioFactura.getText());
+
+        try {
+            Date fechaSeleccionada = (Date) spn_fecha.getValue();
+            f.setFechaFactura(fechaSeleccionada);
+        } catch (ClassCastException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+
+        try {
+            f.setPrecioTotal(Double.valueOf(lb_precioTotal.getText()));
+        } catch (NumberFormatException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+        try {
+            String razonSocial = cbx_proveedores.getSelectedItem().toString();
+            Proveedor proveedor = proveedorDAO.buscarPorRazonSocial(razonSocial);
+
+            f.setIdProveedor(proveedor.getIdProveedor());
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+
+        return f;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
+    private javax.swing.JButton btn_agregarArticulo;
+    private javax.swing.JButton btn_cancelar;
+    private javax.swing.JButton btn_guardar;
+    private javax.swing.JComboBox<String> cbx_partidaPresupuestal;
+    private javax.swing.JComboBox<String> cbx_proveedores;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -203,11 +474,14 @@ public class GUINuevaEntrada extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JSpinner jSpinner1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
+    private javax.swing.JLabel lb_precioTotal;
+    private javax.swing.JSpinner spn_cantidad;
+    private javax.swing.JSpinner spn_costoUnitario;
+    private javax.swing.JSpinner spn_fecha;
+    private javax.swing.JTable tb_articulos;
+    private javax.swing.JTextField txt_descripcionArticulo;
+    private javax.swing.JTextField txt_folioFactura;
     // End of variables declaration//GEN-END:variables
 }

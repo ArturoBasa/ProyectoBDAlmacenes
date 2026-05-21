@@ -54,8 +54,6 @@ public class GUIPrincipal extends javax.swing.JFrame {
 
         pnl_cuerpo = new javax.swing.JPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
-        mb_File = new javax.swing.JMenu();
-        mi_cerrarSesion = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         mi_entradas = new javax.swing.JMenuItem();
         mi_salidas = new javax.swing.JMenuItem();
@@ -66,6 +64,8 @@ public class GUIPrincipal extends javax.swing.JFrame {
         mi_kardex = new javax.swing.JMenuItem();
         mi_reportes = new javax.swing.JMenuItem();
         mi_catalogos = new javax.swing.JMenuItem();
+        jSeparator1 = new javax.swing.JPopupMenu.Separator();
+        mi_cerrarSesion = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(227, 227, 227));
@@ -75,14 +75,6 @@ public class GUIPrincipal extends javax.swing.JFrame {
         pnl_cuerpo.setPreferredSize(new java.awt.Dimension(1080, 720));
         pnl_cuerpo.setLayout(new java.awt.CardLayout());
         getContentPane().add(pnl_cuerpo, java.awt.BorderLayout.CENTER);
-
-        mb_File.setText("Archivo");
-
-        mi_cerrarSesion.setText("Cerrar sesión");
-        mi_cerrarSesion.addActionListener(this::mi_cerrarSesionActionPerformed);
-        mb_File.add(mi_cerrarSesion);
-
-        jMenuBar1.add(mb_File);
 
         jMenu2.setText("Categorías");
 
@@ -121,6 +113,11 @@ public class GUIPrincipal extends javax.swing.JFrame {
         mi_catalogos.setText("Catálogos");
         mi_catalogos.addActionListener(this::mi_catalogosActionPerformed);
         jMenu2.add(mi_catalogos);
+        jMenu2.add(jSeparator1);
+
+        mi_cerrarSesion.setText("Cerrar sesión");
+        mi_cerrarSesion.addActionListener(this::mi_cerrarSesionActionPerformed);
+        jMenu2.add(mi_cerrarSesion);
 
         jMenuBar1.add(jMenu2);
 
@@ -178,8 +175,8 @@ public class GUIPrincipal extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JMenu m_almacen;
-    private javax.swing.JMenu mb_File;
     private javax.swing.JMenuItem mi_bajasRegistradas;
     private javax.swing.JMenuItem mi_catalogos;
     private javax.swing.JMenuItem mi_cerrarSesion;

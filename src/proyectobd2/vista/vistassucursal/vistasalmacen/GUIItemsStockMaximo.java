@@ -4,7 +4,9 @@
  */
 package proyectobd2.vista.vistassucursal.vistasalmacen;
 
+import java.io.IOException;
 import proyectobd2.modelo.DAO.AlertaStockMaximoDAO;
+import proyectobd2.modelo.ExportarExcel;
 
 /**
  *
@@ -14,6 +16,7 @@ public class GUIItemsStockMaximo extends javax.swing.JPanel {
 
     AlertaStockMaximoDAO armDAO = new AlertaStockMaximoDAO();
     int idSucursal;
+
     /**
      * Creates new form GUIItemsStockMaximo
      */
@@ -51,6 +54,11 @@ public class GUIItemsStockMaximo extends javax.swing.JPanel {
         jPanel4.add(filler2);
 
         btn_exelMaximo.setText("Exportar a excel");
+        btn_exelMaximo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_exelMaximoActionPerformed(evt);
+            }
+        });
         jPanel4.add(btn_exelMaximo);
 
         add(jPanel4, java.awt.BorderLayout.PAGE_START);
@@ -75,6 +83,16 @@ public class GUIItemsStockMaximo extends javax.swing.JPanel {
 
         add(jScrollPane2, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btn_exelMaximoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_exelMaximoActionPerformed
+        ExportarExcel obj;
+        try {
+            obj = new ExportarExcel();
+            obj.exportarExcel(tb_stockMaximo);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }//GEN-LAST:event_btn_exelMaximoActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.sql.PreparedStatement;
+import javax.swing.JComboBox;
 import proyectobd2.modelo.Conexion;
 
 public class PartidaPresupuestalDAO implements DAOInterfaz<PartidaPresupuestal> {
@@ -68,6 +69,24 @@ public class PartidaPresupuestalDAO implements DAOInterfaz<PartidaPresupuestal> 
         }
         return p;
     }
+    public PartidaPresupuestal buscarPorNombre(String nombrePartida) throws SQLException {
+        PartidaPresupuestal p = null;
+        String statement = "SELECT idPartidaPresupuestal, nombrePartida, presupuesto FROM partidapresupuestal WHERE nombrePartida = ?";
+        try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
+            ps.setString(1, nombrePartida);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    p = new PartidaPresupuestal();
+                    p.setIdPartidaPresupuestal(rs.getInt("idPartidaPresupuestal"));
+                    p.setNombrePartida(rs.getString("nombrePartida"));
+                    p.setPresupuesto(rs.getDouble("presupuesto"));
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(PartidaPresupuestalDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return p;
+    }
 
     @Override
     public int eliminar(int idPartida) {
@@ -95,5 +114,8 @@ public class PartidaPresupuestalDAO implements DAOInterfaz<PartidaPresupuestal> 
             Logger.getLogger(PartidaPresupuestalDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return valor;
+    }
+    public void llenarPartidasDisponibles(JComboBox cbx_partidaPresupuestal){
+        
     }
 }

@@ -4,7 +4,9 @@
  */
 package proyectobd2.vista.vistassucursal.vistasalmacen;
 
+import java.io.IOException;
 import proyectobd2.modelo.DAO.BitacoraPedidosDAO;
+import proyectobd2.modelo.ExportarExcel;
 
 /**
  *
@@ -14,6 +16,7 @@ public class GUIItemsStockMinimo extends javax.swing.JPanel {
 
     BitacoraPedidosDAO bpDAO = new BitacoraPedidosDAO();
     private int idSucursal;
+
     /**
      * Creates new form GUIItemsStockMinimo
      */
@@ -63,10 +66,26 @@ public class GUIItemsStockMinimo extends javax.swing.JPanel {
         jPanel10.add(filler5);
 
         btn_exelMinimo.setText("Exportar a Exel");
+        btn_exelMinimo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_exelMinimoActionPerformed(evt);
+            }
+        });
         jPanel10.add(btn_exelMinimo);
 
         add(jPanel10, java.awt.BorderLayout.PAGE_START);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btn_exelMinimoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_exelMinimoActionPerformed
+
+        ExportarExcel obj;
+        try {
+            obj = new ExportarExcel();
+            obj.exportarExcel(tb_stockMinimo);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }//GEN-LAST:event_btn_exelMinimoActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

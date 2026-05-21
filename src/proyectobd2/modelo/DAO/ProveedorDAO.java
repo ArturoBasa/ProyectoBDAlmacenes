@@ -75,6 +75,27 @@ public class ProveedorDAO implements DAOInterfaz<Proveedor> {
         return p;
     }
 
+    public Proveedor buscarPorRazonSocial(String razon) throws SQLException{
+        Proveedor p = null;
+        String statement = "SELECT idProveedor, razonSocial, RFCProveedor, domicilioFiscal, telefono FROM proveedor WHERE razonSocial = ?";
+        try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
+            ps.setString(1, razon + "%");
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    p = new Proveedor();
+                    p.setIdProveedor(rs.getInt("idProveedor"));
+                    p.setRazonSocial(rs.getString("razonSocial"));
+                    p.setRFCProveedor(rs.getString("RFCProveedor"));
+                    p.setDomicilioFiscal(rs.getString("domicilioFiscal"));
+                    p.setTelefono(rs.getString("telefono"));
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ProveedorDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return p;
+    }
+
     @Override
     public int eliminar(int idProveedor) {
         int valor = 0;
