@@ -133,7 +133,7 @@ public class GUIEntradas extends javax.swing.JPanel {
         String folio = txt_folio.getText();
         if (!folio.isEmpty()) {
             try {
-                fDAO.buscar(folio, idSucursal, tb_entradas);
+                fDAO.rellenarTablaEntradas(folio, idSucursal, tb_entradas);
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
