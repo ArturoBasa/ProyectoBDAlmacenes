@@ -33,34 +33,39 @@ public class GUIKardex extends javax.swing.JPanel {
         jPanel3 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         jComboBox1 = new javax.swing.JComboBox<>();
-        jPanel2 = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
+        jPanel4 = new javax.swing.JPanel();
+        jLabel5 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTable2 = new javax.swing.JTable();
 
         jLabel3.setText("jLabel3");
 
-        setMinimumSize(new java.awt.Dimension(825, 550));
-        setPreferredSize(new java.awt.Dimension(1080, 720));
+        setMinimumSize(new java.awt.Dimension(1000, 720));
+        setPreferredSize(new java.awt.Dimension(1280, 720));
         setLayout(new java.awt.BorderLayout());
 
         jPanel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 10, 5, 10));
         jPanel1.setLayout(new javax.swing.BoxLayout(jPanel1, javax.swing.BoxLayout.Y_AXIS));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        jLabel1.setText("Kardex");
+        jLabel1.setText("Kárdex");
+        jLabel1.setHorizontalTextPosition(javax.swing.SwingConstants.LEADING);
         jPanel1.add(jLabel1);
 
         jLabel2.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
         jLabel2.setText("Consulte el histórico de precios y costo promedio por artículo  ");
         jPanel1.add(jLabel2);
 
-        jPanel3.setMaximumSize(new java.awt.Dimension(805, 38));
+        jPanel3.setAlignmentX(0.0F);
+        jPanel3.setMaximumSize(new java.awt.Dimension(2000, 38));
         jPanel3.setMinimumSize(new java.awt.Dimension(805, 38));
         jPanel3.setLayout(new javax.swing.BoxLayout(jPanel3, javax.swing.BoxLayout.Y_AXIS));
 
-        jLabel4.setText("jLabel4");
+        jLabel4.setText("Seleccione un artículo");
         jPanel3.add(jLabel4);
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox1.setAlignmentX(0.0F);
         jComboBox1.addActionListener(this::jComboBox1ActionPerformed);
         jPanel3.add(jComboBox1);
 
@@ -68,10 +73,26 @@ public class GUIKardex extends javax.swing.JPanel {
 
         add(jPanel1, java.awt.BorderLayout.NORTH);
 
-        jPanel2.setLayout(new java.awt.BorderLayout());
-        jPanel2.add(jScrollPane1, java.awt.BorderLayout.CENTER);
+        jPanel4.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 10, 10, 10));
+        jPanel4.setLayout(new java.awt.BorderLayout());
 
-        add(jPanel2, java.awt.BorderLayout.CENTER);
+        jLabel5.setFont(new java.awt.Font("Segoe UI Semibold", 0, 16)); // NOI18N
+        jLabel5.setText("aa");
+        jPanel4.add(jLabel5, java.awt.BorderLayout.NORTH);
+
+        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Folio", "Fecha", "Precio de compra", "Precio promedio"
+            }
+        ));
+        jScrollPane2.setViewportView(jTable2);
+
+        jPanel4.add(jScrollPane2, java.awt.BorderLayout.CENTER);
+
+        add(jPanel4, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
@@ -85,9 +106,11 @@ public class GUIKardex extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTable jTable2;
     // End of variables declaration//GEN-END:variables
 }

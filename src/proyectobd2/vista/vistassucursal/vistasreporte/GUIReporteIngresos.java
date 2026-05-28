@@ -2,18 +2,18 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package proyectobd2.vista.vistassucursal.vistascatalogos;
+package proyectobd2.vista.vistassucursal.vistasreporte;
 
 /**
  *
  * @author basa2
  */
-public class GUICatalogo extends javax.swing.JPanel {
+public class GUIReporteIngresos extends javax.swing.JPanel {
 
     /**
-     * Creates new form GUICatalogo
+     * Creates new form GUIReporteIngresos
      */
-    public GUICatalogo() {
+    public GUIReporteIngresos() {
         initComponents();
     }
 
@@ -26,18 +26,15 @@ public class GUICatalogo extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        setMinimumSize(new java.awt.Dimension(1000, 720));
-        setPreferredSize(new java.awt.Dimension(1280, 720));
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1000, Short.MAX_VALUE)
+            .addGap(0, 400, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 720, Short.MAX_VALUE)
+            .addGap(0, 300, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
 
