@@ -24,6 +24,11 @@ public class Item {
     public Item() {
     }
 
+    @Override
+    public String toString() {
+        return this.getNombreItem();
+    }
+    
     public int getIdItem() {
         return idItem;
     }

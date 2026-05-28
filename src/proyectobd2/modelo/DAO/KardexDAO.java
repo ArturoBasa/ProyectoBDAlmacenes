@@ -128,4 +128,33 @@ public class KardexDAO implements DAOInterfaz<Kardex> {
         }
         return valor;
     }
+    
+    public List<Kardex> obtenerKardexEspecifico(int idItemEspecifico) throws SQLException {
+    List<Kardex> listaKardex = new ArrayList<>();
+    
+    String statement = "SELECT k.idKardex, k.costo, k.fecha, k.costoPromedio, k.Item_idItem, k.Factura_idFactura, f.folioFactura "
+                     + "FROM kardex k "
+                     + "INNER JOIN factura f ON k.Factura_idFactura = f.idFactura "
+                     + "WHERE k.Item_idItem = ?;";
+    try (Connection conn = new Conexion().getConnection(); 
+        PreparedStatement ps = conn.prepareStatement(statement)) {
+        ps.setInt(1, idItemEspecifico);
+        try (ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                Kardex k = new Kardex();
+                k.setIdKardex(rs.getInt("idKardex"));
+                k.setCosto(rs.getDouble("costo"));
+                k.setFecha(rs.getDate("fecha"));
+                k.setCostoPromedio(rs.getDouble("costoPromedio"));
+                k.setIdItem(rs.getInt("Item_idItem"));
+                k.setIdFactura(rs.getInt("Factura_idFactura"));
+                k.setFolio(rs.getString("folioFactura"));
+                listaKardex.add(k);
+            }
+        }
+    } catch (SQLException ex) {
+        Logger.getLogger(KardexDAO.class.getName()).log(Level.SEVERE, null, ex);
+    }
+    return listaKardex;
+}
 }

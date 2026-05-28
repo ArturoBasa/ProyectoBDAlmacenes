@@ -48,7 +48,7 @@ public class ItemDAO implements DAOInterfaz<Item> {
     }
 
     @Override
-    public List<Item> obtenerListaObjetos() throws SQLException {
+    public  List<Item> obtenerListaObjetos() throws SQLException {
         List<Item> listaItems = new ArrayList<>();
         String statement = "SELECT idItem, existencias, stockMinimo, stockMaximo, nombreItem, precioUnitario, "
                 + "PartidaPresupuestal_idPartidaPresupuestal, Sucursal_idSucursal, estado, descripcionUso FROM item";

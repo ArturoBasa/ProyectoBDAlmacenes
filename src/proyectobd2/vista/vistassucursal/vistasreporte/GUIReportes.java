@@ -4,17 +4,26 @@
  */
 package proyectobd2.vista.vistassucursal.vistasreporte;
 
+import java.sql.SQLException;
+import java.util.List;
+import javax.swing.JOptionPane;
+import proyectobd2.modelo.DAO.PartidaPresupuestalDAO;
+import proyectobd2.modelo.beans.PartidaPresupuestal;
+
 /**
  *
  * @author basa2
  */
 public class GUIReportes extends javax.swing.JPanel {
-
+    int idSucursal;
+    PartidaPresupuestalDAO partidaDao;
+    private List<PartidaPresupuestal> listaParPre;
     /**
      * Creates new form GUIReportes
      */
-    public GUIReportes() {
+    public GUIReportes(int idSucursal) {
         initComponents();
+        this.idSucursal = idSucursal;
     }
 
     /**
@@ -32,22 +41,31 @@ public class GUIReportes extends javax.swing.JPanel {
         jPanel2 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
-        jFormattedTextField1 = new javax.swing.JFormattedTextField();
+        txfFechaInicio = new javax.swing.JFormattedTextField();
         jPanel5 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
-        jFormattedTextField2 = new javax.swing.JFormattedTextField();
+        txfFechaFin = new javax.swing.JFormattedTextField();
         jPanel6 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        cbxPartidaPresupuestal = new javax.swing.JComboBox();
         jPanel7 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
+        jTabbedPane1 = new javax.swing.JTabbedPane();
+        jPanel8 = new javax.swing.JPanel();
+        btnExportarPdfIngresos = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tblIngresos = new javax.swing.JTable();
+        jPanel9 = new javax.swing.JPanel();
+        btnExportarPdfEgresos = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblEgresos = new javax.swing.JTable();
 
+        setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
         setMinimumSize(new java.awt.Dimension(1000, 720));
         setPreferredSize(new java.awt.Dimension(1280, 720));
         setLayout(new javax.swing.BoxLayout(this, javax.swing.BoxLayout.Y_AXIS));
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        jPanel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
         jPanel1.setMaximumSize(new java.awt.Dimension(1260, 80));
         jPanel1.setPreferredSize(new java.awt.Dimension(1260, 80));
         jPanel1.setLayout(new javax.swing.BoxLayout(jPanel1, javax.swing.BoxLayout.Y_AXIS));
@@ -62,69 +80,163 @@ public class GUIReportes extends javax.swing.JPanel {
 
         add(jPanel1);
 
+        jPanel2.setAlignmentX(0.0F);
         jPanel2.setLayout(new java.awt.GridLayout(2, 2));
 
+        jPanel4.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 5, 1, 5));
         jPanel4.setLayout(new javax.swing.BoxLayout(jPanel4, javax.swing.BoxLayout.Y_AXIS));
 
-        jLabel3.setText("jLabel3");
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel3.setText("Fecha inicio");
         jPanel4.add(jLabel3);
 
-        jFormattedTextField1.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(java.text.DateFormat.getDateInstance(java.text.DateFormat.SHORT))));
-        jPanel4.add(jFormattedTextField1);
+        txfFechaInicio.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(java.text.DateFormat.getDateInstance(java.text.DateFormat.SHORT))));
+        txfFechaInicio.setText("dd/mm/aaaa");
+        txfFechaInicio.setAlignmentX(0.0F);
+        jPanel4.add(txfFechaInicio);
 
         jPanel2.add(jPanel4);
 
+        jPanel5.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 5, 1, 5));
         jPanel5.setLayout(new javax.swing.BoxLayout(jPanel5, javax.swing.BoxLayout.Y_AXIS));
 
-        jLabel4.setText("jLabel4");
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel4.setText("Fecha fin");
         jPanel5.add(jLabel4);
 
-        jFormattedTextField2.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(java.text.DateFormat.getDateInstance(java.text.DateFormat.SHORT))));
-        jFormattedTextField2.setText("dd/mm/aaaa");
-        jPanel5.add(jFormattedTextField2);
+        txfFechaFin.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(java.text.DateFormat.getDateInstance(java.text.DateFormat.SHORT))));
+        txfFechaFin.setText("dd/mm/aaaa");
+        txfFechaFin.setAlignmentX(0.0F);
+        jPanel5.add(txfFechaFin);
 
         jPanel2.add(jPanel5);
 
+        jPanel6.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 5, 1, 5));
         jPanel6.setLayout(new javax.swing.BoxLayout(jPanel6, javax.swing.BoxLayout.Y_AXIS));
 
-        jLabel5.setText("jLabel5");
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel5.setText("Partida presupuestal");
         jPanel6.add(jLabel5);
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jPanel6.add(jComboBox1);
+        cbxPartidaPresupuestal.setAlignmentX(0.0F);
+        jPanel6.add(cbxPartidaPresupuestal);
 
         jPanel2.add(jPanel6);
 
         jPanel7.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
         jPanel7.setLayout(new java.awt.BorderLayout());
-
-        jButton1.setText("Exportar PDF");
-        jPanel7.add(jButton1, java.awt.BorderLayout.CENTER);
-
         jPanel2.add(jPanel7);
 
         add(jPanel2);
 
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1000, Short.MAX_VALUE)
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 599, Short.MAX_VALUE)
-        );
+        jPanel3.setAlignmentX(0.0F);
+        jPanel3.setLayout(new java.awt.BorderLayout());
+
+        jPanel8.setLayout(new java.awt.BorderLayout());
+
+        btnExportarPdfIngresos.setText("Exportar a PDF");
+        btnExportarPdfIngresos.setPreferredSize(new java.awt.Dimension(75, 40));
+        jPanel8.add(btnExportarPdfIngresos, java.awt.BorderLayout.PAGE_START);
+
+        tblIngresos.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
+            },
+            new String [] {
+                "Folio", "Fecha", "Proveedor", "Partida presupuestal", "Total"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane2.setViewportView(tblIngresos);
+
+        jPanel8.add(jScrollPane2, java.awt.BorderLayout.CENTER);
+
+        jTabbedPane1.addTab("Ingresos", jPanel8);
+
+        jPanel9.setLayout(new java.awt.BorderLayout());
+
+        btnExportarPdfEgresos.setText("Exportar a PDF");
+        btnExportarPdfEgresos.setMargin(new java.awt.Insets(2, 14, 10, 14));
+        btnExportarPdfEgresos.setPreferredSize(new java.awt.Dimension(75, 40));
+        btnExportarPdfEgresos.addActionListener(this::btnExportarPdfEgresosActionPerformed);
+        jPanel9.add(btnExportarPdfEgresos, java.awt.BorderLayout.PAGE_START);
+
+        tblEgresos.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Fecha", "Departamento", "Partida presupuestal", "Total"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(tblEgresos);
+
+        jPanel9.add(jScrollPane1, java.awt.BorderLayout.CENTER);
+
+        jTabbedPane1.addTab("Egresos", jPanel9);
+
+        jPanel3.add(jTabbedPane1, java.awt.BorderLayout.CENTER);
 
         add(jPanel3);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnExportarPdfEgresosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportarPdfEgresosActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnExportarPdfEgresosActionPerformed
 
+    private void llenarCombo(){
+        try{
+            listaParPre = partidaDao.obtenerListaObjetos();
+        
+            for (PartidaPresupuestal partidaPresupuestal : listaParPre){
+                cbxPartidaPresupuestal.addItem(partidaPresupuestal);
+            }
+        }catch (SQLException e){
+            javax.swing.JOptionPane.showMessageDialog(this, "Error de base de datos: " + e.getMessage());
+
+        }
+    }
+    
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JFormattedTextField jFormattedTextField1;
-    private javax.swing.JFormattedTextField jFormattedTextField2;
+    private javax.swing.JButton btnExportarPdfEgresos;
+    private javax.swing.JButton btnExportarPdfIngresos;
+    private javax.swing.JComboBox cbxPartidaPresupuestal;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -137,5 +249,14 @@ public class GUIReportes extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel jPanel8;
+    private javax.swing.JPanel jPanel9;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JTable tblEgresos;
+    private javax.swing.JTable tblIngresos;
+    private javax.swing.JFormattedTextField txfFechaFin;
+    private javax.swing.JFormattedTextField txfFechaInicio;
     // End of variables declaration//GEN-END:variables
 }

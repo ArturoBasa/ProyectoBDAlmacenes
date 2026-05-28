@@ -9,12 +9,13 @@ package proyectobd2.vista.vistassucursal.vistascatalogos;
  * @author basa2
  */
 public class GUICatalogo extends javax.swing.JPanel {
-
+    int idSucursal;
     /**
      * Creates new form GUICatalogo
      */
-    public GUICatalogo() {
+    public GUICatalogo(int idSucursal) {
         initComponents();
+        this.idSucursal = idSucursal;
     }
 
     /**

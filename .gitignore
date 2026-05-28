@@ -2,4 +2,13 @@
 /build/
 /dist/
 /resources/
+/target/
+*.class
+*.jar
+*.war
+*.ear
+.nbproject/private/
+nbbuild/
+nbdist/
+.metadata/
 
