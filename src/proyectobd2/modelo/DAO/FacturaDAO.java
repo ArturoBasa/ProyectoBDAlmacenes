@@ -70,7 +70,7 @@ public class FacturaDAO implements DAOInterfaz<Factura> {
         return null;
     }
 
-    public void buscar(String folioFactura, int idSucursal, JTable tb_entradas) throws SQLException {
+    public void rellenarTablaEntradas(String folioFactura, int idSucursal, JTable tb_entradas) throws SQLException {
 
         String statement = "SELECT folio, fechaFactura, proveedor, rfc, total FROM entradasView WHERE sucursal = ? AND folio LIKE ?";
         DefaultTableModel modelo = (DefaultTableModel) tb_entradas.getModel();
@@ -97,6 +97,33 @@ public class FacturaDAO implements DAOInterfaz<Factura> {
         } catch (SQLException ex) {
             Logger.getLogger(FacturaDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    public Factura buscarPorFolio(String folio) throws SQLException {
+        String statement = "SELECT idFactura, folioFactura, fechaFactura, precioTotal, Proveedor_idProveedor FROM factura";
+
+        try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
+            ps.setString(1, folio);
+
+            try (ResultSet rs = ps.executeQuery();) {
+                
+
+                if (rs.next()) {
+                    Factura f = new Factura();
+                    f.setIdFactura(rs.getInt("idFactura"));
+                    f.setFolioFactura(rs.getString("folioFactura"));
+                    f.setFechaFactura(rs.getDate("fechaFactura"));
+                    f.setPrecioTotal(rs.getDouble("precioTotal"));
+                    f.setIdProveedor(rs.getInt("Proveedor_idProveedor"));
+                    return f;
+
+                }
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(FacturaDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 
     private Factura mapFactura(ResultSet rs) throws SQLException {
