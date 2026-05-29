@@ -16,7 +16,7 @@ import proyectobd2.modelo.beans.Item;
  */
 public class GUISeleccionarItem extends javax.swing.JDialog {
 
-    ItemDAO itemDAO = new ItemDAO();
+    
 
     /**
      * Creates new form GUISeleccionarItem
@@ -32,7 +32,7 @@ public class GUISeleccionarItem extends javax.swing.JDialog {
 
     private void llenarTabla() {
         try {
-            List<Item> listaItems = itemDAO.obtenerListaObjetos();
+            List<Item> listaItems = ItemDAO.obtenerListaObjetos();
 
             DefaultTableModel modelo = (DefaultTableModel) tb_items.getModel();
             modelo.setRowCount(0);

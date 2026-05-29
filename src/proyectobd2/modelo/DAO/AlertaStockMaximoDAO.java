@@ -20,7 +20,7 @@ import proyectobd2.modelo.Conexion;
  */
 public class AlertaStockMaximoDAO {
 
-    public void obtenerItemsStockMaximo(JTable tb_stockMaximo, int idSucursal) {
+    public static void obtenerItemsStockMaximo(JTable tb_stockMaximo, int idSucursal) {
 
         String statement = "SELECT nombreItem , existencias , stockMaximo, excedente FROM itemsStockMaximoPorSucursal WHERE idSucursal = ?";
         DefaultTableModel modelo = (DefaultTableModel) tb_stockMaximo.getModel();

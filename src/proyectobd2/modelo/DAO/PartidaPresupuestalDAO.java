@@ -16,10 +16,9 @@ import java.sql.PreparedStatement;
 import javax.swing.JComboBox;
 import proyectobd2.modelo.Conexion;
 
-public class PartidaPresupuestalDAO implements DAOInterfaz<PartidaPresupuestal> {
+public class PartidaPresupuestalDAO {
 
-    @Override
-    public int insertar(PartidaPresupuestal partida) {
+    public static int insertar(PartidaPresupuestal partida) {
         int valor = 0;
         String statement = "INSERT INTO partidapresupuestal (nombrePartida, presupuesto) values (?,?)";
         try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
@@ -32,8 +31,7 @@ public class PartidaPresupuestalDAO implements DAOInterfaz<PartidaPresupuestal> 
         return valor;
     }
 
-    @Override
-    public List<PartidaPresupuestal> obtenerListaObjetos() throws SQLException {
+    public static List<PartidaPresupuestal> obtenerListaObjetos() throws SQLException {
         List<PartidaPresupuestal> listaPartidas = new ArrayList<>();
         String statement = "SELECT idPartidaPresupuestal, nombrePartida, presupuesto FROM partidapresupuestal";
         try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement); ResultSet rs = ps.executeQuery()) {
@@ -50,8 +48,7 @@ public class PartidaPresupuestalDAO implements DAOInterfaz<PartidaPresupuestal> 
         return listaPartidas;
     }
 
-    @Override
-    public PartidaPresupuestal buscar(int idPartida) throws SQLException {
+    public static PartidaPresupuestal buscar(int idPartida) throws SQLException {
         PartidaPresupuestal p = null;
         String statement = "SELECT idPartidaPresupuestal, nombrePartida, presupuesto FROM partidapresupuestal WHERE idPartidaPresupuestal = ?";
         try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
@@ -69,7 +66,7 @@ public class PartidaPresupuestalDAO implements DAOInterfaz<PartidaPresupuestal> 
         }
         return p;
     }
-    public PartidaPresupuestal buscarPorNombre(String nombrePartida) throws SQLException {
+    public static PartidaPresupuestal buscarPorNombre(String nombrePartida) throws SQLException {
         PartidaPresupuestal p = null;
         String statement = "SELECT idPartidaPresupuestal, nombrePartida, presupuesto FROM partidapresupuestal WHERE nombrePartida = ?";
         try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
@@ -88,8 +85,7 @@ public class PartidaPresupuestalDAO implements DAOInterfaz<PartidaPresupuestal> 
         return p;
     }
 
-    @Override
-    public int eliminar(int idPartida) {
+    public static int eliminar(int idPartida) {
         int valor = 0;
         String statement = "DELETE FROM partidapresupuestal WHERE idPartidaPresupuestal=?";
         try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
@@ -101,8 +97,7 @@ public class PartidaPresupuestalDAO implements DAOInterfaz<PartidaPresupuestal> 
         return valor;
     }
 
-    @Override
-    public int modificar(PartidaPresupuestal partida) {
+    public static int modificar(PartidaPresupuestal partida) {
         int valor = 0;
         String statement = "UPDATE partidapresupuestal SET nombrePartida=?, presupuesto=? WHERE idPartidaPresupuestal=?";
         try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
@@ -115,7 +110,7 @@ public class PartidaPresupuestalDAO implements DAOInterfaz<PartidaPresupuestal> 
         }
         return valor;
     }
-    public void llenarPartidasDisponibles(JComboBox cbx_partidaPresupuestal){
+    public static void llenarPartidasDisponibles(JComboBox cbx_partidaPresupuestal){
         
     }
 }

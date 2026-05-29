@@ -19,10 +19,9 @@ import proyectobd2.modelo.beans.Departamento;
  *
  * @author endri
  */
-public class DepartamentoDAO implements DAOInterfaz<Departamento> {
+public class DepartamentoDAO {
 
-    @Override
-    public int insertar(Departamento departamento) {
+    public static int insertar(Departamento departamento) {
         int valor = 0;
         // Nota: He omitido Sucursal_idSucursal porque no está en tu Bean.
         String statement = "INSERT INTO departamento (nombreDepartamento, Sucursal_idSucursal, Empleado_idEncargado) VALUES (?,?,?)";
@@ -40,8 +39,7 @@ public class DepartamentoDAO implements DAOInterfaz<Departamento> {
         return valor;
     }
 
-    @Override
-    public List<Departamento> obtenerListaObjetos() throws SQLException {
+    public static List<Departamento> obtenerListaObjetos() throws SQLException {
         List<Departamento> listaDepartamentos = new ArrayList<>();
         String statement = "SELECT idDepartamento, nombreDepartamento, Sucursal_idSucursal, Empleado_idEncargado FROM departamento";
 
@@ -61,8 +59,7 @@ public class DepartamentoDAO implements DAOInterfaz<Departamento> {
         return listaDepartamentos;
     }
 
-    @Override
-    public Departamento buscar(int idDepartamento) throws SQLException {
+    public static Departamento buscar(int idDepartamento) throws SQLException {
         Departamento d = null;
         String statement = "SELECT idDepartamento, nombreDepartamento, Sucursal_idSucursal, Empleado_idEncargado FROM departamento WHERE idDepartamento = ?";
 
@@ -84,8 +81,7 @@ public class DepartamentoDAO implements DAOInterfaz<Departamento> {
         return d;
     }
 
-    @Override
-    public int eliminar(int idDepartamento) {
+    public static int eliminar(int idDepartamento) {
         int valor = 0;
         String statement = "DELETE FROM departamento WHERE idDepartamento = ?";
 
@@ -99,8 +95,7 @@ public class DepartamentoDAO implements DAOInterfaz<Departamento> {
         return valor;
     }
 
-    @Override
-    public int modificar(Departamento d) {
+    public static int modificar(Departamento d) {
         int valor = 0;
         String statement = "UPDATE departamento SET nombreDepartamento = ?, Sucursal_idSucursal = ?, Empleado_idEncargado = ? WHERE idDepartamento = ?";
 

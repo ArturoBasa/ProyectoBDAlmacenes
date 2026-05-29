@@ -21,10 +21,9 @@ import proyectobd2.modelo.beans.BitacoraOperacionesBaja;
  *
  * @author endri
  */
-public class BitacoraOperacionesBajaDAO implements DAOInterfaz<BitacoraOperacionesBaja> {
+public class BitacoraOperacionesBajaDAO {
 
-    @Override
-    public int insertar(BitacoraOperacionesBaja bitacora) {
+    public static int insertar(BitacoraOperacionesBaja bitacora) {
         int valor = 0;
         String statement = "INSERT INTO bitacoraoperacionesbajas (fecha, razonBaja, descripcion, cantidadSobrante, Item_idItem) VALUES (?,?,?,?,?)";
         
@@ -44,8 +43,7 @@ public class BitacoraOperacionesBajaDAO implements DAOInterfaz<BitacoraOperacion
         return valor;
     }
 
-    @Override
-    public List<BitacoraOperacionesBaja> obtenerListaObjetos() throws SQLException {
+    public static List<BitacoraOperacionesBaja> obtenerListaObjetos() throws SQLException {
         List<BitacoraOperacionesBaja> listaBitacora = new ArrayList<>();
         String statement = "SELECT idBitacoraOperacionesBajas, fecha, razonBaja, descripcion, cantidadSobrante, Item_idItem FROM bitacoraoperacionesbajas";
         
@@ -69,8 +67,7 @@ public class BitacoraOperacionesBajaDAO implements DAOInterfaz<BitacoraOperacion
         return listaBitacora;
     }
 
-    @Override
-    public BitacoraOperacionesBaja buscar(int idBitacora) throws SQLException {
+    public static BitacoraOperacionesBaja buscar(int idBitacora) throws SQLException {
         BitacoraOperacionesBaja b = null;
         String statement = "SELECT idBitacoraOperacionesBajas, fecha, razonBaja, descripcion, cantidadSobrante, Item_idItem FROM bitacoraoperacionesbajas WHERE idBitacoraOperacionesBajas = ?";
         
@@ -95,8 +92,7 @@ public class BitacoraOperacionesBajaDAO implements DAOInterfaz<BitacoraOperacion
         return b;
     }
 
-    @Override
-    public int eliminar(int idBitacora) {
+    public static int eliminar(int idBitacora) {
         int valor = 0;
         String statement = "DELETE FROM bitacoraoperacionesbajas WHERE idBitacoraOperacionesBajas = ?";
         
@@ -111,8 +107,7 @@ public class BitacoraOperacionesBajaDAO implements DAOInterfaz<BitacoraOperacion
         return valor;
     }
 
-    @Override
-    public int modificar(BitacoraOperacionesBaja b) {
+    public static int modificar(BitacoraOperacionesBaja b) {
         int valor = 0;
         String statement = "UPDATE bitacoraoperacionesbajas SET fecha = ?, razonBaja = ?, descripcion = ?, cantidadSobrante = ?, Item_idItem = ? WHERE idBitacoraOperacionesBajas = ?";
         
@@ -132,7 +127,7 @@ public class BitacoraOperacionesBajaDAO implements DAOInterfaz<BitacoraOperacion
         }
         return valor;
     }
-    public void obtenerBajasRegistradas(JTable tb_bajas, int idSucursal) {
+    public static void obtenerBajasRegistradas(JTable tb_bajas, int idSucursal) {
 
         String statement = "SELECT fecha , nombreItem , razonBaja, cantidadSobrante FROM bajasRegistradas WHERE idSucursal = ?";
         DefaultTableModel modelo = (DefaultTableModel) tb_bajas.getModel();

@@ -4,7 +4,7 @@
  */
 package proyectobd2.vista;
 
-import proyectobd2.vista.vistassucursal.GUIPrincipal;
+import proyectobd2.vista.vistassucursal.GUIPrincipalSucursal;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -155,9 +155,9 @@ public class InicioSesion extends javax.swing.JFrame {
         if (!nombre.isEmpty() && !contraseniaPlana.isEmpty()) {
             String contraseniaHasheada = HasheoContrasenia.hashPassword(contraseniaPlana);
 
-            EmpleadoDAO empleadodao = new EmpleadoDAO();
+            
             try {
-                Empleado empleado = empleadodao.login(nombre, contraseniaHasheada);
+                Empleado empleado = EmpleadoDAO.login(nombre, contraseniaHasheada);
 
                 if (empleado != null) {
 
@@ -170,7 +170,7 @@ public class InicioSesion extends javax.swing.JFrame {
                     } else if (empleado.getRol().equals("Usuario sucursal")) {
                         try {
 
-                            GUIPrincipal principal = new GUIPrincipal(empleado);
+                            GUIPrincipalSucursal principal = new GUIPrincipalSucursal(empleado);
                             principal.setVisible(true);
 
                         } catch (NumberFormatException ex) {

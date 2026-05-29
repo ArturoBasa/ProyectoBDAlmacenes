@@ -21,10 +21,9 @@ import proyectobd2.modelo.beans.Factura;
  *
  * @author endri
  */
-public class FacturaDAO implements DAOInterfaz<Factura> {
+public class FacturaDAO {
 
-    @Override
-    public int insertar(Factura factura) {
+    public static int insertar(Factura factura) {
         int valor = 0;
         String statement = "INSERT INTO factura (folioFactura, fechaFactura, precioTotal, Proveedor_idProveedor) VALUES (?,?,?,?)";
 
@@ -42,8 +41,7 @@ public class FacturaDAO implements DAOInterfaz<Factura> {
         return valor;
     }
 
-    @Override
-    public List<Factura> obtenerListaObjetos() throws SQLException {
+    public static List<Factura> obtenerListaObjetos() throws SQLException {
         List<Factura> listaFacturas = new ArrayList<>();
         String statement = "SELECT idFactura, folioFactura, fechaFactura, precioTotal, Proveedor_idProveedor FROM factura";
 
@@ -65,12 +63,11 @@ public class FacturaDAO implements DAOInterfaz<Factura> {
         return listaFacturas;
     }
 
-    @Override
-    public Factura buscar(int id) throws SQLException {
+    public static Factura buscar(int id) throws SQLException {
         return null;
     }
 
-    public void rellenarTablaEntradas(String folioFactura, int idSucursal, JTable tb_entradas) throws SQLException {
+    public static void rellenarTablaEntradas(String folioFactura, int idSucursal, JTable tb_entradas) throws SQLException {
 
         String statement = "SELECT folio, fechaFactura, proveedor, rfc, total FROM entradasView WHERE sucursal = ? AND folio LIKE ?";
         DefaultTableModel modelo = (DefaultTableModel) tb_entradas.getModel();
@@ -99,7 +96,7 @@ public class FacturaDAO implements DAOInterfaz<Factura> {
         }
     }
 
-    public Factura buscarPorFolio(String folio) throws SQLException {
+    public static Factura buscarPorFolio(String folio) throws SQLException {
         String statement = "SELECT idFactura, folioFactura, fechaFactura, precioTotal, Proveedor_idProveedor FROM factura";
 
         try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
@@ -137,8 +134,7 @@ public class FacturaDAO implements DAOInterfaz<Factura> {
         return f;
     }
 
-    @Override
-    public int eliminar(int idFactura) {
+    public static int eliminar(int idFactura) {
         int valor = 0;
         String statement = "DELETE FROM factura WHERE idFactura = ?";
 
@@ -152,8 +148,7 @@ public class FacturaDAO implements DAOInterfaz<Factura> {
         return valor;
     }
 
-    @Override
-    public int modificar(Factura f) {
+    public static int modificar(Factura f) {
         int valor = 0;
         String statement = "UPDATE factura SET folioFactura = ?, fechaFactura = ?, precioTotal = ?, Proveedor_idProveedor = ? WHERE idFactura = ?";
 
@@ -172,7 +167,7 @@ public class FacturaDAO implements DAOInterfaz<Factura> {
         return valor;
     }
 
-    public void obtenerEntradas(JTable tb_entradas, int idSucursal) {
+    public static void obtenerEntradas(JTable tb_entradas, int idSucursal) {
 
         String statement = "SELECT folio, fechaFactura, proveedor, rfc, total FROM entradasView WHERE sucursal = ?";
         DefaultTableModel modelo = (DefaultTableModel) tb_entradas.getModel();
@@ -201,7 +196,7 @@ public class FacturaDAO implements DAOInterfaz<Factura> {
 
     }
 
-    public void obtenerArticulosFolio(JTable tb_articulosFolio, String folio) {
+    public static void obtenerArticulosFolio(JTable tb_articulosFolio, String folio) {
         String statement = "SELECT item, cantidad, sucursal FROM itemPorFactura WHERE folio = ?";
         DefaultTableModel modelo = (DefaultTableModel) tb_articulosFolio.getModel();
         modelo.setRowCount(0);

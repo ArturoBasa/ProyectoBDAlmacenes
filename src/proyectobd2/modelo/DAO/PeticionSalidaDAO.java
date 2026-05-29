@@ -17,10 +17,9 @@ import javax.swing.table.DefaultTableModel;
 import proyectobd2.modelo.Conexion;
 import proyectobd2.modelo.beans.PeticionSalida;
 
-public class PeticionSalidaDAO implements DAOInterfaz<PeticionSalida> {
+public class PeticionSalidaDAO {
 
-    @Override
-    public int insertar(PeticionSalida peticion) {
+    public static int insertar(PeticionSalida peticion) {
         int valor = 0;
         String statement = "INSERT INTO peticionsalida (fecha, idEmpleadoAlmacen) values (?,?)";
         try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
@@ -33,8 +32,7 @@ public class PeticionSalidaDAO implements DAOInterfaz<PeticionSalida> {
         return valor;
     }
 
-    @Override
-    public List<PeticionSalida> obtenerListaObjetos() throws SQLException {
+    public static List<PeticionSalida> obtenerListaObjetos() throws SQLException {
         List<PeticionSalida> listaPeticiones = new ArrayList<>();
         String statement = "SELECT idPeticionSalida, fecha, idEmpleadoAlmacen FROM peticionsalida";
         try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement); ResultSet rs = ps.executeQuery()) {
@@ -51,12 +49,11 @@ public class PeticionSalidaDAO implements DAOInterfaz<PeticionSalida> {
         return listaPeticiones;
     }
 
-    @Override
-    public PeticionSalida buscar(int idPeticion) throws SQLException {
+    public static PeticionSalida buscar(int idPeticion) throws SQLException {
         return null;
     }
 
-    public void buscar(String departamento, int idSucursal, JTable tb_salidas) throws SQLException {
+    public static void buscar(String departamento, int idSucursal, JTable tb_salidas) throws SQLException {
 
         String statement = "SELECT fecha , departamento , encargado , descripcion FROM salidasView WHERE idSucursal = ? AND LOWER(departamento) LIKE LOWER(?)";
         DefaultTableModel modelo = (DefaultTableModel) tb_salidas.getModel();
@@ -85,8 +82,7 @@ public class PeticionSalidaDAO implements DAOInterfaz<PeticionSalida> {
         }
     }
 
-    @Override
-    public int eliminar(int idPeticion) {
+    public static int eliminar(int idPeticion) {
         int valor = 0;
         String statement = "DELETE FROM peticionsalida WHERE idPeticionSalida=?";
         try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
@@ -98,8 +94,7 @@ public class PeticionSalidaDAO implements DAOInterfaz<PeticionSalida> {
         return valor;
     }
 
-    @Override
-    public int modificar(PeticionSalida peticion) {
+    public static int modificar(PeticionSalida peticion) {
         int valor = 0;
         String statement = "UPDATE peticionsalida SET fecha=?, idEmpleadoAlmacen=? WHERE idPeticionSalida=?";
         try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
@@ -113,7 +108,7 @@ public class PeticionSalidaDAO implements DAOInterfaz<PeticionSalida> {
         return valor;
     }
 
-    public void obtenerSalidas(JTable tb_salidas, int idSucursal) {
+    public static void obtenerSalidas(JTable tb_salidas, int idSucursal) {
 
         String statement = "SELECT fecha , departamento , encargado , descripcion FROM salidasView WHERE idSucursal = ? AND descripcion = ?";
         DefaultTableModel modelo = (DefaultTableModel) tb_salidas.getModel();
@@ -143,7 +138,7 @@ public class PeticionSalidaDAO implements DAOInterfaz<PeticionSalida> {
 
     }
 
-    public void obtenerArticulosDepartamento(JTable tb_articulosDepartamento, String departamento) {
+    public static void obtenerArticulosDepartamento(JTable tb_articulosDepartamento, String departamento) {
         String statement = "SELECT item, cantidad, sucursal FROM itemPorDepartamento WHERE departamento = ?";
         DefaultTableModel modelo = (DefaultTableModel) tb_articulosDepartamento.getModel();
         modelo.setRowCount(0);

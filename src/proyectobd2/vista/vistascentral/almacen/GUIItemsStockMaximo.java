@@ -2,8 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package proyectobd2.vista.vistassucursal.vistasalmacen;
+package proyectobd2.vista.vistascentral.almacen;
 
+import proyectobd2.vista.vistassucursal.vistasalmacen.*;
 import java.io.IOException;
 import proyectobd2.modelo.DAO.AlertaStockMaximoDAO;
 import proyectobd2.modelo.ExportarExcel;

@@ -2,8 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package proyectobd2.vista.vistassucursal.vistasentradas;
+package proyectobd2.vista.vistascentral.entradas;
 
+import proyectobd2.vista.vistassucursal.vistasentradas.*;
 import java.sql.SQLException;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
@@ -45,7 +46,6 @@ public class GUIEntradas extends javax.swing.JPanel {
         jLabel1 = new javax.swing.JLabel();
         txt_folio = new javax.swing.JTextField();
         btn_buscar = new javax.swing.JButton();
-        btn_nuevaEntrada = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         tb_entradas = new javax.swing.JTable();
 
@@ -71,14 +71,6 @@ public class GUIEntradas extends javax.swing.JPanel {
             }
         });
         jPanel1.add(btn_buscar);
-
-        btn_nuevaEntrada.setText("Nueva entrada");
-        btn_nuevaEntrada.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_nuevaEntradaActionPerformed(evt);
-            }
-        });
-        jPanel1.add(btn_nuevaEntrada);
 
         add(jPanel1, java.awt.BorderLayout.PAGE_START);
 
@@ -107,11 +99,6 @@ public class GUIEntradas extends javax.swing.JPanel {
 
         add(jScrollPane2, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void btn_nuevaEntradaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_nuevaEntradaActionPerformed
-        GUINuevaEntrada nuevaEntrada = new GUINuevaEntrada(this.framePadre, true);
-        nuevaEntrada.setVisible(true);
-    }//GEN-LAST:event_btn_nuevaEntradaActionPerformed
 
     private void tb_entradasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tb_entradasMouseClicked
         if (evt.getClickCount() == 2) {
@@ -146,7 +133,6 @@ public class GUIEntradas extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_buscar;
-    private javax.swing.JButton btn_nuevaEntrada;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;

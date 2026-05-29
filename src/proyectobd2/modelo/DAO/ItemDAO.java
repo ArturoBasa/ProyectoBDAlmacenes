@@ -19,10 +19,9 @@ import proyectobd2.modelo.beans.Item;
  *
  * @author endri
  */
-public class ItemDAO implements DAOInterfaz<Item> {
+public class ItemDAO {
 
-    @Override
-    public int insertar(Item item) {
+    public static int insertar(Item item) {
         int valor = 0;
         String statement = "INSERT INTO item (existencias, stockMinimo, stockMaximo, nombreItem, precioUnitario, "
                 + "PartidaPresupuestal_idPartidaPresupuestal, Sucursal_idSucursal, estado, descripcionUso) "
@@ -47,8 +46,7 @@ public class ItemDAO implements DAOInterfaz<Item> {
         return valor;
     }
 
-    @Override
-    public List<Item> obtenerListaObjetos() throws SQLException {
+    public static List<Item> obtenerListaObjetos() throws SQLException {
         List<Item> listaItems = new ArrayList<>();
         String statement = "SELECT idItem, existencias, stockMinimo, stockMaximo, nombreItem, precioUnitario, "
                 + "PartidaPresupuestal_idPartidaPresupuestal, Sucursal_idSucursal, estado, descripcionUso FROM item";
@@ -77,8 +75,7 @@ public class ItemDAO implements DAOInterfaz<Item> {
         return listaItems;
     }
 
-    @Override
-    public Item buscar(int idItem) throws SQLException {
+    public static Item buscar(int idItem) throws SQLException {
         Item item = null;
         String statement = "SELECT idItem, existencias, stockMinimo, stockMaximo, nombreItem, precioUnitario, "
                 + "PartidaPresupuestal_idPartidaPresupuestal, Sucursal_idSucursal, estado, descripcionUso "
@@ -108,8 +105,7 @@ public class ItemDAO implements DAOInterfaz<Item> {
         return item;
     }
 
-    @Override
-    public int eliminar(int idItem) {
+    public static int eliminar(int idItem) {
         int valor = 0;
         String statement = "DELETE FROM item WHERE idItem = ?";
         try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
@@ -121,8 +117,7 @@ public class ItemDAO implements DAOInterfaz<Item> {
         return valor;
     }
 
-    @Override
-    public int modificar(Item item) {
+    public static int modificar(Item item) {
         int valor = 0;
         String statement = "UPDATE item SET existencias=?, stockMinimo=?, stockMaximo=?, nombreItem=?, "
                 + "precioUnitario=?, PartidaPresupuestal_idPartidaPresupuestal=?, Sucursal_idSucursal=?, "

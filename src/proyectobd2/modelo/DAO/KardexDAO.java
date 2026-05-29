@@ -19,10 +19,9 @@ import proyectobd2.modelo.beans.Kardex;
  *
  * @author endri
  */
-public class KardexDAO implements DAOInterfaz<Kardex> {
+public class KardexDAO {
 
-    @Override
-    public int insertar(Kardex kardex) {
+    public static int insertar(Kardex kardex) {
         int valor = 0;
         String statement = "INSERT INTO vistaKardex (costo, fecha, costoPromedio, Item_idItem, Factura_idFactura) values (?,?,?,?,?)";
 
@@ -42,8 +41,7 @@ public class KardexDAO implements DAOInterfaz<Kardex> {
         return valor;
     }
 
-    @Override
-    public List<Kardex> obtenerListaObjetos() throws SQLException {
+    public static List<Kardex> obtenerListaObjetos() throws SQLException {
         List<Kardex> listaKardex = new ArrayList<>();
         String statement = "SELECT idKardex, costo, fecha, costoPromedio, Item_idItem, Factura_idFactura FROM vistaKardex";
 
@@ -66,8 +64,7 @@ public class KardexDAO implements DAOInterfaz<Kardex> {
         return listaKardex;
     }
 
-    @Override
-    public Kardex buscar(int idKardex) throws SQLException {
+    public static Kardex buscar(int idKardex) throws SQLException {
         Kardex k = null;
         String statement = "SELECT idKardex, costo, fecha, costoPromedio, Item_idItem, Factura_idFactura FROM vistaKardex WHERE idKardex = ?";
 
@@ -91,8 +88,7 @@ public class KardexDAO implements DAOInterfaz<Kardex> {
         return k;
     }
 
-    @Override
-    public int eliminar(int idKardex) {
+    public static int eliminar(int idKardex) {
         int valor = 0;
         String statement = "DELETE FROM vistaKardex WHERE idKardex = ?";
 
@@ -107,8 +103,7 @@ public class KardexDAO implements DAOInterfaz<Kardex> {
         return valor;
     }
 
-    @Override
-    public int modificar(Kardex k) {
+    public static int modificar(Kardex k) {
         int valor = 0;
         String statement = "UPDATE vistaKardex SET costo=?, fecha=?, costoPromedio=?, Item_idItem=?, Factura_idFactura=? WHERE idKardex=?";
 

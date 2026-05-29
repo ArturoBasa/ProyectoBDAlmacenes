@@ -2,8 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package proyectobd2.vista.vistassucursal.vistassalidas;
+package proyectobd2.vista.vistascentral.salidas;
 
+import proyectobd2.vista.vistassucursal.vistassalidas.*;
 import proyectobd2.vista.vistassucursal.vistassalidas.GUIArticulosPeticion;
 import java.sql.SQLException;
 import javax.swing.JFrame;
@@ -44,7 +45,6 @@ public class GUISalidas extends javax.swing.JPanel {
         jLabel1 = new javax.swing.JLabel();
         txt_departamento = new javax.swing.JTextField();
         btn_buscar = new javax.swing.JButton();
-        btn_nuevaSalida = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tb_salidas = new javax.swing.JTable();
 
@@ -64,14 +64,6 @@ public class GUISalidas extends javax.swing.JPanel {
             }
         });
         jPanel1.add(btn_buscar);
-
-        btn_nuevaSalida.setText("Nueva salida");
-        btn_nuevaSalida.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_nuevaSalidaActionPerformed(evt);
-            }
-        });
-        jPanel1.add(btn_nuevaSalida);
 
         add(jPanel1, java.awt.BorderLayout.PAGE_START);
 
@@ -130,15 +122,9 @@ public class GUISalidas extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_tb_salidasMouseClicked
 
-    private void btn_nuevaSalidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_nuevaSalidaActionPerformed
-        GUINuevaSalida nuevaSalida = new GUINuevaSalida(this.framePadre, true);
-        nuevaSalida.setVisible(true);
-    }//GEN-LAST:event_btn_nuevaSalidaActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_buscar;
-    private javax.swing.JButton btn_nuevaSalida;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;

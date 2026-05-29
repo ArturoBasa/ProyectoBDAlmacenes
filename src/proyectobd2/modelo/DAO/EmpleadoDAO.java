@@ -12,7 +12,6 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.sql.PreparedStatement;
-import java.util.HashMap;
 import proyectobd2.modelo.Conexion;
 import proyectobd2.modelo.beans.Empleado;
 
@@ -20,9 +19,9 @@ import proyectobd2.modelo.beans.Empleado;
  *
  * @author endri
  */
-public class EmpleadoDAO implements DAOInterfaz<Empleado> {
+public class EmpleadoDAO {
 
-    public Empleado login(String username, String contrasenia) throws SQLException {
+    public static Empleado login(String username, String contrasenia) throws SQLException {
         Empleado e = null;
 
         String statement = """
@@ -64,8 +63,7 @@ public class EmpleadoDAO implements DAOInterfaz<Empleado> {
         return null;
     }
 
-    @Override
-    public int insertar(Empleado empleado) {
+    public static int insertar(Empleado empleado) {
         int valor = 0;
         String statement = "INSERT INTO empleado (nombre, apellidos, correoElectronico, telefonoFijo, telefonoCelular, fechaRegistro, contrasenia) VALUES (?,?,?,?,?,?,?)";
 
@@ -86,8 +84,7 @@ public class EmpleadoDAO implements DAOInterfaz<Empleado> {
         return valor;
     }
 
-    @Override
-    public List<Empleado> obtenerListaObjetos() throws SQLException {
+    public static List<Empleado> obtenerListaObjetos() throws SQLException {
         List<Empleado> listaEmpleados = new ArrayList<>();
         String statement = "SELECT idEmpleado, nombre, apellidos, correoElectronico, telefonoFijo, telefonoCelular, fechaRegistro, contrasenia FROM empleado";
 
@@ -112,8 +109,7 @@ public class EmpleadoDAO implements DAOInterfaz<Empleado> {
         return listaEmpleados;
     }
 
-    @Override
-    public Empleado buscar(int idEmpleado) throws SQLException {
+    public static Empleado buscar(int idEmpleado) throws SQLException {
         Empleado e = null;
         String statement = "SELECT idEmpleado, nombre, apellidos, correoElectronico, telefonoFijo, telefonoCelular, fechaRegistro, contrasenia FROM empleado WHERE idEmpleado = ?";
 
@@ -139,8 +135,7 @@ public class EmpleadoDAO implements DAOInterfaz<Empleado> {
         return e;
     }
 
-    @Override
-    public int eliminar(int idEmpleado) {
+    public static int eliminar(int idEmpleado) {
         int valor = 0;
         String statement = "DELETE FROM empleado WHERE idEmpleado = ?";
 
@@ -154,8 +149,7 @@ public class EmpleadoDAO implements DAOInterfaz<Empleado> {
         return valor;
     }
 
-    @Override
-    public int modificar(Empleado e) {
+    public static int modificar(Empleado e) {
         int valor = 0;
         String statement = "UPDATE empleado SET nombre = ?, apellidos = ?, correoElectronico = ?, telefonoFijo = ?, telefonoCelular = ?, fechaRegistro = ?, contrasenia =? WHERE idEmpleado = ?";
 

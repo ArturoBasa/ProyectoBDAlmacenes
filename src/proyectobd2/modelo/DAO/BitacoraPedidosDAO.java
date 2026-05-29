@@ -21,10 +21,9 @@ import proyectobd2.modelo.beans.BitacoraPedidos;
  *
  * @author endri
  */
-public class BitacoraPedidosDAO implements DAOInterfaz<BitacoraPedidos> {
+public class BitacoraPedidosDAO {
 
-    @Override
-    public int insertar(BitacoraPedidos bitacora) {
+    public static int insertar(BitacoraPedidos bitacora) {
         int valor = 0;
         String statement = "INSERT INTO bitacorapedidos (fecha, cantidadPedir, Item_idItem) VALUES (?,?,?)";
 
@@ -41,8 +40,7 @@ public class BitacoraPedidosDAO implements DAOInterfaz<BitacoraPedidos> {
         return valor;
     }
 
-    @Override
-    public List<BitacoraPedidos> obtenerListaObjetos() throws SQLException {
+    public static List<BitacoraPedidos> obtenerListaObjetos() throws SQLException {
         List<BitacoraPedidos> listaBitacora = new ArrayList<>();
         String statement = "SELECT idBitacoraPedidos, fecha, cantidadPedir, Item_idItem FROM bitacorapedidos";
 
@@ -62,8 +60,7 @@ public class BitacoraPedidosDAO implements DAOInterfaz<BitacoraPedidos> {
         return listaBitacora;
     }
 
-    @Override
-    public BitacoraPedidos buscar(int idBitacora) throws SQLException {
+    public static BitacoraPedidos buscar(int idBitacora) throws SQLException {
         BitacoraPedidos b = null;
         String statement = "SELECT idBitacoraPedidos, fecha, cantidadPedir, Item_idItem FROM bitacorapedidos WHERE idBitacoraPedidos = ?";
 
@@ -85,8 +82,7 @@ public class BitacoraPedidosDAO implements DAOInterfaz<BitacoraPedidos> {
         return b;
     }
 
-    @Override
-    public int eliminar(int idBitacora) {
+    public static int eliminar(int idBitacora) {
         int valor = 0;
         String statement = "DELETE FROM bitacorapedidos WHERE idBitacoraPedidos = ?";
 
@@ -100,8 +96,7 @@ public class BitacoraPedidosDAO implements DAOInterfaz<BitacoraPedidos> {
         return valor;
     }
 
-    @Override
-    public int modificar(BitacoraPedidos b) {
+    public static int modificar(BitacoraPedidos b) {
         int valor = 0;
         String statement = "UPDATE bitacorapedidos SET fecha = ?, cantidadPedir = ?, Item_idItem = ? WHERE idBitacoraPedidos = ?";
 
@@ -119,7 +114,7 @@ public class BitacoraPedidosDAO implements DAOInterfaz<BitacoraPedidos> {
         return valor;
     }
     
-    public void obtenerItemsStockMinimo(JTable tb_stockMinimo, int idSucursal) {
+    public static void obtenerItemsStockMinimo(JTable tb_stockMinimo, int idSucursal) {
 
         String statement = "SELECT nombreItem , existencias , stockMinimo, diferencia FROM itemsStockMinimoPorSucursal WHERE idSucursal = ?";
         DefaultTableModel modelo = (DefaultTableModel) tb_stockMinimo.getModel();

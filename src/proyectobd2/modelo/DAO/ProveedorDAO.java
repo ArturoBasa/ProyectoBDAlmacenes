@@ -15,10 +15,9 @@ import java.sql.PreparedStatement;
 import proyectobd2.modelo.Conexion;
 import proyectobd2.modelo.beans.Proveedor;
 
-public class ProveedorDAO implements DAOInterfaz<Proveedor> {
+public class ProveedorDAO {
 
-    @Override
-    public int insertar(Proveedor proveedor) {
+    public static int insertar(Proveedor proveedor) {
         int valor = 0;
         String statement = "INSERT INTO proveedor (razonSocial, RFCProveedor, domicilioFiscal, telefono) values (?,?,?,?)";
         try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
@@ -33,8 +32,7 @@ public class ProveedorDAO implements DAOInterfaz<Proveedor> {
         return valor;
     }
 
-    @Override
-    public List<Proveedor> obtenerListaObjetos() throws SQLException {
+    public static List<Proveedor> obtenerListaObjetos() throws SQLException {
         List<Proveedor> listaProveedores = new ArrayList<>();
         String statement = "SELECT idProveedor, razonSocial, RFCProveedor, domicilioFiscal, telefono FROM proveedor";
         try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement); ResultSet rs = ps.executeQuery()) {
@@ -53,8 +51,7 @@ public class ProveedorDAO implements DAOInterfaz<Proveedor> {
         return listaProveedores;
     }
 
-    @Override
-    public Proveedor buscar(int idProveedor) throws SQLException {
+    public static Proveedor buscar(int idProveedor) throws SQLException {
         Proveedor p = null;
         String statement = "SELECT idProveedor, razonSocial, RFCProveedor, domicilioFiscal, telefono FROM proveedor WHERE idProveedor = ?";
         try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
@@ -75,7 +72,7 @@ public class ProveedorDAO implements DAOInterfaz<Proveedor> {
         return p;
     }
 
-    public Proveedor buscarPorRazonSocial(String razon) throws SQLException{
+    public static Proveedor buscarPorRazonSocial(String razon) throws SQLException{
         Proveedor p = null;
         String statement = "SELECT idProveedor, razonSocial, RFCProveedor, domicilioFiscal, telefono FROM proveedor WHERE razonSocial = ?";
         try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
@@ -96,8 +93,7 @@ public class ProveedorDAO implements DAOInterfaz<Proveedor> {
         return p;
     }
 
-    @Override
-    public int eliminar(int idProveedor) {
+    public static int eliminar(int idProveedor) {
         int valor = 0;
         String statement = "DELETE FROM proveedor WHERE idProveedor=?";
         try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
@@ -109,8 +105,7 @@ public class ProveedorDAO implements DAOInterfaz<Proveedor> {
         return valor;
     }
 
-    @Override
-    public int modificar(Proveedor proveedor) {
+    public static int modificar(Proveedor proveedor) {
         int valor = 0;
         String statement = "UPDATE proveedor SET razonSocial=?, RFCProveedor=?, domicilioFiscal=?, telefono=? WHERE idProveedor=?";
         try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {

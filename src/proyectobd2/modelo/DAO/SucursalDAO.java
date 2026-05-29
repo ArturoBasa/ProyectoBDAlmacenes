@@ -19,10 +19,9 @@ import proyectobd2.modelo.beans.Sucursal;
  *
  * @author endri
  */
-public class SucursalDAO implements DAOInterfaz<Sucursal> {
+public class SucursalDAO {
 
-    @Override
-    public int insertar(Sucursal sucursal) {
+    public static int insertar(Sucursal sucursal) {
         int valor = 0;
         String statement = "INSERT INTO sucursal (nombreSucursal, ciudad, direccion) values (?,?,?)";
 
@@ -40,8 +39,7 @@ public class SucursalDAO implements DAOInterfaz<Sucursal> {
         return valor;
     }
 
-    @Override
-    public List<Sucursal> obtenerListaObjetos() throws SQLException {
+    public static List<Sucursal> obtenerListaObjetos() throws SQLException {
         List<Sucursal> listaSucursales = new ArrayList<>();
         String statement = "SELECT idSucursal, nombreSucursal, ciudad, direccion FROM sucursal";
 
@@ -61,8 +59,7 @@ public class SucursalDAO implements DAOInterfaz<Sucursal> {
         return listaSucursales;
     }
 
-    @Override
-    public Sucursal buscar(int idSucursal) throws SQLException {
+    public static Sucursal buscar(int idSucursal) throws SQLException {
         Sucursal sucursal = null;
         String statement = "SELECT idSucursal, nombreSucursal, ciudad, direccion FROM sucursal WHERE idSucursal = ?";
 
@@ -84,8 +81,7 @@ public class SucursalDAO implements DAOInterfaz<Sucursal> {
         return sucursal;
     }
 
-    @Override
-    public int eliminar(int idSucursal) {
+    public static int eliminar(int idSucursal) {
         int valor = 0;
         String statement = "DELETE FROM sucursal WHERE idSucursal = ?";
 
@@ -100,8 +96,7 @@ public class SucursalDAO implements DAOInterfaz<Sucursal> {
         return valor;
     }
 
-    @Override
-    public int modificar(Sucursal sucursal) {
+    public static int modificar(Sucursal sucursal) {
         int valor = 0;
         String statement = "UPDATE sucursal SET nombreSucursal = ?, ciudad = ?, direccion = ? WHERE idSucursal = ?";
 

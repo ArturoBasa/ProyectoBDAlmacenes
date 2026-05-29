@@ -23,8 +23,8 @@ public class GUIArticulosPeticion extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         lb_departamento.setText(departamento);
-        PeticionSalidaDAO psDAO = new PeticionSalidaDAO();
-        psDAO.obtenerArticulosDepartamento(tb_articulosDepartamento, departamento);
+        
+        PeticionSalidaDAO.obtenerArticulosDepartamento(tb_articulosDepartamento, departamento);
         this.pack();
         this.setLocationRelativeTo(null);
 

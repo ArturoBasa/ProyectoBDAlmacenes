@@ -19,10 +19,9 @@ import proyectobd2.modelo.beans.DetalleFactura;
  *
  * @author endri
  */
-public class DetalleFacturaDAO implements DAOInterfaz<DetalleFactura> {
+public class DetalleFacturaDAO {
 
-    @Override
-    public int insertar(DetalleFactura detalle) {
+    public static int insertar(DetalleFactura detalle) {
         int valor = 0;
         String statement = "INSERT INTO detallefactura (Item_idItem, Factura_idFactura, cantidad, costo) VALUES (?,?,?,?)";
 
@@ -40,8 +39,7 @@ public class DetalleFacturaDAO implements DAOInterfaz<DetalleFactura> {
         return valor;
     }
 
-    @Override
-    public List<DetalleFactura> obtenerListaObjetos() throws SQLException {
+    public static List<DetalleFactura> obtenerListaObjetos() throws SQLException {
         List<DetalleFactura> listaDetalles = new ArrayList<>();
         String statement = "SELECT Item_idItem, Factura_idFactura, cantidad, costo FROM detallefactura";
 
@@ -61,12 +59,11 @@ public class DetalleFacturaDAO implements DAOInterfaz<DetalleFactura> {
         return listaDetalles;
     }
 
-    @Override
-    public DetalleFactura buscar(int id) throws SQLException {
+    public static DetalleFactura buscar(int id) throws SQLException {
         return null;
     }
 
-    public DetalleFactura buscar(int idItem, int idFactura) throws SQLException {
+    public static DetalleFactura buscar(int idItem, int idFactura) throws SQLException {
         DetalleFactura df = null;
         String statement = "SELECT Item_idItem, Factura_idFactura, cantidad, costo FROM detallefactura "
                 + "WHERE Item_idItem = ? AND Factura_idFactura = ?";
@@ -91,12 +88,11 @@ public class DetalleFacturaDAO implements DAOInterfaz<DetalleFactura> {
         return df;
     }
 
-    @Override
-    public int eliminar(int id) {
+    public static int eliminar(int id) {
         return 0;
     }
 
-    public int eliminar(int idItem, int idFactura) {
+    public static int eliminar(int idItem, int idFactura) {
         int valor = 0;
         String statement = "DELETE FROM detallefactura WHERE Item_idItem = ? AND Factura_idFactura = ?";
 
@@ -110,8 +106,7 @@ public class DetalleFacturaDAO implements DAOInterfaz<DetalleFactura> {
         return valor;
     }
 
-    @Override
-    public int modificar(DetalleFactura detalle) {
+    public static int modificar(DetalleFactura detalle) {
         int valor = 0;
         String statement = "UPDATE detallefactura SET cantidad = ?, costo = ? "
                 + "WHERE Item_idItem = ? AND Factura_idFactura = ?";

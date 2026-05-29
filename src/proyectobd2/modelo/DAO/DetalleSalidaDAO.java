@@ -19,10 +19,9 @@ import proyectobd2.modelo.beans.DetalleSalida;
  *
  * @author endri
  */
-public class DetalleSalidaDAO implements DAOInterfaz<DetalleSalida> {
+public class DetalleSalidaDAO {
 
-    @Override
-    public int insertar(DetalleSalida detalle) {
+    public static int insertar(DetalleSalida detalle) {
         int valor = 0;
         String statement = "INSERT INTO detallesalida (Item_idItem, PeticionSalida_idPeticionSalida, cantidad) VALUES (?,?,?)";
 
@@ -39,8 +38,7 @@ public class DetalleSalidaDAO implements DAOInterfaz<DetalleSalida> {
         return valor;
     }
 
-    @Override
-    public List<DetalleSalida> obtenerListaObjetos() throws SQLException {
+    public static List<DetalleSalida> obtenerListaObjetos() throws SQLException {
         List<DetalleSalida> listaDetalles = new ArrayList<>();
         String statement = "SELECT Item_idItem, PeticionSalida_idPeticionSalida, cantidad FROM detallesalida";
 
@@ -64,13 +62,12 @@ public class DetalleSalidaDAO implements DAOInterfaz<DetalleSalida> {
      * una lista. Este método busca una combinación específica de Item y
      * Petición.
      */
-    @Override
-    public DetalleSalida buscar(int id) throws SQLException {
+    public static DetalleSalida buscar(int id) throws SQLException {
         
         return null;
     }
 
-    public DetalleSalida buscar(int idItem, int idPeticion) throws SQLException {
+    public static DetalleSalida buscar(int idItem, int idPeticion) throws SQLException {
         DetalleSalida ds = null;
         String statement = "SELECT Item_idItem, PeticionSalida_idPeticionSalida, cantidad FROM detallesalida "
                 + "WHERE Item_idItem = ? AND PeticionSalida_idPeticionSalida = ?";
@@ -94,12 +91,11 @@ public class DetalleSalidaDAO implements DAOInterfaz<DetalleSalida> {
         return ds;
     }
 
-    @Override
-    public int eliminar(int id){
+    public static int eliminar(int id){
         return 0;
     }
     
-    public int eliminar(int idItem, int idPeticion) {
+    public static int eliminar(int idItem, int idPeticion) {
 
         int valor = 0;
         String statement = "DELETE FROM detallesalida WHERE Item_idItem = ? AND PeticionSalida_idPeticionSalida = ?";
@@ -114,8 +110,7 @@ public class DetalleSalidaDAO implements DAOInterfaz<DetalleSalida> {
         return valor;
     }
 
-    @Override
-    public int modificar(DetalleSalida detalle) {
+    public static int modificar(DetalleSalida detalle) {
         int valor = 0;
         String statement = "UPDATE detallesalida SET cantidad = ? "
                 + "WHERE Item_idItem = ? AND PeticionSalida_idPeticionSalida = ?";

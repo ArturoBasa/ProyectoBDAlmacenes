@@ -19,10 +19,9 @@ import proyectobd2.modelo.beans.Rol;
  *
  * @author endri
  */
-public class RolDAO implements DAOInterfaz<Rol> {
+public class RolDAO {
 
-    @Override
-    public int insertar(Rol rol) {
+    public static int insertar(Rol rol) {
         int valor = 0;
         String statement = "INSERT INTO rol (descripcion) values (?)";
 
@@ -37,8 +36,7 @@ public class RolDAO implements DAOInterfaz<Rol> {
         return valor;
     }
 
-    @Override
-    public List<Rol> obtenerListaObjetos() throws SQLException {
+    public static List<Rol> obtenerListaObjetos() throws SQLException {
         List<Rol> listaRoles = new ArrayList<>();
         String statement = "SELECT idRol, descripcion FROM rol";
 
@@ -56,8 +54,7 @@ public class RolDAO implements DAOInterfaz<Rol> {
         return listaRoles;
     }
 
-    @Override
-    public Rol buscar(int idRol) throws SQLException {
+    public static Rol buscar(int idRol) throws SQLException {
         Rol rol = null;
         String statement = "SELECT idRol, descripcion FROM rol WHERE idRol = ?";
 
@@ -77,8 +74,7 @@ public class RolDAO implements DAOInterfaz<Rol> {
         return rol;
     }
 
-    @Override
-    public int eliminar(int idRol) {
+    public static int eliminar(int idRol) {
         int valor = 0;
         String statement = "DELETE FROM rol WHERE idRol=?";
 
@@ -93,8 +89,7 @@ public class RolDAO implements DAOInterfaz<Rol> {
         return valor;
     }
 
-    @Override
-    public int modificar(Rol rol) {
+    public static int modificar(Rol rol) {
         int valor = 0;
         String statement = "UPDATE rol SET descripcion=? WHERE idRol=?";
 
