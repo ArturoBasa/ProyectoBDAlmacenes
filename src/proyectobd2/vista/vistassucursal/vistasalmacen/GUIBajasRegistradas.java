@@ -15,13 +15,14 @@ import proyectobd2.modelo.DAO.BitacoraOperacionesBajaDAO;
 public class GUIBajasRegistradas extends javax.swing.JPanel {
 
     private JFrame framePadre = (JFrame) SwingUtilities.getAncestorOfClass(JFrame.class, this);
-    
+    private int idSucursal;
 
     /**
      * Creates new form GUIBajasRegistradas
      */
     public GUIBajasRegistradas(int idSucursal) {
         initComponents();
+        this.idSucursal = idSucursal;
         BitacoraOperacionesBajaDAO.obtenerBajasRegistradas(tb_bajas, idSucursal);
     }
 
@@ -84,7 +85,7 @@ public class GUIBajasRegistradas extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_realizarBajaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_realizarBajaActionPerformed
-        GUINuevaBajaItem nuevaBaja = new GUINuevaBajaItem(this.framePadre, true);
+        GUINuevaBajaItem nuevaBaja = new GUINuevaBajaItem(this.framePadre, true, this.idSucursal);
         nuevaBaja.setVisible(true);
     }//GEN-LAST:event_btn_realizarBajaActionPerformed
 

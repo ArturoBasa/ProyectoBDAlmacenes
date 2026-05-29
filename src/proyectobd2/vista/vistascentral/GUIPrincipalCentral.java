@@ -1,15 +1,14 @@
 package proyectobd2.vista.vistascentral;
 
-import proyectobd2.vista.vistassucursal.vistassalidas.*;
-
 import java.awt.CardLayout;
-import java.sql.SQLException;
-import proyectobd2.modelo.DAO.SucursalDAO;
 import proyectobd2.modelo.beans.Empleado;
-import proyectobd2.vista.vistascentral.almacen.GUIBajasRegistradas;
-import proyectobd2.vista.vistascentral.almacen.GUIItemsStockMaximo;
-import proyectobd2.vista.vistascentral.almacen.GUIItemsStockMinimo;
-import proyectobd2.vista.vistascentral.entradas.GUIEntradas;
+import proyectobd2.vista.vistassucursal.vistassalidas.*;
+import java.sql.SQLException;
+import proyectobd2.vista.vistascentral.almacen.GUIBajasRegistradasCentral;
+import proyectobd2.vista.vistascentral.almacen.GUIItemsStockMaximoCentral;
+import proyectobd2.vista.vistascentral.almacen.GUIItemsStockMinimoCentral;
+import proyectobd2.vista.vistascentral.entradas.GUIEntradasCentral;
+
 
 /**
  *
@@ -27,12 +26,12 @@ public class GUIPrincipalCentral extends javax.swing.JFrame {
         card = (CardLayout) pnl_cuerpo.getLayout();
         int idSucursal = empleado.getIdSucursal();
         lb_nombreEmpleado.setText(empleado.getNombre() + empleado.getApellidos());
-        lb_nombreSucursal.setText(SucursalDAO.buscar(idSucursal).getNombreSucursal());
-        GUIEntradas panelEntradas = new GUIEntradas(idSucursal);
+        
+        GUIEntradasCentral panelEntradas = new GUIEntradasCentral(idSucursal);
         GUISalidas panelSalidas = new GUISalidas(idSucursal);
-        GUIItemsStockMinimo panelItemsMinimo = new GUIItemsStockMinimo(idSucursal);
-        GUIItemsStockMaximo panelItemsMaximo = new GUIItemsStockMaximo(idSucursal);
-        GUIBajasRegistradas panelBajasRegistradas = new GUIBajasRegistradas(idSucursal);
+        GUIItemsStockMinimoCentral panelItemsMinimo = new GUIItemsStockMinimoCentral(idSucursal);
+        GUIItemsStockMaximoCentral panelItemsMaximo = new GUIItemsStockMaximoCentral(idSucursal);
+        GUIBajasRegistradasCentral panelBajasRegistradas = new GUIBajasRegistradasCentral(idSucursal);
 
         pnl_cuerpo.add(panelItemsMinimo, "itemsStockMinimo");
         pnl_cuerpo.add(panelItemsMaximo, "itemsStockMaximo");
@@ -61,8 +60,6 @@ public class GUIPrincipalCentral extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         lb_nombreEmpleado = new javax.swing.JLabel();
         filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(30, 20), new java.awt.Dimension(50, 20), new java.awt.Dimension(30, 20));
-        jLabel2 = new javax.swing.JLabel();
-        lb_nombreSucursal = new javax.swing.JLabel();
         filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(30, 20), new java.awt.Dimension(50, 20), new java.awt.Dimension(30, 20));
         jLabel3 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
@@ -96,15 +93,9 @@ public class GUIPrincipalCentral extends javax.swing.JFrame {
         lb_nombreEmpleado.setText("*");
         jPanel1.add(lb_nombreEmpleado);
         jPanel1.add(filler1);
-
-        jLabel2.setText("Sucursal: ");
-        jPanel1.add(jLabel2);
-
-        lb_nombreSucursal.setText("*");
-        jPanel1.add(lb_nombreSucursal);
         jPanel1.add(filler2);
 
-        jLabel3.setText("Usuario Sucursal");
+        jLabel3.setText("Usuario Central");
         jPanel1.add(jLabel3);
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.SOUTH);
@@ -209,14 +200,12 @@ public class GUIPrincipalCentral extends javax.swing.JFrame {
     private javax.swing.Box.Filler filler1;
     private javax.swing.Box.Filler filler2;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JLabel lb_nombreEmpleado;
-    private javax.swing.JLabel lb_nombreSucursal;
     private javax.swing.JMenu m_almacen;
     private javax.swing.JMenuItem mi_bajasRegistradas;
     private javax.swing.JMenuItem mi_catalogos;

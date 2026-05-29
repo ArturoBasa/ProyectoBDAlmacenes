@@ -13,7 +13,7 @@ import proyectobd2.modelo.ExportarExcel;
  *
  * @author endri
  */
-public class GUIItemsStockMaximo extends javax.swing.JPanel {
+public class GUIItemsStockMaximoCentral extends javax.swing.JPanel {
 
     
     int idSucursal;
@@ -21,7 +21,7 @@ public class GUIItemsStockMaximo extends javax.swing.JPanel {
     /**
      * Creates new form GUIItemsStockMaximo
      */
-    public GUIItemsStockMaximo(int idSucursal) {
+    public GUIItemsStockMaximoCentral(int idSucursal) {
         initComponents();
         this.idSucursal = idSucursal;
         AlertaStockMaximoDAO.obtenerItemsStockMaximo(tb_stockMaximo, idSucursal);
@@ -50,7 +50,7 @@ public class GUIItemsStockMaximo extends javax.swing.JPanel {
         jPanel4.add(filler3);
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel2.setText("Articulos con stock alto");
+        jLabel2.setText("Articulos con stock máximo");
         jPanel4.add(jLabel2);
         jPanel4.add(filler2);
 
@@ -69,11 +69,11 @@ public class GUIItemsStockMaximo extends javax.swing.JPanel {
 
             },
             new String [] {
-                "ARTICULO", "ATOCK ACTUAL", "STOCK MÁXIMO", "EXEDENTE"
+                "ARTICULO", "ATOCK ACTUAL", "STOCK MÁXIMO", "EXEDENTE", "SUCURSAL"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {

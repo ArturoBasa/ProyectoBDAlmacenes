@@ -12,14 +12,14 @@ import proyectobd2.modelo.beans.Factura;
  *
  * @author endri
  */
-public class GUIArticulosFactura extends javax.swing.JDialog {
+public class GUIArticulosFacturaCentral extends javax.swing.JDialog {
 
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(GUIArticulosFactura.class.getName());
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(GUIArticulosFacturaCentral.class.getName());
 
     /**
      * Creates new form GUIArticulosFactura
      */
-    public GUIArticulosFactura(java.awt.Frame parent, boolean modal, String folio) {
+    public GUIArticulosFacturaCentral(java.awt.Frame parent, boolean modal, String folio) {
         super(parent, modal);
         initComponents();
         lb_folio.setText(folio);

@@ -78,7 +78,7 @@ public class ItemDAO {
     public static List<Item> obtenerListaPorSucursal(int idSucursal) throws SQLException {
         List<Item> listaItems = new ArrayList<>();
         String statement = "SELECT idItem, existencias, stockMinimo, stockMaximo, nombreItem, precioUnitario, "
-                + "PartidaPresupuestal_idPartidaPresupuestal, Sucursal_idSucursal, estado, descripcionUso FROM item WHERE Sucursal_idSucursal = ?";
+                + "PartidaPresupuestal_idPartidaPresupuestal, Sucursal_idSucursal, estado, descripcionUso FROM item WHERE Sucursal_idSucursal = ? AND estado = 'ACTIVO'";
 
         try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
             ps.setInt(1, idSucursal);

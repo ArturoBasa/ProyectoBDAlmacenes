@@ -4,6 +4,14 @@
  */
 package proyectobd2.vista.vistassucursal.vistasalmacen;
 
+import proyectobd2.vista.vistassucursal.vistasentradas.GUISeleccionarItem;
+import javax.swing.JOptionPane;
+import java.sql.SQLException;
+import proyectobd2.modelo.DAO.ItemDAO;
+import proyectobd2.modelo.DAO.BitacoraOperacionesBajaDAO;
+import proyectobd2.modelo.beans.Item;
+import proyectobd2.modelo.beans.BitacoraOperacionesBaja;
+
 /**
  *
  * @author endri
@@ -11,13 +19,18 @@ package proyectobd2.vista.vistassucursal.vistasalmacen;
 public class GUINuevaBajaItem extends javax.swing.JDialog {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(GUINuevaBajaItem.class.getName());
-
+    private int idSucursal;
     /**
      * Creates new form NuevaBajaItem2
+     * @param parent
+     * @param modal
+     * @param idSucursal
      */
-    public GUINuevaBajaItem(java.awt.Frame parent, boolean modal) {
+    public GUINuevaBajaItem(java.awt.Frame parent, boolean modal, int idSucursal) {
         super(parent, modal);
         initComponents();
+        this.idSucursal = idSucursal;
+        
     }
 
     /**
@@ -32,37 +45,63 @@ public class GUINuevaBajaItem extends javax.swing.JDialog {
         jPanel7 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        txt_razonBaja = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        txt_fecha = new javax.swing.JTextField();
-        cb_items = new javax.swing.JComboBox<>();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btn_realizarBaja = new javax.swing.JButton();
+        btn_cancelar = new javax.swing.JButton();
+        spn_fecha = new javax.swing.JSpinner();
+        lb_nombreItem = new javax.swing.JLabel();
+        btn_buscarItem = new javax.swing.JButton();
+        txt_razonBaja = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        txta_descripcionBaja = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel3.setText("Dar de baja un articulo");
 
-        jLabel4.setText("Seleccionar item");
-
-        txt_razonBaja.setPreferredSize(new java.awt.Dimension(150, 22));
+        jLabel4.setText("Item seleccionado: ");
 
         jLabel5.setText("Razón de baja");
 
         jLabel6.setText("Fecha");
 
-        txt_fecha.setPreferredSize(new java.awt.Dimension(150, 22));
+        btn_realizarBaja.setBackground(new java.awt.Color(255, 0, 0));
+        btn_realizarBaja.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btn_realizarBaja.setText("Realizar baja");
+        btn_realizarBaja.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_realizarBajaActionPerformed(evt);
+            }
+        });
 
-        cb_items.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        btn_cancelar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btn_cancelar.setText("Cancelar");
+        btn_cancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_cancelarActionPerformed(evt);
+            }
+        });
 
-        jButton1.setBackground(new java.awt.Color(255, 0, 0));
-        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jButton1.setText("Realizar baja");
+        spn_fecha.setModel(new javax.swing.SpinnerDateModel());
+        spn_fecha.setEditor(new javax.swing.JSpinner.DateEditor(spn_fecha, "dd/MM/yyyy"));
 
-        jButton2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jButton2.setText("Cancelar");
+        lb_nombreItem.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        btn_buscarItem.setText("Buscar item");
+        btn_buscarItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_buscarItemActionPerformed(evt);
+            }
+        });
+
+        jLabel7.setText("Descripción de la baja:");
+
+        txta_descripcionBaja.setColumns(20);
+        txta_descripcionBaja.setRows(5);
+        jScrollPane1.setViewportView(txta_descripcionBaja);
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
@@ -70,19 +109,25 @@ public class GUINuevaBajaItem extends javax.swing.JDialog {
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel7Layout.createSequentialGroup()
                 .addGap(31, 31, 31)
-                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel6)
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 325, Short.MAX_VALUE)
+                    .addComponent(jLabel7)
                     .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(txt_razonBaja, javax.swing.GroupLayout.DEFAULT_SIZE, 325, Short.MAX_VALUE)
+                        .addComponent(jLabel6)
                         .addComponent(jLabel5)
-                        .addComponent(jLabel4)
                         .addComponent(jLabel3)
-                        .addComponent(cb_items, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(txt_fecha, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanel7Layout.createSequentialGroup()
-                        .addComponent(jButton1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton2)))
+                        .addGroup(jPanel7Layout.createSequentialGroup()
+                            .addComponent(btn_realizarBaja)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(btn_cancelar))
+                        .addComponent(spn_fecha, javax.swing.GroupLayout.DEFAULT_SIZE, 325, Short.MAX_VALUE)
+                        .addGroup(jPanel7Layout.createSequentialGroup()
+                            .addComponent(btn_buscarItem)
+                            .addGap(48, 48, 48)
+                            .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel4)
+                                .addComponent(lb_nombreItem, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(txt_razonBaja)))
                 .addContainerGap(29, Short.MAX_VALUE))
         );
         jPanel7Layout.setVerticalGroup(
@@ -90,96 +135,130 @@ public class GUINuevaBajaItem extends javax.swing.JDialog {
             .addGroup(jPanel7Layout.createSequentialGroup()
                 .addGap(24, 24, 24)
                 .addComponent(jLabel3)
-                .addGap(31, 31, 31)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cb_items, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btn_buscarItem)
+                    .addComponent(lb_nombreItem, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txt_razonBaja, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel7)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(jLabel6)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txt_fecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(57, 57, 57)
+                .addGap(12, 12, 12)
+                .addComponent(spn_fecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(29, 29, 29)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
-                .addContainerGap(57, Short.MAX_VALUE))
+                    .addComponent(btn_realizarBaja)
+                    .addComponent(btn_cancelar))
+                .addContainerGap(33, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(0, 7, Short.MAX_VALUE)
+                .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 8, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 377, Short.MAX_VALUE)
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+    private void btn_cancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cancelarActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_btn_cancelarActionPerformed
 
-        /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                GUINuevaBajaItem dialog = new GUINuevaBajaItem(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
+    private void btn_buscarItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_buscarItemActionPerformed
+        GUISeleccionarItem seleccionarItem = new GUISeleccionarItem(this, true, this.idSucursal);
+        seleccionarItem.setVisible(true);
+        String seleccionado = seleccionarItem.getItemSeleccionado();
+        if (seleccionado != null) {
+            lb_nombreItem.setText(seleccionado);
+        }
+    }//GEN-LAST:event_btn_buscarItemActionPerformed
+
+    private void btn_realizarBajaActionPerformed(java.awt.event.ActionEvent evt) {
+        String nombreItem = lb_nombreItem.getText();
+        String razonBaja = txt_razonBaja.getText().trim();
+        String descripcion = txta_descripcionBaja.getText().trim();
+        
+        if (nombreItem == null || nombreItem.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar un artículo.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        if (razonBaja.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Debe ingresar la razón de baja.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        if (descripcion.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Debe ingresar una descripción de la baja.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        try {
+            Item item = ItemDAO.buscarPorNombre(nombreItem, this.idSucursal);
+            if (item == null) {
+                JOptionPane.showMessageDialog(this, "No se encontró el artículo en la base de datos.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
             }
-        });
+            
+            BitacoraOperacionesBaja bitacora = new BitacoraOperacionesBaja();
+            bitacora.setFecha((java.util.Date) spn_fecha.getValue());
+            bitacora.setRazonBaja(razonBaja);
+            bitacora.setDescripcion(descripcion);
+            bitacora.setCantidadSobrante(item.getExistencias());
+            bitacora.setIdItem(item.getIdItem());
+            
+            int insercion = BitacoraOperacionesBajaDAO.insertar(bitacora);
+            if (insercion > 0) {
+                item.setEstado("INACTIVO");
+                ItemDAO.modificar(item);
+                
+                JOptionPane.showMessageDialog(this, "Baja de ítem realizada con éxito.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                this.dispose();
+            } else {
+                JOptionPane.showMessageDialog(this, "Error al registrar la baja en la bitácora.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error de base de datos.", "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (ClassCastException e) {
+            JOptionPane.showMessageDialog(this, "Fecha inválida.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<String> cb_items;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton btn_buscarItem;
+    private javax.swing.JButton btn_cancelar;
+    private javax.swing.JButton btn_realizarBaja;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel7;
-    private javax.swing.JTextField txt_fecha;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lb_nombreItem;
+    private javax.swing.JSpinner spn_fecha;
     private javax.swing.JTextField txt_razonBaja;
+    private javax.swing.JTextArea txta_descripcionBaja;
     // End of variables declaration//GEN-END:variables
 }

@@ -20,16 +20,23 @@ import proyectobd2.modelo.beans.PeticionSalida;
 public class PeticionSalidaDAO {
 
     public static int insertar(PeticionSalida peticion) {
-        int valor = 0;
-        String statement = "INSERT INTO peticionsalida (fecha, idEmpleadoAlmacen) values (?,?)";
-        try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
+        int idGenerado = 0;
+        String statement = "INSERT INTO peticionsalida (fecha, idEmpleadoAlmacen, idEstadoPeticion) values (?,?,?)";
+        try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement, java.sql.Statement.RETURN_GENERATED_KEYS)) {
             ps.setDate(1, new java.sql.Date(peticion.getFecha().getTime()));
             ps.setInt(2, peticion.getIdEmpleadoAlmacen());
-            valor = ps.executeUpdate();
+            ps.setInt(3, peticion.getIdEstadoPeticion());
+            ps.executeUpdate();
+            
+            try (ResultSet rs = ps.getGeneratedKeys()) {
+                if (rs.next()) {
+                    idGenerado = rs.getInt(1);
+                }
+            }
         } catch (SQLException ex) {
             Logger.getLogger(PeticionSalidaDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return valor;
+        return idGenerado;
     }
 
     public static List<PeticionSalida> obtenerListaObjetos() throws SQLException {
@@ -55,7 +62,7 @@ public class PeticionSalidaDAO {
 
     public static void buscar(String departamento, int idSucursal, JTable tb_salidas) throws SQLException {
 
-        String statement = "SELECT fecha , departamento , encargado , descripcion FROM salidasView WHERE idSucursal = ? AND LOWER(departamento) LIKE LOWER(?)";
+        String statement = "SELECT DISTINCT fecha , departamento , encargado , descripcion FROM salidasView WHERE idSucursal = ? AND LOWER(departamento) LIKE LOWER(?)";
         DefaultTableModel modelo = (DefaultTableModel) tb_salidas.getModel();
         modelo.setRowCount(0);
 
@@ -110,13 +117,13 @@ public class PeticionSalidaDAO {
 
     public static void obtenerSalidas(JTable tb_salidas, int idSucursal) {
 
-        String statement = "SELECT fecha , departamento , encargado , descripcion FROM salidasView WHERE idSucursal = ? AND descripcion = ?";
+        String statement = "SELECT DISTINCT fecha , departamento , encargado , descripcion FROM salidasView WHERE idSucursal = ?";
         DefaultTableModel modelo = (DefaultTableModel) tb_salidas.getModel();
         modelo.setRowCount(0);
 
         try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
             ps.setInt(1, idSucursal);
-            ps.setString(2, "ACEPTADA");
+            //ps.setString(2, "EN ESPERA");
 
             try (ResultSet rs = ps.executeQuery();) {
                 int columnas = rs.getMetaData().getColumnCount();

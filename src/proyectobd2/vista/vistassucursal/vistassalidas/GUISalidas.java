@@ -4,7 +4,6 @@
  */
 package proyectobd2.vista.vistassucursal.vistassalidas;
 
-import proyectobd2.vista.vistassucursal.vistassalidas.GUIArticulosPeticion;
 import java.sql.SQLException;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
@@ -15,20 +14,25 @@ import proyectobd2.modelo.DAO.PeticionSalidaDAO;
  * @author endri
  */
 public class GUISalidas extends javax.swing.JPanel {
- 
+
     private JFrame framePadre = (JFrame) SwingUtilities.getAncestorOfClass(JFrame.class, this);
-    
 
     int idSucursal;
 
     /**
      * Creates new form Salidas
+     *
      * @param idSucursal
      */
     public GUISalidas(int idSucursal) {
         initComponents();
+        llenarTabla();
         this.idSucursal = idSucursal;
         PeticionSalidaDAO.obtenerSalidas(tb_salidas, idSucursal);
+    }
+
+    private void llenarTabla() {
+        PeticionSalidaDAO.obtenerSalidas(tb_salidas, this.idSucursal);
     }
 
     /**
@@ -115,7 +119,7 @@ public class GUISalidas extends javax.swing.JPanel {
             }
 
         } else {
-            PeticionSalidaDAO.obtenerSalidas(tb_salidas, this.idSucursal);
+            llenarTabla();
         }
     }//GEN-LAST:event_btn_buscarActionPerformed
 
@@ -125,8 +129,6 @@ public class GUISalidas extends javax.swing.JPanel {
 
             if (fila != -1) {
                 String departamento = tb_salidas.getValueAt(fila, 1).toString();
-
-                
 
                 GUIArticulosPeticion articulosPeticion = new GUIArticulosPeticion(this.framePadre, true, departamento);
                 articulosPeticion.setVisible(true);

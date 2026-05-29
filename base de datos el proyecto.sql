@@ -832,7 +832,7 @@ DELIMITER ;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013  SQL SECURITY DEFINER */
-/*!50001 VIEW `itemsStockMaximoPorSucursal` AS select `i`.`nombreItem` AS `nombreItem`,`i`.`existencias` AS `existencias`,`i`.`stockMaximo` AS `stockMaximo`,(`i`.`existencias` - `i`.`stockMaximo`) AS `excedente`,`s`.`idSucursal` AS `idSucursal` from ((`alertaStockMaximo` `asm` join `item` `i` on((`asm`.`idItem` = `i`.`idItem`))) join `sucursal` `s` on((`i`.`Sucursal_idSucursal` = `s`.`idSucursal`))) */;
+/*!50001 VIEW `itemsStockMaximoPorSucursal` AS select `i`.`nombreItem` AS `nombreItem`,`i`.`existencias` AS `existencias`,`i`.`stockMaximo` AS `stockMaximo`,(`i`.`existencias` - `i`.`stockMaximo`) AS `excedente`,`s`.`idSucursal` AS `idSucursal` from ((`alertaStockMaximo` `asm` join `item` `i` on((`asm`.`idItem` = `i`.`idItem`))) join `sucursal` `s` on((`i`.`Sucursal_idSucursal` = `s`.`idSucursal`))) where (`i`.`estado` = 'ACTIVO') */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -850,7 +850,7 @@ DELIMITER ;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013  SQL SECURITY DEFINER */
-/*!50001 VIEW `itemsStockMinimoPorSucursal` AS select `i`.`nombreItem` AS `nombreItem`,`i`.`existencias` AS `existencias`,`i`.`stockMinimo` AS `stockMinimo`,(`i`.`existencias` - `i`.`stockMinimo`) AS `diferencia`,`s`.`idSucursal` AS `idSucursal` from ((`bitacorapedidos` `bp` join `item` `i` on((`bp`.`Item_idItem` = `i`.`idItem`))) join `sucursal` `s` on((`i`.`Sucursal_idSucursal` = `s`.`idSucursal`))) */;
+/*!50001 VIEW `itemsStockMinimoPorSucursal` AS select `i`.`nombreItem` AS `nombreItem`,`i`.`existencias` AS `existencias`,`i`.`stockMinimo` AS `stockMinimo`,(`i`.`existencias` - `i`.`stockMinimo`) AS `diferencia`,`s`.`idSucursal` AS `idSucursal` from ((`bitacorapedidos` `bp` join `item` `i` on((`bp`.`Item_idItem` = `i`.`idItem`))) join `sucursal` `s` on((`i`.`Sucursal_idSucursal` = `s`.`idSucursal`))) where (`i`.`estado` = 'ACTIVO') */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;

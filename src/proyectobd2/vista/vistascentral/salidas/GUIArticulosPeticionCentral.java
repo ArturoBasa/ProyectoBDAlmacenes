@@ -11,7 +11,7 @@ import proyectobd2.modelo.DAO.PeticionSalidaDAO;
  *
  * @author endri
  */
-public class GUIArticulosPeticion extends javax.swing.JDialog {
+public class GUIArticulosPeticionCentral extends javax.swing.JDialog {
 
 
     /**
@@ -20,7 +20,7 @@ public class GUIArticulosPeticion extends javax.swing.JDialog {
      * @param modal
      * @param departamento
      */
-    public GUIArticulosPeticion(java.awt.Frame parent, boolean modal, String departamento) {
+    public GUIArticulosPeticionCentral(java.awt.Frame parent, boolean modal, String departamento) {
         super(parent, modal);
         initComponents();
         lb_departamento.setText(departamento);

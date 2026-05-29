@@ -13,16 +13,17 @@ import proyectobd2.modelo.DAO.BitacoraOperacionesBajaDAO;
  *
  * @author endri
  */
-public class GUIBajasRegistradas extends javax.swing.JPanel {
+public class GUIBajasRegistradasCentral extends javax.swing.JPanel {
 
     private JFrame framePadre = (JFrame) SwingUtilities.getAncestorOfClass(JFrame.class, this);
-    
+    private int idSucursal;
 
     /**
      * Creates new form GUIBajasRegistradas
      */
-    public GUIBajasRegistradas(int idSucursal) {
+    public GUIBajasRegistradasCentral(int idSucursal) {
         initComponents();
+        this.idSucursal = idSucursal;
         BitacoraOperacionesBajaDAO.obtenerBajasRegistradas(tb_bajas, idSucursal);
     }
 
@@ -49,11 +50,11 @@ public class GUIBajasRegistradas extends javax.swing.JPanel {
 
             },
             new String [] {
-                "FECHA", "ARTÍCULO", "RAZÓN", "CANTIDAD SOBRANTE"
+                "FECHA", "ARTÍCULO", "RAZÓN", "CANTIDAD SOBRANTE", "SUCURSAL"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -68,7 +69,7 @@ public class GUIBajasRegistradas extends javax.swing.JPanel {
         jPanel3.add(filler6);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel1.setText("Bitacora de operaciones");
+        jLabel1.setText("Bitacora de bajas");
         jPanel3.add(jLabel1);
         jPanel3.add(filler1);
 

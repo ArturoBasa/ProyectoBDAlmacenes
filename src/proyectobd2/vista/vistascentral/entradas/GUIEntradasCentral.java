@@ -14,7 +14,7 @@ import proyectobd2.modelo.DAO.FacturaDAO;
  *
  * @author endri
  */
-public class GUIEntradas extends javax.swing.JPanel {
+public class GUIEntradasCentral extends javax.swing.JPanel {
     
     private JFrame framePadre = (JFrame) SwingUtilities.getAncestorOfClass(JFrame.class, this);
     
@@ -24,7 +24,7 @@ public class GUIEntradas extends javax.swing.JPanel {
      * Creates new form Dashboard
      * @param idSucursal
      */
-    public GUIEntradas(int idSucursal) {
+    public GUIEntradasCentral(int idSucursal) {
         initComponents();
         this.idSucursal = idSucursal;
         FacturaDAO.obtenerEntradas(tb_entradas, this.idSucursal);
@@ -43,6 +43,7 @@ public class GUIEntradas extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
         jPanel1 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         txt_folio = new javax.swing.JTextField();
         btn_buscar = new javax.swing.JButton();
@@ -56,6 +57,10 @@ public class GUIEntradas extends javax.swing.JPanel {
         jScrollPane1.setViewportView(jTextArea1);
 
         setLayout(new java.awt.BorderLayout());
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel2.setText("PANEL ENTRADAS");
+        jPanel1.add(jLabel2);
 
         jLabel1.setText("Buscar por folio de factura:");
         jPanel1.add(jLabel1);
@@ -79,11 +84,11 @@ public class GUIEntradas extends javax.swing.JPanel {
 
             },
             new String [] {
-                "FOLIO", "FECHA", "PROVEEDOR", "RFC", "TOTAL"
+                "FOLIO", "FECHA", "PROVEEDOR", "RFC", "TOTAL", "SUCURSAL"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -134,6 +139,7 @@ public class GUIEntradas extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_buscar;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;

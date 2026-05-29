@@ -173,7 +173,7 @@ public class InicioSesion extends javax.swing.JFrame {
                             central.setVisible(true);
 
                         } catch (NumberFormatException ex) {
-                            System.out.println("No se pudo obtener correctamente la id de sucursal: ");
+                            System.out.println("No se pudo obtener correctamente la información del usuario.");
                         }
                         this.dispose();
                     } else if (empleado.getRol().equals("Usuario sucursal")) {
@@ -183,7 +183,7 @@ public class InicioSesion extends javax.swing.JFrame {
                             principal.setVisible(true);
 
                         } catch (NumberFormatException ex) {
-                            System.out.println("No se pudo obtener correctamente la id de sucursal: ");
+                            System.out.println("No se pudo obtener correctamente la información del usuario.");
                         }
 
                         this.dispose();

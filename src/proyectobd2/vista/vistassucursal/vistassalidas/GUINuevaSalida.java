@@ -16,6 +16,11 @@ import proyectobd2.modelo.beans.Item;
 import proyectobd2.modelo.DAO.DepartamentoDAO;
 import proyectobd2.modelo.DAO.EmpleadoDAO;
 import proyectobd2.modelo.DAO.ItemDAO;
+import proyectobd2.modelo.beans.PeticionSalida;
+import proyectobd2.modelo.beans.DetalleSalida;
+import proyectobd2.modelo.DAO.PeticionSalidaDAO;
+import proyectobd2.modelo.DAO.DetalleSalidaDAO;
+import java.util.Date;
 
 /**
  *
@@ -108,6 +113,11 @@ public class GUINuevaSalida extends javax.swing.JDialog {
         btn_guardar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btn_guardar.setForeground(new java.awt.Color(0, 0, 0));
         btn_guardar.setText("Guardar");
+        btn_guardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_guardarActionPerformed(evt);
+            }
+        });
 
         jLabel5.setText("Departamento solicitante:");
 
@@ -133,6 +143,11 @@ public class GUINuevaSalida extends javax.swing.JDialog {
         btn_agregarArticulo.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btn_agregarArticulo.setForeground(new java.awt.Color(0, 0, 0));
         btn_agregarArticulo.setText("Agregar artículo");
+        btn_agregarArticulo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_agregarArticuloActionPerformed(evt);
+            }
+        });
 
         spn_fecha.setModel(new javax.swing.SpinnerDateModel());
         spn_fecha.setEditor(new javax.swing.JSpinner.DateEditor(spn_fecha, "dd/MM/yyyy"));
@@ -267,7 +282,7 @@ public class GUINuevaSalida extends javax.swing.JDialog {
         this.dispose();
     }//GEN-LAST:event_btn_cancelarActionPerformed
 
-    private void btn_agregarArticuloActionPerformed(java.awt.event.ActionEvent evt) {
+    private void btn_agregarArticuloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_agregarArticuloActionPerformed
         if (itemSeleccionado == null) {
             JOptionPane.showMessageDialog(this, "Debe seleccionar un artículo.", "Advertencia", JOptionPane.WARNING_MESSAGE);
             return;
@@ -276,6 +291,11 @@ public class GUINuevaSalida extends javax.swing.JDialog {
         int cantidad = (int) spn_cantidad.getValue();
         if (cantidad <= 0) {
             JOptionPane.showMessageDialog(this, "La cantidad debe ser mayor a 0.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        if (cantidad > itemSeleccionado.getExistencias()) {
+            JOptionPane.showMessageDialog(this, "El máximo de existencias de este ítem son: " + itemSeleccionado.getExistencias(), "Advertencia", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
@@ -297,7 +317,72 @@ public class GUINuevaSalida extends javax.swing.JDialog {
         itemSeleccionado = null;
         lb_nombreItem.setText("");
         spn_cantidad.setValue(0);
-    }
+    }//GEN-LAST:event_btn_agregarArticuloActionPerformed
+
+    private void btn_guardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_guardarActionPerformed
+        DefaultTableModel modelo = (DefaultTableModel) tb_articulos.getModel();
+        if (modelo.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(this, "Debe agregar al menos un artículo a la lista.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        int index = cb_departamentoSolicitante.getSelectedIndex();
+        if (index < 0 || index >= departamentosSucursal.size()) {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar un departamento.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        Departamento deptoSeleccionado = departamentosSucursal.get(index);
+        
+        PeticionSalida peticion = new PeticionSalida();
+        try {
+            Date fechaSeleccionada = (Date) spn_fecha.getValue();
+            peticion.setFecha(fechaSeleccionada);
+        } catch (ClassCastException ex) {
+            JOptionPane.showMessageDialog(this, "Fecha inválida.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        peticion.setIdEmpleadoAlmacen(deptoSeleccionado.getIdEncargado());
+        peticion.setIdEstadoPeticion(2); 
+
+        int idPeticionGenerado = PeticionSalidaDAO.insertar(peticion);
+        
+        if (idPeticionGenerado > 0) {
+            boolean errorEnDetalles = false;
+            
+            for (int i = 0; i < modelo.getRowCount(); i++) {
+                String nombreArticulo = modelo.getValueAt(i, 0).toString();
+                int cantidadArticulo = Integer.parseInt(modelo.getValueAt(i, 1).toString());
+                
+                try {
+                    Item itemActual = ItemDAO.buscarPorNombre(nombreArticulo, this.idSucursal);
+                    if (itemActual != null) {
+                        DetalleSalida detalle = new DetalleSalida();
+                        detalle.setIdItem(itemActual.getIdItem());
+                        detalle.setIdPeticionSalida(idPeticionGenerado);
+                        detalle.setCantidad(cantidadArticulo);
+                        
+                        DetalleSalidaDAO.insertar(detalle);
+                    }
+                } catch (SQLException e) {
+                    errorEnDetalles = true;
+                    e.printStackTrace();
+                }
+            }
+            
+            if (errorEnDetalles) {
+                JOptionPane.showMessageDialog(this, "La petición se creó, pero hubo un error guardando algunos detalles.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(this, "Petición de salida guardada exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            }
+            this.dispose();
+            
+        } else {
+            JOptionPane.showMessageDialog(this, "Error al guardar la petición.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btn_guardarActionPerformed
+
 
     private void cargarDepartamentos() {
         try {

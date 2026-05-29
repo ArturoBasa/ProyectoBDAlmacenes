@@ -5,7 +5,6 @@
 package proyectobd2.vista.vistascentral.salidas;
 
 import proyectobd2.vista.vistassucursal.vistassalidas.*;
-import proyectobd2.vista.vistassucursal.vistassalidas.GUIArticulosPeticion;
 import java.sql.SQLException;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
@@ -15,21 +14,26 @@ import proyectobd2.modelo.DAO.PeticionSalidaDAO;
  *
  * @author endri
  */
-public class GUISalidas extends javax.swing.JPanel {
- 
+public class GUISalidasCentral extends javax.swing.JPanel {
+
     private JFrame framePadre = (JFrame) SwingUtilities.getAncestorOfClass(JFrame.class, this);
-    
 
     int idSucursal;
 
     /**
      * Creates new form Salidas
+     *
      * @param idSucursal
      */
-    public GUISalidas(int idSucursal) {
+    public GUISalidasCentral(int idSucursal) {
         initComponents();
+        llenarTabla();
         this.idSucursal = idSucursal;
         PeticionSalidaDAO.obtenerSalidas(tb_salidas, idSucursal);
+    }
+
+    private void llenarTabla() {
+        PeticionSalidaDAO.obtenerSalidas(tb_salidas, this.idSucursal);
     }
 
     /**
@@ -42,6 +46,7 @@ public class GUISalidas extends javax.swing.JPanel {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         txt_departamento = new javax.swing.JTextField();
         btn_buscar = new javax.swing.JButton();
@@ -50,6 +55,10 @@ public class GUISalidas extends javax.swing.JPanel {
 
         setPreferredSize(new java.awt.Dimension(874, 720));
         setLayout(new java.awt.BorderLayout());
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel2.setText("PANEL SALIDAS");
+        jPanel1.add(jLabel2);
 
         jLabel1.setText("Buscar por departamento:");
         jPanel1.add(jLabel1);
@@ -72,11 +81,11 @@ public class GUISalidas extends javax.swing.JPanel {
 
             },
             new String [] {
-                "FECHA", "DEPARTAMENTO", "ENCARGADO", "ESTADO"
+                "FECHA", "DEPARTAMENTO", "ENCARGADO", "ESTADO", "SUCURSAL"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -102,7 +111,7 @@ public class GUISalidas extends javax.swing.JPanel {
             }
 
         } else {
-            PeticionSalidaDAO.obtenerSalidas(tb_salidas, this.idSucursal);
+            llenarTabla();
         }
     }//GEN-LAST:event_btn_buscarActionPerformed
 
@@ -112,8 +121,6 @@ public class GUISalidas extends javax.swing.JPanel {
 
             if (fila != -1) {
                 String departamento = tb_salidas.getValueAt(fila, 1).toString();
-
-                
 
                 GUIArticulosPeticion articulosPeticion = new GUIArticulosPeticion(this.framePadre, true, departamento);
                 articulosPeticion.setVisible(true);
@@ -126,6 +133,7 @@ public class GUISalidas extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_buscar;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tb_salidas;

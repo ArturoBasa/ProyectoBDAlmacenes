@@ -23,7 +23,7 @@ public class DetalleSalidaDAO {
 
     public static int insertar(DetalleSalida detalle) {
         int valor = 0;
-        String statement = "INSERT INTO detallesalida (Item_idItem, PeticionSalida_idPeticionSalida, cantidad) VALUES (?,?,?)";
+        String statement = "INSERT INTO detalle_salida (Item_idItem, PeticionSalida_idPeticionSalida, cantidad) VALUES (?,?,?)";
 
         try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
 
@@ -40,7 +40,7 @@ public class DetalleSalidaDAO {
 
     public static List<DetalleSalida> obtenerListaObjetos() throws SQLException {
         List<DetalleSalida> listaDetalles = new ArrayList<>();
-        String statement = "SELECT Item_idItem, PeticionSalida_idPeticionSalida, cantidad FROM detallesalida";
+        String statement = "SELECT Item_idItem, PeticionSalida_idPeticionSalida, cantidad FROM detalle_salida";
 
         try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
             ResultSet rs = ps.executeQuery();
@@ -69,7 +69,7 @@ public class DetalleSalidaDAO {
 
     public static DetalleSalida buscar(int idItem, int idPeticion) throws SQLException {
         DetalleSalida ds = null;
-        String statement = "SELECT Item_idItem, PeticionSalida_idPeticionSalida, cantidad FROM detallesalida "
+        String statement = "SELECT Item_idItem, PeticionSalida_idPeticionSalida, cantidad FROM detalle_salida "
                 + "WHERE Item_idItem = ? AND PeticionSalida_idPeticionSalida = ?";
 
         try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
@@ -98,7 +98,7 @@ public class DetalleSalidaDAO {
     public static int eliminar(int idItem, int idPeticion) {
 
         int valor = 0;
-        String statement = "DELETE FROM detallesalida WHERE Item_idItem = ? AND PeticionSalida_idPeticionSalida = ?";
+        String statement = "DELETE FROM detalle_salida WHERE Item_idItem = ? AND PeticionSalida_idPeticionSalida = ?";
 
         try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
             ps.setInt(1, idItem);
@@ -112,7 +112,7 @@ public class DetalleSalidaDAO {
 
     public static int modificar(DetalleSalida detalle) {
         int valor = 0;
-        String statement = "UPDATE detallesalida SET cantidad = ? "
+        String statement = "UPDATE detalle_salida SET cantidad = ? "
                 + "WHERE Item_idItem = ? AND PeticionSalida_idPeticionSalida = ?";
 
         try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {

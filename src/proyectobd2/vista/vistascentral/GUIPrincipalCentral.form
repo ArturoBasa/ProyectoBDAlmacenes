@@ -178,16 +178,6 @@
             <AuxValue name="classDetails" type="java.lang.String" value="Box.Filler.RigidArea"/>
           </AuxValues>
         </Component>
-        <Component class="javax.swing.JLabel" name="jLabel2">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Sucursal: "/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JLabel" name="lb_nombreSucursal">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="*"/>
-          </Properties>
-        </Component>
         <Component class="javax.swing.Box$Filler" name="filler2">
           <Properties>
             <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -206,7 +196,7 @@
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel3">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Usuario Sucursal"/>
+            <Property name="text" type="java.lang.String" value="Usuario Central"/>
           </Properties>
         </Component>
       </SubComponents>

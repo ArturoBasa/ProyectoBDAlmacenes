@@ -13,7 +13,7 @@ import proyectobd2.modelo.ExportarExcel;
  *
  * @author endri
  */
-public class GUIItemsStockMinimo extends javax.swing.JPanel {
+public class GUIItemsStockMinimoCentral extends javax.swing.JPanel {
 
     
     private int idSucursal;
@@ -21,7 +21,7 @@ public class GUIItemsStockMinimo extends javax.swing.JPanel {
     /**
      * Creates new form GUIItemsStockMinimo
      */
-    public GUIItemsStockMinimo(int idSucursal) {
+    public GUIItemsStockMinimoCentral(int idSucursal) {
         initComponents();
         this.idSucursal = idSucursal;
         BitacoraPedidosDAO.obtenerItemsStockMinimo(tb_stockMinimo, idSucursal);
@@ -51,7 +51,7 @@ public class GUIItemsStockMinimo extends javax.swing.JPanel {
 
             },
             new String [] {
-                "ARTICULO", "STOCK ACTUAL", "STOCK MÍNIMO", "DIFERENCIA"
+                "ARTICULO", "STOCK ACTUAL", "STOCK MÍNIMO", "DIFERENCIA", "SUCURSAL"
             }
         ));
         jScrollPane1.setViewportView(tb_stockMinimo);

@@ -15,6 +15,7 @@ public class PeticionSalida {
     private int idPeticionSalida;
     private Date fecha;
     private int idEmpleadoAlmacen;
+    private int idEstadoPeticion;
 
     public PeticionSalida() {
     }
@@ -41,6 +42,14 @@ public class PeticionSalida {
 
     public void setIdEmpleadoAlmacen(int idEmpleadoAlmacen) {
         this.idEmpleadoAlmacen = idEmpleadoAlmacen;
+    }
+
+    public int getIdEstadoPeticion() {
+        return idEstadoPeticion;
+    }
+
+    public void setIdEstadoPeticion(int idEstadoPeticion) {
+        this.idEstadoPeticion = idEstadoPeticion;
     }
 
 }
