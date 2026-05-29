@@ -59,6 +59,28 @@ public class DepartamentoDAO {
         return listaDepartamentos;
     }
 
+    public static List<Departamento> obtenerPorSucursal(int idSucursal) throws SQLException {
+        List<Departamento> listaDepartamentos = new ArrayList<>();
+        String statement = "SELECT idDepartamento, nombreDepartamento, Sucursal_idSucursal, Empleado_idEncargado FROM departamento WHERE Sucursal_idSucursal = ?";
+
+        try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
+            ps.setInt(1, idSucursal);
+                try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Departamento d = new Departamento();
+                    d.setIdDepartamento(rs.getInt("idDepartamento"));
+                    d.setNombreDepartamento(rs.getString("nombreDepartamento"));
+                    d.setIdSucursal(rs.getInt("Sucursal_idSucursal"));
+                    d.setIdEncargado(rs.getInt("Empleado_idEncargado"));
+                    listaDepartamentos.add(d);
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DepartamentoDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return listaDepartamentos;
+    }
+
     public static Departamento buscar(int idDepartamento) throws SQLException {
         Departamento d = null;
         String statement = "SELECT idDepartamento, nombreDepartamento, Sucursal_idSucursal, Empleado_idEncargado FROM departamento WHERE idDepartamento = ?";

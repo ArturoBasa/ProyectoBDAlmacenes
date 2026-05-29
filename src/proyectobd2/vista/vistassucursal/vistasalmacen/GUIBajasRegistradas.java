@@ -68,7 +68,7 @@ public class GUIBajasRegistradas extends javax.swing.JPanel {
         jPanel3.add(filler6);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel1.setText("Bitacora de operaciones");
+        jLabel1.setText("Bitacora de bajas");
         jPanel3.add(jLabel1);
         jPanel3.add(filler1);
 

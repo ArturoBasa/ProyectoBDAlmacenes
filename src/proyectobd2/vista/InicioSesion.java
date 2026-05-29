@@ -12,6 +12,7 @@ import javax.swing.JOptionPane;
 import proyectobd2.modelo.DAO.EmpleadoDAO;
 import proyectobd2.modelo.HasheoContrasenia;
 import proyectobd2.modelo.beans.Empleado;
+import proyectobd2.vista.vistascentral.GUIPrincipalCentral;
 
 /**
  *
@@ -166,6 +167,14 @@ public class InicioSesion extends javax.swing.JFrame {
                     //principal.setVisible(true);
                     if (empleado.getRol().equals("Usuario central")) {
                         //Mostrar la GUI de usuario central
+                        try {
+
+                            GUIPrincipalCentral central = new GUIPrincipalCentral(empleado);
+                            central.setVisible(true);
+
+                        } catch (NumberFormatException ex) {
+                            System.out.println("No se pudo obtener correctamente la id de sucursal: ");
+                        }
                         this.dispose();
                     } else if (empleado.getRol().equals("Usuario sucursal")) {
                         try {

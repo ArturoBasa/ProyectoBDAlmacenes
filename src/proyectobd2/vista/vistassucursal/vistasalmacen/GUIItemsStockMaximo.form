@@ -48,7 +48,7 @@
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Segoe UI" size="18" style="1"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Articulos con stock alto"/>
+            <Property name="text" type="java.lang.String" value="Articulos con stock m&#xe1;ximo"/>
           </Properties>
         </Component>
         <Component class="javax.swing.Box$Filler" name="filler2">

@@ -75,6 +75,35 @@ public class ItemDAO {
         return listaItems;
     }
 
+    public static List<Item> obtenerListaPorSucursal(int idSucursal) throws SQLException {
+        List<Item> listaItems = new ArrayList<>();
+        String statement = "SELECT idItem, existencias, stockMinimo, stockMaximo, nombreItem, precioUnitario, "
+                + "PartidaPresupuestal_idPartidaPresupuestal, Sucursal_idSucursal, estado, descripcionUso FROM item WHERE Sucursal_idSucursal = ?";
+
+        try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
+            ps.setInt(1, idSucursal);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Item item = new Item();
+                item.setIdItem(rs.getInt("idItem"));
+                item.setExistencias(rs.getInt("existencias"));
+                item.setStockMinimo(rs.getInt("stockMinimo"));
+                item.setStockMaximo(rs.getInt("stockMaximo"));
+                item.setNombreItem(rs.getString("nombreItem"));
+                item.setPrecioUnitario(rs.getDouble("precioUnitario"));
+                item.setIdPartidaPresupuestal(rs.getInt("PartidaPresupuestal_idPartidaPresupuestal"));
+                item.setIdSucursal(rs.getInt("Sucursal_idSucursal"));
+                item.setEstado(rs.getString("estado"));
+                item.setDescripcionUso(rs.getString("descripcionUso"));
+
+                listaItems.add(item);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ItemDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return listaItems;
+    }
+
     public static Item buscar(int idItem) throws SQLException {
         Item item = null;
         String statement = "SELECT idItem, existencias, stockMinimo, stockMaximo, nombreItem, precioUnitario, "
@@ -84,6 +113,36 @@ public class ItemDAO {
         try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
 
             ps.setInt(1, idItem);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    item = new Item();
+                    item.setIdItem(rs.getInt("idItem"));
+                    item.setExistencias(rs.getInt("existencias"));
+                    item.setStockMinimo(rs.getInt("stockMinimo"));
+                    item.setStockMaximo(rs.getInt("stockMaximo"));
+                    item.setNombreItem(rs.getString("nombreItem"));
+                    item.setPrecioUnitario(rs.getDouble("precioUnitario"));
+                    item.setIdPartidaPresupuestal(rs.getInt("PartidaPresupuestal_idPartidaPresupuestal"));
+                    item.setIdSucursal(rs.getInt("Sucursal_idSucursal"));
+                    item.setEstado(rs.getString("estado"));
+                    item.setDescripcionUso(rs.getString("descripcionUso"));
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ItemDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return item;
+    }
+
+    public static Item buscarPorNombre(String nombreItem, int idSucursal) throws SQLException {
+        Item item = null;
+        String statement = "SELECT idItem, existencias, stockMinimo, stockMaximo, nombreItem, precioUnitario, "
+                + "PartidaPresupuestal_idPartidaPresupuestal, Sucursal_idSucursal, estado, descripcionUso "
+                + "FROM item WHERE nombreItem = ? AND Sucursal_idSucursal = ?";
+
+        try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
+            ps.setString(1, nombreItem);
+            ps.setInt(2, idSucursal);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     item = new Item();

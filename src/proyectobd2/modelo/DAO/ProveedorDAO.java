@@ -76,7 +76,7 @@ public class ProveedorDAO {
         Proveedor p = null;
         String statement = "SELECT idProveedor, razonSocial, RFCProveedor, domicilioFiscal, telefono FROM proveedor WHERE razonSocial = ?";
         try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
-            ps.setString(1, razon + "%");
+            ps.setString(1, razon);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     p = new Proveedor();

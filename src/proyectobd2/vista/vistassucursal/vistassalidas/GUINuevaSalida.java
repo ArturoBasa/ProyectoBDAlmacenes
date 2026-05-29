@@ -6,6 +6,16 @@ package proyectobd2.vista.vistassucursal.vistassalidas;
 
 import java.awt.Frame;
 import proyectobd2.vista.vistassucursal.vistasentradas.GUISeleccionarItem;
+import java.sql.SQLException;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import proyectobd2.modelo.beans.Departamento;
+import proyectobd2.modelo.beans.Empleado;
+import proyectobd2.modelo.beans.Item;
+import proyectobd2.modelo.DAO.DepartamentoDAO;
+import proyectobd2.modelo.DAO.EmpleadoDAO;
+import proyectobd2.modelo.DAO.ItemDAO;
 
 /**
  *
@@ -13,14 +23,22 @@ import proyectobd2.vista.vistassucursal.vistasentradas.GUISeleccionarItem;
  */
 public class GUINuevaSalida extends javax.swing.JDialog {
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(GUINuevaSalida.class.getName());
+
+    private int idSucursal;
+    private Item itemSeleccionado;
+    private List<Departamento> departamentosSucursal;
 
     /**
      * Creates new form GUINuevaSalida
+     * @param parent
+     * @param modal
+     * @param idSucursal
      */
-    public GUINuevaSalida(java.awt.Frame parent, boolean modal) {
+    public GUINuevaSalida(java.awt.Frame parent, boolean modal, int idSucursal) {
         super(parent, modal);
+        this.idSucursal = idSucursal;
         initComponents();
+        cargarDepartamentos();
     }
 
     /**
@@ -37,23 +55,23 @@ public class GUINuevaSalida extends javax.swing.JDialog {
         jLabel2 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        cb_departamentoSolicitante = new javax.swing.JComboBox<>();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btn_cancelar = new javax.swing.JButton();
+        btn_guardar = new javax.swing.JButton();
         jTextField6 = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
-        jSpinner1 = new javax.swing.JSpinner();
+        spn_cantidad = new javax.swing.JSpinner();
         jSeparator1 = new javax.swing.JSeparator();
         jScrollPane1 = new javax.swing.JScrollPane();
         tb_articulos = new javax.swing.JTable();
         btn_agregarArticulo = new javax.swing.JButton();
         spn_fecha = new javax.swing.JSpinner();
-        jComboBox3 = new javax.swing.JComboBox<>();
         lb_nombreItem = new javax.swing.JLabel();
         btn_buscarItem = new javax.swing.JButton();
+        lb_personaEncargada = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -68,7 +86,7 @@ public class GUINuevaSalida extends javax.swing.JDialog {
 
         jLabel6.setText("Uso del material:");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cb_departamentoSolicitante.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel7.setText("Materiales solicitados");
@@ -77,14 +95,19 @@ public class GUINuevaSalida extends javax.swing.JDialog {
 
         jLabel9.setText("Artículo");
 
-        jButton1.setBackground(new java.awt.Color(255, 0, 51));
-        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jButton1.setText("Cancelar");
+        btn_cancelar.setBackground(new java.awt.Color(255, 0, 51));
+        btn_cancelar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btn_cancelar.setText("Cancelar");
+        btn_cancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_cancelarActionPerformed(evt);
+            }
+        });
 
-        jButton2.setBackground(new java.awt.Color(0, 204, 0));
-        jButton2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jButton2.setForeground(new java.awt.Color(0, 0, 0));
-        jButton2.setText("Guardar");
+        btn_guardar.setBackground(new java.awt.Color(0, 204, 0));
+        btn_guardar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btn_guardar.setForeground(new java.awt.Color(0, 0, 0));
+        btn_guardar.setText("Guardar");
 
         jLabel5.setText("Departamento solicitante:");
 
@@ -114,8 +137,6 @@ public class GUINuevaSalida extends javax.swing.JDialog {
         spn_fecha.setModel(new javax.swing.SpinnerDateModel());
         spn_fecha.setEditor(new javax.swing.JSpinner.DateEditor(spn_fecha, "dd/MM/yyyy"));
 
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
         lb_nombreItem.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         btn_buscarItem.setText("Buscar item");
@@ -142,19 +163,11 @@ public class GUINuevaSalida extends javax.swing.JDialog {
                                     .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 490, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addGap(25, 25, 25)
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                             .addComponent(jLabel2)
                                             .addComponent(spn_fecha, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addComponent(jLabel6)
                                             .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 456, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                                .addComponent(jLabel5)
-                                                .addGap(105, 105, 105)
-                                                .addComponent(jLabel4))
-                                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addGap(18, 18, 18)
-                                                .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE))
                                             .addComponent(jLabel7)
                                             .addComponent(jLabel9)
                                             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -162,12 +175,20 @@ public class GUINuevaSalida extends javax.swing.JDialog {
                                                 .addGap(67, 67, 67)
                                                 .addComponent(lb_nombreItem, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))
                                             .addComponent(jLabel8)
-                                            .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                            .addComponent(spn_cantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addComponent(jLabel5)
+                                                    .addComponent(cb_departamentoSolicitante, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addGap(18, 18, 18)
+                                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addComponent(jLabel4)
+                                                    .addComponent(lb_personaEncargada, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(31, 31, 31)
-                                .addComponent(jButton1)
+                                .addComponent(btn_cancelar)
                                 .addGap(36, 36, 36)
-                                .addComponent(jButton2)))
+                                .addComponent(btn_guardar)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(btn_agregarArticulo)
@@ -194,9 +215,9 @@ public class GUINuevaSalida extends javax.swing.JDialog {
                             .addComponent(jLabel5)
                             .addComponent(jLabel4))
                         .addGap(6, 6, 6)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(lb_personaEncargada, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(cb_departamentoSolicitante))
                         .addGap(23, 23, 23)
                         .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
@@ -210,13 +231,13 @@ public class GUINuevaSalida extends javax.swing.JDialog {
                         .addGap(12, 12, 12)
                         .addComponent(jLabel8)
                         .addGap(6, 6, 6)
-                        .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(spn_cantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 510, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(40, 40, 40)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton1)
+                    .addComponent(btn_cancelar)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jButton2)
+                        .addComponent(btn_guardar)
                         .addComponent(btn_agregarArticulo))))
         );
 
@@ -226,22 +247,105 @@ public class GUINuevaSalida extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_buscarItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_buscarItemActionPerformed
-         
-        
-        GUISeleccionarItem seleccionarItem = new GUISeleccionarItem((Frame) this.getOwner(), false);
-        
+        GUISeleccionarItem seleccionarItem = new GUISeleccionarItem(this, true, this.idSucursal);
         seleccionarItem.setVisible(true);
+        String seleccionado = seleccionarItem.getItemSeleccionado();
+        if (seleccionado != null) {
+            try {
+                this.itemSeleccionado = ItemDAO.buscarPorNombre(seleccionado, this.idSucursal);
+                if (this.itemSeleccionado != null) {
+                    lb_nombreItem.setText(this.itemSeleccionado.getNombreItem());
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }//GEN-LAST:event_btn_buscarItemActionPerformed
+
+    private void btn_cancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cancelarActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+    }//GEN-LAST:event_btn_cancelarActionPerformed
+
+    private void btn_agregarArticuloActionPerformed(java.awt.event.ActionEvent evt) {
+        if (itemSeleccionado == null) {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar un artículo.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        int cantidad = (int) spn_cantidad.getValue();
+        if (cantidad <= 0) {
+            JOptionPane.showMessageDialog(this, "La cantidad debe ser mayor a 0.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        DefaultTableModel modelo = (DefaultTableModel) tb_articulos.getModel();
+        
+        for (int i = 0; i < modelo.getRowCount(); i++) {
+            if (modelo.getValueAt(i, 0).equals(itemSeleccionado.getNombreItem())) {
+                JOptionPane.showMessageDialog(this, "El artículo ya está en la lista.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+        }
+
+        Object[] fila = new Object[2];
+        fila[0] = itemSeleccionado.getNombreItem();
+        fila[1] = cantidad;
+        
+        modelo.addRow(fila);
+        
+        itemSeleccionado = null;
+        lb_nombreItem.setText("");
+        spn_cantidad.setValue(0);
+    }
+
+    private void cargarDepartamentos() {
+        try {
+            departamentosSucursal = DepartamentoDAO.obtenerPorSucursal(this.idSucursal);
+            cb_departamentoSolicitante.removeAllItems();
+            for (Departamento d : departamentosSucursal) {
+                cb_departamentoSolicitante.addItem(d.getNombreDepartamento());
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        
+        cb_departamentoSolicitante.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                if (evt.getStateChange() == java.awt.event.ItemEvent.SELECTED) {
+                    actualizarEncargado();
+                }
+            }
+        });
+        
+        if (!departamentosSucursal.isEmpty()) {
+            actualizarEncargado();
+        }
+    }
+
+    private void actualizarEncargado() {
+        int index = cb_departamentoSolicitante.getSelectedIndex();
+        if (index >= 0 && index < departamentosSucursal.size()) {
+            Departamento d = departamentosSucursal.get(index);
+            try {
+                Empleado e = EmpleadoDAO.buscar(d.getIdEncargado());
+                if (e != null) {
+                    lb_personaEncargada.setText(e.getNombre() + " " + e.getApellidos());
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
 
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_agregarArticulo;
     private javax.swing.JButton btn_buscarItem;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox3;
+    private javax.swing.JButton btn_cancelar;
+    private javax.swing.JButton btn_guardar;
+    private javax.swing.JComboBox<String> cb_departamentoSolicitante;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
@@ -253,9 +357,10 @@ public class GUINuevaSalida extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JSpinner jSpinner1;
     private javax.swing.JTextField jTextField6;
     private javax.swing.JLabel lb_nombreItem;
+    private javax.swing.JLabel lb_personaEncargada;
+    private javax.swing.JSpinner spn_cantidad;
     private javax.swing.JSpinner spn_fecha;
     private javax.swing.JTable tb_articulos;
     // End of variables declaration//GEN-END:variables

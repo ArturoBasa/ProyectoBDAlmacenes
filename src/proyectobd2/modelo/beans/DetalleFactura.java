@@ -14,6 +14,7 @@ public class DetalleFactura {
     private int idFactura;
     private int cantidad;
     private Double costo;
+    private String folioFactura;
 
     public DetalleFactura() {
     }
@@ -48,6 +49,14 @@ public class DetalleFactura {
 
     public void setCosto(Double costo) {
         this.costo = costo;
+    }
+
+    public String getFolioFactura() {
+        return folioFactura;
+    }
+
+    public void setFolioFactura(String folioFactura) {
+        this.folioFactura = folioFactura;
     }
 
 }

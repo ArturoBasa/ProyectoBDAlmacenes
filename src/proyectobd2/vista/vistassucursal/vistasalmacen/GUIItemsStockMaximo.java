@@ -49,7 +49,7 @@ public class GUIItemsStockMaximo extends javax.swing.JPanel {
         jPanel4.add(filler3);
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel2.setText("Articulos con stock alto");
+        jLabel2.setText("Articulos con stock máximo");
         jPanel4.add(jLabel2);
         jPanel4.add(filler2);
 

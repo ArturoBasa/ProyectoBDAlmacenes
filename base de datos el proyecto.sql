@@ -1,4 +1,4 @@
-CREATE DATABASE  IF NOT EXISTS "ProyectoBD2" /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+
 USE `ProyectoBD2`;
 -- MySQL dump 10.13  Distrib 8.0.43, for Win64 (x86_64)
 --
@@ -23,8 +23,8 @@ SET @@SESSION.SQL_LOG_BIN= 0;
 -- GTID state at the beginning of the backup 
 --
 
-SET @@GLOBAL.GTID_PURGED=/*!80000 '+'*/ '4548842c-518c-11f1-9214-6a8b449bf1c5:1-333,
-d565136b-5462-11f1-83cb-8e14e0c72622:1-60';
+#SET @@GLOBAL.GTID_PURGED=/*!80000 '+'*/ '4548842c-518c-11f1-9214-6a8b449bf1c5:1-333,
+#d565136b-5462-11f1-83cb-8e14e0c72622:1-60';
 
 --
 -- Table structure for table `alertaStockMaximo`
@@ -194,7 +194,7 @@ UNLOCK TABLES;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'REAL_AS_FLOAT,PIPES_AS_CONCAT,ANSI_QUOTES,IGNORE_SPACE,ONLY_FULL_GROUP_BY,ANSI,STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`avnadmin`@`%`*/ /*!50003 TRIGGER `detalle_factura_AFTER_INSERT` AFTER INSERT ON `detalle_factura` FOR EACH ROW BEGIN
+/*!50003 CREATE*/ /*!50017 */ /*!50003 TRIGGER `detalle_factura_AFTER_INSERT` AFTER INSERT ON `detalle_factura` FOR EACH ROW BEGIN
     	UPDATE item 
 	SET existencias = existencias + NEW.cantidad 
 	WHERE idItem = NEW.Item_idItem;
@@ -247,7 +247,7 @@ UNLOCK TABLES;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'REAL_AS_FLOAT,PIPES_AS_CONCAT,ANSI_QUOTES,IGNORE_SPACE,ONLY_FULL_GROUP_BY,ANSI,STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`avnadmin`@`%`*/ /*!50003 TRIGGER `detalle_salida_AFTER_INSERT` AFTER INSERT ON `detalle_salida` FOR EACH ROW BEGIN
+/*!50003 CREATE*/ /*!50017 */ /*!50003 TRIGGER `detalle_salida_AFTER_INSERT` AFTER INSERT ON `detalle_salida` FOR EACH ROW BEGIN
     UPDATE item 
     SET existencias = existencias - NEW.cantidad 
     WHERE idItem = NEW.Item_idItem;
@@ -408,7 +408,7 @@ UNLOCK TABLES;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'REAL_AS_FLOAT,PIPES_AS_CONCAT,ANSI_QUOTES,IGNORE_SPACE,ONLY_FULL_GROUP_BY,ANSI,STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`avnadmin`@`%`*/ /*!50003 TRIGGER `item_AFTER_UPDATE` AFTER UPDATE ON `item` FOR EACH ROW BEGIN
+/*!50003 CREATE*/ /*!50017 */ /*!50003 TRIGGER `item_AFTER_UPDATE` AFTER UPDATE ON `item` FOR EACH ROW BEGIN
     
     IF OLD.existencias <> NEW.existencias THEN
         IF NEW.existencias < NEW.stockMinimo AND OLD.existencias >= NEW.stockMinimo THEN
@@ -694,7 +694,7 @@ UNLOCK TABLES;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'REAL_AS_FLOAT,PIPES_AS_CONCAT,ANSI_QUOTES,IGNORE_SPACE,ONLY_FULL_GROUP_BY,ANSI,STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER="avnadmin"@"%" PROCEDURE "paCalcularPromedioExacto"(IN pIdItem INT, IN pIdFactura INT)
+CREATE  PROCEDURE "paCalcularPromedioExacto"(IN pIdItem INT, IN pIdFactura INT)
 BEGIN
 
     DECLARE vPromedio DOUBLE DEFAULT 0;
@@ -725,7 +725,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'REAL_AS_FLOAT,PIPES_AS_CONCAT,ANSI_QUOTES,IGNORE_SPACE,ONLY_FULL_GROUP_BY,ANSI,STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER="avnadmin"@"%" PROCEDURE "paDarDeBajaItem"(IN pIdItem INT, IN pRazon VARCHAR(45), IN pDesc VARCHAR(45))
+CREATE  PROCEDURE "paDarDeBajaItem"(IN pIdItem INT, IN pRazon VARCHAR(45), IN pDesc VARCHAR(45))
 BEGIN
     DECLARE vCantidadFinal INT;
     
@@ -759,7 +759,7 @@ DELIMITER ;
 /*!50001 SET character_set_results     = utf8mb4 */;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`avnadmin`@`%` SQL SECURITY DEFINER */
+/*!50013  SQL SECURITY DEFINER */
 /*!50001 VIEW `bajasRegistradas` AS select `bob`.`fecha` AS `fecha`,`i`.`nombreItem` AS `nombreItem`,`bob`.`razonBaja` AS `razonBaja`,`bob`.`cantidadSobrante` AS `cantidadSobrante`,`s`.`idSucursal` AS `idSucursal` from ((`bitacoraoperacionesbajas` `bob` join `item` `i` on((`bob`.`Item_idItem` = `i`.`idItem`))) join `sucursal` `s` on((`i`.`Sucursal_idSucursal` = `s`.`idSucursal`))) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
@@ -777,8 +777,8 @@ DELIMITER ;
 /*!50001 SET character_set_results     = utf8mb4 */;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`avnadmin`@`%` SQL SECURITY DEFINER */
-/*!50001 VIEW `entradasView` (`folio`,`fechaFactura`,`proveedor`,`rfc`,`total`,`sucursal`) AS select `f`.`folioFactura` AS `folio`,`f`.`fechaFactura` AS `fechaFactura`,`p`.`razonSocial` AS `proveedor`,`p`.`RFCProveedor` AS `rfc`,`f`.`precioTotal` AS `total`,`s`.`idSucursal` AS `idSucursal` from ((((`factura` `f` join `proveedor` `p` on((`f`.`Proveedor_idProveedor` = `p`.`idProveedor`))) join `detalle_factura` `df` on((`f`.`idFactura` = `df`.`Factura_idFactura`))) join `item` `i` on((`df`.`Item_idItem` = `i`.`idItem`))) join `sucursal` `s` on((`i`.`Sucursal_idSucursal` = `s`.`idSucursal`))) */;
+/*!50013  SQL SECURITY DEFINER */
+/*!50001 VIEW `entradasView` (`folio`,`fechaFactura`,`proveedor`,`rfc`,`total`,`sucursal`) AS select DISTINCT `f`.`folioFactura` AS `folio`,`f`.`fechaFactura` AS `fechaFactura`,`p`.`razonSocial` AS `proveedor`,`p`.`RFCProveedor` AS `rfc`,`f`.`precioTotal` AS `total`,`s`.`idSucursal` AS `idSucursal` from ((((`factura` `f` join `proveedor` `p` on((`f`.`Proveedor_idProveedor` = `p`.`idProveedor`))) join `detalle_factura` `df` on((`f`.`idFactura` = `df`.`Factura_idFactura`))) join `item` `i` on((`df`.`Item_idItem` = `i`.`idItem`))) join `sucursal` `s` on((`i`.`Sucursal_idSucursal` = `s`.`idSucursal`))) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -795,7 +795,7 @@ DELIMITER ;
 /*!50001 SET character_set_results     = utf8mb4 */;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`avnadmin`@`%` SQL SECURITY DEFINER */
+/*!50013  SQL SECURITY DEFINER */
 /*!50001 VIEW `itemPorDepartamento` (`departamento`,`item`,`cantidad`,`sucursal`) AS select `d`.`nombreDepartamento` AS `departamento`,`i`.`nombreItem` AS `nombreItem`,`ds`.`cantidad` AS `cantidad`,`s`.`nombreSucursal` AS `nombreSucursal` from (((((`departamento` `d` join `sucursal` `s` on((`d`.`Sucursal_idSucursal` = `s`.`idSucursal`))) join `empleado` `e` on((`e`.`idDepartamentoEncargado` = `d`.`idDepartamento`))) join `peticionsalida` `ps` on((`ps`.`idEmpleadoAlmacen` = `e`.`idEmpleado`))) join `detalle_salida` `ds` on((`ds`.`PeticionSalida_idPeticionSalida` = `ps`.`idPeticionSalida`))) join `item` `i` on((`i`.`idItem` = `ds`.`Item_idItem`))) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
@@ -813,8 +813,8 @@ DELIMITER ;
 /*!50001 SET character_set_results     = utf8mb4 */;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`avnadmin`@`%` SQL SECURITY DEFINER */
-/*!50001 VIEW `itemPorFactura` (`folio`,`item`,`cantidad`,`sucursal`) AS select `f`.`folioFactura` AS `folio`,`i`.`nombreItem` AS `item`,`df`.`cantidad` AS `cantidad`,`s`.`nombreSucursal` AS `sucursal` from (((`detalle_factura` `df` join `item` `i` on((`i`.`idItem` = `df`.`Item_idItem`))) join `factura` `f` on((`f`.`idFactura` = `df`.`Factura_idFactura`))) join `sucursal` `s` on((`i`.`Sucursal_idSucursal` = `s`.`idSucursal`))) */;
+/*!50013  SQL SECURITY DEFINER */
+/*!50001 VIEW `itemPorFactura` (`folio`,`item`,`cantidad`,`sucursal`) AS select DISTINCT `f`.`folioFactura` AS `folio`,`i`.`nombreItem` AS `item`,`df`.`cantidad` AS `cantidad`,`s`.`nombreSucursal` AS `sucursal` from (((`detalle_factura` `df` join `item` `i` on((`i`.`idItem` = `df`.`Item_idItem`))) join `factura` `f` on((`f`.`idFactura` = `df`.`Factura_idFactura`))) join `sucursal` `s` on((`i`.`Sucursal_idSucursal` = `s`.`idSucursal`))) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -831,7 +831,7 @@ DELIMITER ;
 /*!50001 SET character_set_results     = utf8mb4 */;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`avnadmin`@`%` SQL SECURITY DEFINER */
+/*!50013  SQL SECURITY DEFINER */
 /*!50001 VIEW `itemsStockMaximoPorSucursal` AS select `i`.`nombreItem` AS `nombreItem`,`i`.`existencias` AS `existencias`,`i`.`stockMaximo` AS `stockMaximo`,(`i`.`existencias` - `i`.`stockMaximo`) AS `excedente`,`s`.`idSucursal` AS `idSucursal` from ((`alertaStockMaximo` `asm` join `item` `i` on((`asm`.`idItem` = `i`.`idItem`))) join `sucursal` `s` on((`i`.`Sucursal_idSucursal` = `s`.`idSucursal`))) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
@@ -849,7 +849,7 @@ DELIMITER ;
 /*!50001 SET character_set_results     = utf8mb4 */;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`avnadmin`@`%` SQL SECURITY DEFINER */
+/*!50013  SQL SECURITY DEFINER */
 /*!50001 VIEW `itemsStockMinimoPorSucursal` AS select `i`.`nombreItem` AS `nombreItem`,`i`.`existencias` AS `existencias`,`i`.`stockMinimo` AS `stockMinimo`,(`i`.`existencias` - `i`.`stockMinimo`) AS `diferencia`,`s`.`idSucursal` AS `idSucursal` from ((`bitacorapedidos` `bp` join `item` `i` on((`bp`.`Item_idItem` = `i`.`idItem`))) join `sucursal` `s` on((`i`.`Sucursal_idSucursal` = `s`.`idSucursal`))) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
@@ -867,7 +867,7 @@ DELIMITER ;
 /*!50001 SET character_set_results     = utf8mb4 */;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`avnadmin`@`%` SQL SECURITY DEFINER */
+/*!50013  SQL SECURITY DEFINER */
 /*!50001 VIEW `salidasView` (`fecha`,`departamento`,`encargado`,`descripcion`,`idSucursal`) AS select `ps`.`fecha` AS `fecha`,`d`.`nombreDepartamento` AS `departamento`,`e`.`nombre` AS `encargado`,`ep`.`descripcion` AS `descripcion`,`s`.`idSucursal` AS `idSucursal` from ((((`peticionsalida` `ps` join `empleado` `e` on((`ps`.`idEmpleadoAlmacen` = `e`.`idEmpleado`))) join `departamento` `d` on((`d`.`idDepartamento` = `e`.`idDepartamentoEncargado`))) join `estadoPeticion` `ep` on((`ep`.`idestadoPeticion` = `ps`.`idEstadoPeticion`))) join `sucursal` `s` on((`d`.`Sucursal_idSucursal` = `s`.`idSucursal`))) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;

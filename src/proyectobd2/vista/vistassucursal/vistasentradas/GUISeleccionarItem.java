@@ -16,23 +16,42 @@ import proyectobd2.modelo.beans.Item;
  */
 public class GUISeleccionarItem extends javax.swing.JDialog {
 
-    
+    private int idSucursal;
+    private String itemSeleccionado = null;
 
     /**
      * Creates new form GUISeleccionarItem
      *
      * @param parent
      * @param modal
+     * @param idSucursal
      */
-    public GUISeleccionarItem(java.awt.Frame parent, boolean modal) {
+    public GUISeleccionarItem(java.awt.Dialog parent, boolean modal, int idSucursal) {
         super(parent, modal);
+        this.idSucursal = idSucursal;
         initComponents();
         llenarTabla();
+        
+        tb_items.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                if (evt.getClickCount() == 2) {
+                    int fila = tb_items.getSelectedRow();
+                    if (fila != -1) {
+                        itemSeleccionado = tb_items.getValueAt(fila, 0).toString();
+                        dispose();
+                    }
+                }
+            }
+        });
+    }
+
+    public String getItemSeleccionado() {
+        return itemSeleccionado;
     }
 
     private void llenarTabla() {
         try {
-            List<Item> listaItems = ItemDAO.obtenerListaObjetos();
+            List<Item> listaItems = ItemDAO.obtenerListaPorSucursal(this.idSucursal);
 
             DefaultTableModel modelo = (DefaultTableModel) tb_items.getModel();
             modelo.setRowCount(0);
@@ -87,7 +106,15 @@ public class GUISeleccionarItem extends javax.swing.JDialog {
             new String [] {
                 "Nombre item", "Existencias "
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(tb_items);
 
         getContentPane().add(jScrollPane1, java.awt.BorderLayout.CENTER);

@@ -97,7 +97,7 @@ public class FacturaDAO {
     }
 
     public static Factura buscarPorFolio(String folio) throws SQLException {
-        String statement = "SELECT idFactura, folioFactura, fechaFactura, precioTotal, Proveedor_idProveedor FROM factura";
+        String statement = "SELECT idFactura, folioFactura, fechaFactura, precioTotal, Proveedor_idProveedor FROM factura WHERE folioFactura = ?";
 
         try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
             ps.setString(1, folio);

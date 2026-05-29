@@ -42,6 +42,7 @@ public class GUIEntradas extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
         jPanel1 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         txt_folio = new javax.swing.JTextField();
         btn_buscar = new javax.swing.JButton();
@@ -56,6 +57,10 @@ public class GUIEntradas extends javax.swing.JPanel {
         jScrollPane1.setViewportView(jTextArea1);
 
         setLayout(new java.awt.BorderLayout());
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel2.setText("PANEL ENTRADAS");
+        jPanel1.add(jLabel2);
 
         jLabel1.setText("Buscar por folio de factura:");
         jPanel1.add(jLabel1);
@@ -109,7 +114,7 @@ public class GUIEntradas extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_nuevaEntradaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_nuevaEntradaActionPerformed
-        GUINuevaEntrada nuevaEntrada = new GUINuevaEntrada(this.framePadre, true);
+        GUINuevaEntrada nuevaEntrada = new GUINuevaEntrada(this.framePadre, true, this.idSucursal);
         nuevaEntrada.setVisible(true);
     }//GEN-LAST:event_btn_nuevaEntradaActionPerformed
 
@@ -148,6 +153,7 @@ public class GUIEntradas extends javax.swing.JPanel {
     private javax.swing.JButton btn_buscar;
     private javax.swing.JButton btn_nuevaEntrada;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;

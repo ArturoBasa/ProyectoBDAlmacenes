@@ -27,11 +27,8 @@ public class GUINuevaEntrada extends javax.swing.JDialog {
     private List<PartidaPresupuestal> listaPartidas;
     private List<Proveedor> listaProveedores;
     private double total = 0;
+    private int idSucursal;
 
-    
-    
-    
-    
     java.awt.Frame parent;
 
     /**
@@ -39,14 +36,34 @@ public class GUINuevaEntrada extends javax.swing.JDialog {
      *
      * @param parent
      * @param modal
+     * @param idSucursal
      */
-    public GUINuevaEntrada(java.awt.Frame parent, boolean modal) {
+    public GUINuevaEntrada(java.awt.Frame parent, boolean modal, int idSucursal) {
         super(parent, modal);
         this.parent = parent;
+        this.idSucursal = idSucursal;
         initComponents();
         prepararComboBoxPartidas();
         prepararProveedores();
 
+        txt_folioFactura.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                String folio = txt_folioFactura.getText();
+                if (!folio.trim().isEmpty()) {
+                    try {
+                        if (FacturaDAO.buscarPorFolio(folio) != null) {
+                            JOptionPane.showMessageDialog(GUINuevaEntrada.this,
+                                    "El folio ingresado ya existe. Por favor, ingresa uno diferente.",
+                                    "Folio duplicado", JOptionPane.WARNING_MESSAGE);
+                            txt_folioFactura.setText("");
+                            txt_folioFactura.requestFocus();
+                        }
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+            }
+        });
     }
 
     private void prepararComboBoxPartidas() {
@@ -422,36 +439,60 @@ public class GUINuevaEntrada extends javax.swing.JDialog {
 
         Factura f = prepararFactura();
         if(f == null){
-            JOptionPane.showMessageDialog(this, "El folio ya está registrado...");
+            JOptionPane.showMessageDialog(this, "El folio ya está registrado o hay un error en los datos...");
             return;
         }
-        ArrayList<Item> items = new ArrayList<>();
+        
+        if (FacturaDAO.insertar(f) == 0) {
+            JOptionPane.showMessageDialog(this, "Error al guardar la factura.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        try {
+            f = FacturaDAO.buscarPorFolio(f.getFolioFactura());
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this, "Error al recuperar la factura guardada.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
 
         DefaultTableModel modelo = (DefaultTableModel) tb_articulos.getModel();
 
         for (int i = 0; i < modelo.getRowCount(); i++) {
 
-            // 3. Extraemos los datos de cada columna especificando (fila, columna)
-            // El índice 'i' representa la fila actual en el ciclo
             String descripcion = modelo.getValueAt(i, 0).toString();
             int cantidad = (Integer) modelo.getValueAt(i, 1);
             double costoUnitario = (Double) modelo.getValueAt(i, 2);
 
             try {
-                PartidaPresupuestal partida = PartidaPresupuestalDAO.buscarPorNombre(modelo.getValueAt(i, 3).toString());
+                Item item = proyectobd2.modelo.DAO.ItemDAO.buscarPorNombre(descripcion, this.idSucursal);
+                if (item != null) {
+                    item.setExistencias(item.getExistencias() + cantidad);
+                    proyectobd2.modelo.DAO.ItemDAO.modificar(item);
+                    
+                    proyectobd2.modelo.beans.DetalleFactura detalle = new proyectobd2.modelo.beans.DetalleFactura();
+                    detalle.setIdFactura(f.getIdFactura());
+                    detalle.setIdItem(item.getIdItem());
+                    detalle.setCantidad(cantidad);
+                    detalle.setCosto(costoUnitario);
+                    detalle.setFolioFactura(f.getFolioFactura());
+                    proyectobd2.modelo.DAO.DetalleFacturaDAO.insertar(detalle);
+                }
             } catch (SQLException ex) {
-                return;
-
+                ex.printStackTrace();
             }
-
-            Item item = new Item();
-//            item.set
         }
+        
+        JOptionPane.showMessageDialog(this, "Entrada registrada exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+        this.dispose();
     }//GEN-LAST:event_btn_guardarActionPerformed
 
     private void btn_buscarItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_buscarItemActionPerformed
-        GUISeleccionarItem seleccionarItem = new GUISeleccionarItem(parent, false);
+        GUISeleccionarItem seleccionarItem = new GUISeleccionarItem(this, true, this.idSucursal);
         seleccionarItem.setVisible(true);
+        String seleccionado = seleccionarItem.getItemSeleccionado();
+        if (seleccionado != null) {
+            lb_nombreItem.setText(seleccionado);
+        }
     }//GEN-LAST:event_btn_buscarItemActionPerformed
 
     private Factura prepararFactura() {
@@ -459,12 +500,11 @@ public class GUINuevaEntrada extends javax.swing.JDialog {
         Factura f = new Factura();
         String folioFactura = txt_folioFactura.getText();
         try {
-            if (FacturaDAO.buscarPorFolio(folioFactura) == null) {
-                
+            if (FacturaDAO.buscarPorFolio(folioFactura) != null) {
                 return null;
             }
         } catch (SQLException ex) {
-
+            return null;
         }
 
         f.setFolioFactura(folioFactura);

@@ -23,7 +23,7 @@ public class DetalleFacturaDAO {
 
     public static int insertar(DetalleFactura detalle) {
         int valor = 0;
-        String statement = "INSERT INTO detallefactura (Item_idItem, Factura_idFactura, cantidad, costo) VALUES (?,?,?,?)";
+        String statement = "INSERT INTO detalle_factura (Item_idItem, Factura_idFactura, cantidad, costo, Factura_folioFactura) VALUES (?,?,?,?,?)";
 
         try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
 
@@ -31,6 +31,7 @@ public class DetalleFacturaDAO {
             ps.setInt(2, detalle.getIdFactura());
             ps.setInt(3, detalle.getCantidad());
             ps.setDouble(4, detalle.getCosto());
+            ps.setString(5, detalle.getFolioFactura());
 
             valor = ps.executeUpdate();
         } catch (SQLException ex) {
@@ -41,7 +42,7 @@ public class DetalleFacturaDAO {
 
     public static List<DetalleFactura> obtenerListaObjetos() throws SQLException {
         List<DetalleFactura> listaDetalles = new ArrayList<>();
-        String statement = "SELECT Item_idItem, Factura_idFactura, cantidad, costo FROM detallefactura";
+        String statement = "SELECT Item_idItem, Factura_idFactura, cantidad, costo, Factura_folioFactura FROM detalle_factura";
 
         try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement); ResultSet rs = ps.executeQuery()) {
 
@@ -51,6 +52,7 @@ public class DetalleFacturaDAO {
                 df.setIdFactura(rs.getInt("Factura_idFactura"));
                 df.setCantidad(rs.getInt("cantidad"));
                 df.setCosto(rs.getDouble("costo"));
+                df.setFolioFactura(rs.getString("Factura_folioFactura"));
                 listaDetalles.add(df);
             }
         } catch (SQLException ex) {
@@ -65,7 +67,7 @@ public class DetalleFacturaDAO {
 
     public static DetalleFactura buscar(int idItem, int idFactura) throws SQLException {
         DetalleFactura df = null;
-        String statement = "SELECT Item_idItem, Factura_idFactura, cantidad, costo FROM detallefactura "
+        String statement = "SELECT Item_idItem, Factura_idFactura, cantidad, costo, Factura_folioFactura FROM detalle_factura "
                 + "WHERE Item_idItem = ? AND Factura_idFactura = ?";
 
         try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
@@ -80,6 +82,7 @@ public class DetalleFacturaDAO {
                     df.setIdFactura(rs.getInt("Factura_idFactura"));
                     df.setCantidad(rs.getInt("cantidad"));
                     df.setCosto(rs.getDouble("costo"));
+                    df.setFolioFactura(rs.getString("Factura_folioFactura"));
                 }
             }
         } catch (SQLException ex) {
@@ -94,7 +97,7 @@ public class DetalleFacturaDAO {
 
     public static int eliminar(int idItem, int idFactura) {
         int valor = 0;
-        String statement = "DELETE FROM detallefactura WHERE Item_idItem = ? AND Factura_idFactura = ?";
+        String statement = "DELETE FROM detalle_factura WHERE Item_idItem = ? AND Factura_idFactura = ?";
 
         try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
             ps.setInt(1, idItem);
@@ -108,15 +111,16 @@ public class DetalleFacturaDAO {
 
     public static int modificar(DetalleFactura detalle) {
         int valor = 0;
-        String statement = "UPDATE detallefactura SET cantidad = ?, costo = ? "
+        String statement = "UPDATE detalle_factura SET cantidad = ?, costo = ?, Factura_folioFactura = ? "
                 + "WHERE Item_idItem = ? AND Factura_idFactura = ?";
 
         try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
 
             ps.setInt(1, detalle.getCantidad());
             ps.setDouble(2, detalle.getCosto());
-            ps.setInt(3, detalle.getIdItem());
-            ps.setInt(4, detalle.getIdFactura());
+            ps.setString(3, detalle.getFolioFactura());
+            ps.setInt(4, detalle.getIdItem());
+            ps.setInt(5, detalle.getIdFactura());
 
             valor = ps.executeUpdate();
         } catch (SQLException ex) {

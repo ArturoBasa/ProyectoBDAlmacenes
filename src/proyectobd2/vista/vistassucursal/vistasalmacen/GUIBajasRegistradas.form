@@ -74,7 +74,7 @@
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Segoe UI" size="18" style="1"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Bitacora de operaciones"/>
+            <Property name="text" type="java.lang.String" value="Bitacora de bajas"/>
           </Properties>
         </Component>
         <Component class="javax.swing.Box$Filler" name="filler1">

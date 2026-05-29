@@ -43,6 +43,8 @@ public class GUIPrincipalCentral extends javax.swing.JFrame {
 //        pnl_cuerpo.add(new GUIReportes(), "CARD_REPORTES");
 //        pnl_cuerpo.add(new GUIKardex(), "CARD_KARDEX");
 //        pnl_cuerpo.add(new GUICatalogo(), "CARD_CATALOGOS");
+        
+        card.show(pnl_cuerpo, "entradas");
     }
 
     /**
