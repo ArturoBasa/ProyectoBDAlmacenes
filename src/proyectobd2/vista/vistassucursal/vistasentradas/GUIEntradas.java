@@ -7,6 +7,9 @@ package proyectobd2.vista.vistassucursal.vistasentradas;
 import proyectobd2.vista.GUIArticulosFactura;
 import java.sql.SQLException;
 import javax.swing.JFrame;
+import java.util.logging.Logger;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.SwingUtilities;
 import proyectobd2.modelo.DAO.FacturaDAO;
 
@@ -15,19 +18,29 @@ import proyectobd2.modelo.DAO.FacturaDAO;
  * @author endri
  */
 public class GUIEntradas extends javax.swing.JPanel {
-    
+
     private JFrame framePadre = (JFrame) SwingUtilities.getAncestorOfClass(JFrame.class, this);
-    
+
     private final int idSucursal;
 
     /**
      * Creates new form Dashboard
+     *
      * @param idSucursal
      */
     public GUIEntradas(int idSucursal) {
         initComponents();
         this.idSucursal = idSucursal;
-        FacturaDAO.obtenerEntradas(tb_entradas, this.idSucursal);
+        llenarTabla();
+    }
+    
+    private void llenarTabla() {
+        DefaultTableModel modelo = (DefaultTableModel) tb_entradas.getModel();
+        modelo.setRowCount(0);
+        List<Object[]> datos = FacturaDAO.obtenerEntradas(idSucursal);
+        for (Object[] fila : datos) {
+            modelo.addRow(fila);
+        }
     }
 
     /**
@@ -126,8 +139,6 @@ public class GUIEntradas extends javax.swing.JPanel {
             if (fila != -1) {
                 String folio = tb_entradas.getValueAt(fila, 0).toString();
 
-                
-
                 GUIArticulosFactura articulosFactura = new GUIArticulosFactura(this.framePadre, true, folio);
                 articulosFactura.setVisible(true);
 
@@ -139,13 +150,18 @@ public class GUIEntradas extends javax.swing.JPanel {
         String folio = txt_folio.getText();
         if (!folio.isEmpty()) {
             try {
-                FacturaDAO.rellenarTablaEntradas(folio, idSucursal, tb_entradas);
+                DefaultTableModel modelo = (DefaultTableModel) tb_entradas.getModel();
+                modelo.setRowCount(0);
+                List<Object[]> datos = FacturaDAO.rellenarTablaEntradas(folio, idSucursal);
+                for (Object[] fila : datos) {
+                    modelo.addRow(fila);
+                }
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
 
-        }else{
-            FacturaDAO.obtenerEntradas(tb_entradas, this.idSucursal);
+        } else {
+            llenarTabla();
         }
     }//GEN-LAST:event_btn_buscarActionPerformed
 

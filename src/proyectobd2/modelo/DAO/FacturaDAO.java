@@ -12,8 +12,8 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.sql.PreparedStatement;
-import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
+import java.util.ArrayList;
+import java.util.List;
 import proyectobd2.modelo.Conexion;
 import proyectobd2.modelo.beans.Factura;
 
@@ -67,11 +67,9 @@ public class FacturaDAO {
         return null;
     }
 
-    public static void rellenarTablaEntradas(String folioFactura, int idSucursal, JTable tb_entradas) throws SQLException {
-
+    public static List<Object[]> rellenarTablaEntradas(String folioFactura, int idSucursal) throws SQLException {
+        List<Object[]> listaFilas = new ArrayList<>();
         String statement = "SELECT folio, fechaFactura, proveedor, rfc, total FROM entradasView WHERE sucursal = ? AND folio LIKE ?";
-        DefaultTableModel modelo = (DefaultTableModel) tb_entradas.getModel();
-        modelo.setRowCount(0);
 
         try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
             ps.setInt(1, idSucursal);
@@ -83,24 +81,22 @@ public class FacturaDAO {
                 while (rs.next()) {
                     Object[] fila = new Object[columnas];
                     for (int i = 0; i < columnas; i++) {
-
                         fila[i] = rs.getObject(i + 1);
                     }
-                    modelo.addRow(fila);
-
+                    listaFilas.add(fila);
                 }
             }
 
         } catch (SQLException ex) {
             Logger.getLogger(FacturaDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        return listaFilas;
     }
 
-    public static void rellenarTablaEntradasGlobal(String folioFactura, JTable tb_entradas) throws SQLException {
-
+    public static List<Object[]> rellenarTablaEntradasGlobal(String folioFactura) throws SQLException {
+        List<Object[]> listaFilas = new ArrayList<>();
         String statement = "SELECT v.folio, v.fechaFactura, v.proveedor, v.rfc, v.total, s.nombreSucursal FROM entradasView v JOIN sucursal s ON v.sucursal = s.idSucursal WHERE v.folio LIKE ?";
-        DefaultTableModel modelo = (DefaultTableModel) tb_entradas.getModel();
-        modelo.setRowCount(0);
 
         try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
             ps.setString(1, folioFactura + "%");
@@ -113,13 +109,15 @@ public class FacturaDAO {
                     for (int i = 0; i < columnas; i++) {
                         fila[i] = rs.getObject(i + 1);
                     }
-                    modelo.addRow(fila);
+                    listaFilas.add(fila);
                 }
             }
 
         } catch (SQLException ex) {
             Logger.getLogger(FacturaDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        return listaFilas;
     }
 
     public static Factura buscarPorFolio(String folio) throws SQLException {
@@ -129,7 +127,6 @@ public class FacturaDAO {
             ps.setString(1, folio);
 
             try (ResultSet rs = ps.executeQuery();) {
-                
 
                 if (rs.next()) {
                     Factura f = new Factura();
@@ -193,11 +190,9 @@ public class FacturaDAO {
         return valor;
     }
 
-    public static void obtenerEntradas(JTable tb_entradas, int idSucursal) {
-
+    public static List<Object[]> obtenerEntradas(int idSucursal) {
+        List<Object[]> listaFilas = new ArrayList<>();
         String statement = "SELECT folio, fechaFactura, proveedor, rfc, total FROM entradasView WHERE sucursal = ?";
-        DefaultTableModel modelo = (DefaultTableModel) tb_entradas.getModel();
-        modelo.setRowCount(0);
 
         try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
             ps.setInt(1, idSucursal);
@@ -208,25 +203,22 @@ public class FacturaDAO {
                 while (rs.next()) {
                     Object[] fila = new Object[columnas];
                     for (int i = 0; i < columnas; i++) {
-
                         fila[i] = rs.getObject(i + 1);
                     }
-                    modelo.addRow(fila);
-
+                    listaFilas.add(fila);
                 }
             }
-
+            
         } catch (SQLException ex) {
             Logger.getLogger(FacturaDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+       
+        return listaFilas;
     }
 
-    public static void obtenerEntradasGlobales(JTable tb_entradas) {
-
+    public static List<Object[]> obtenerEntradasGlobales() {
+        List<Object[]> listaFilas = new ArrayList<>();
         String statement = "SELECT v.folio, v.fechaFactura, v.proveedor, v.rfc, v.total, s.nombreSucursal FROM entradasView v JOIN sucursal s ON v.sucursal = s.idSucursal";
-        DefaultTableModel modelo = (DefaultTableModel) tb_entradas.getModel();
-        modelo.setRowCount(0);
 
         try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
 
@@ -238,38 +230,38 @@ public class FacturaDAO {
                     for (int i = 0; i < columnas; i++) {
                         fila[i] = rs.getObject(i + 1);
                     }
-                    modelo.addRow(fila);
+                    listaFilas.add(fila);
                 }
             }
 
         } catch (SQLException ex) {
             Logger.getLogger(FacturaDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        
+        return listaFilas;
     }
 
-    public static void obtenerArticulosFolio(JTable tb_articulosFolio, String folio) {
+    public static List<Object[]> obtenerArticulosFolio(String folio) {
+        List<Object[]> listaFilas = new ArrayList<>();
         String statement = "SELECT item, cantidad, sucursal FROM itemPorFactura WHERE folio = ?";
-        DefaultTableModel modelo = (DefaultTableModel) tb_articulosFolio.getModel();
-        modelo.setRowCount(0);
 
         try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
             ps.setString(1, folio);
             try (ResultSet rs = ps.executeQuery()) {
                 int columnas = rs.getMetaData().getColumnCount();
-                Object[] fila = new Object[columnas];
                 while (rs.next()) {
+                    Object[] fila = new Object[columnas];
                     for (int i = 0; i < columnas; i++) {
-
                         fila[i] = rs.getObject(i + 1);
                     }
-                    modelo.addRow(fila);
-
+                    listaFilas.add(fila);
                 }
             }
 
         } catch (SQLException ex) {
             Logger.getLogger(FacturaDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        return listaFilas;
     }
 }

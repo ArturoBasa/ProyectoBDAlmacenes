@@ -7,6 +7,8 @@ package proyectobd2.vista.vistascentral.almacen;
 import proyectobd2.vista.vistassucursal.vistasalmacen.*;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
 import proyectobd2.modelo.DAO.BitacoraOperacionesBajaDAO;
 
 /**
@@ -22,7 +24,16 @@ public class GUIBajasRegistradasCentral extends javax.swing.JPanel {
      */
     public GUIBajasRegistradasCentral() {
         initComponents();
-        BitacoraOperacionesBajaDAO.obtenerBajasRegistradasGlobales(tb_bajas);
+        llenarTabla();
+    }
+    
+    private void llenarTabla() {
+        DefaultTableModel modelo = (DefaultTableModel) tb_bajas.getModel();
+        modelo.setRowCount(0);
+        List<Object[]> datos = BitacoraOperacionesBajaDAO.obtenerBajasRegistradasGlobales();
+        for (Object[] fila : datos) {
+            modelo.addRow(fila);
+        }
     }
 
     /**

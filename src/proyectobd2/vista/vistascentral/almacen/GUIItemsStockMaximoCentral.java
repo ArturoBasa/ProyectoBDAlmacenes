@@ -6,6 +6,8 @@ package proyectobd2.vista.vistascentral.almacen;
 
 import proyectobd2.vista.vistassucursal.vistasalmacen.*;
 import java.io.IOException;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
 import proyectobd2.modelo.DAO.AlertaStockMaximoDAO;
 import proyectobd2.modelo.ExportarExcel;
 
@@ -21,7 +23,16 @@ public class GUIItemsStockMaximoCentral extends javax.swing.JPanel {
      */
     public GUIItemsStockMaximoCentral() {
         initComponents();
-        AlertaStockMaximoDAO.obtenerItemsStockMaximoGlobales(tb_stockMaximo);
+        llenarTabla();
+    }
+    
+    private void llenarTabla() {
+        DefaultTableModel modelo = (DefaultTableModel) tb_stockMaximo.getModel();
+        modelo.setRowCount(0);
+        List<Object[]> datos = AlertaStockMaximoDAO.obtenerItemsStockMaximoGlobales();
+        for (Object[] fila : datos) {
+            modelo.addRow(fila);
+        }
     }
 
     /**

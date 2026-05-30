@@ -4,6 +4,8 @@
  */
 package proyectobd2.vista;
 
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
 import proyectobd2.modelo.DAO.PeticionSalidaDAO;
 
 /**
@@ -12,6 +14,8 @@ import proyectobd2.modelo.DAO.PeticionSalidaDAO;
  */
 public class GUIArticulosPeticion extends javax.swing.JDialog {
 
+
+    private String departamento;
 
     /**
      * Creates new form GUIArticulosPeticion
@@ -22,12 +26,20 @@ public class GUIArticulosPeticion extends javax.swing.JDialog {
     public GUIArticulosPeticion(java.awt.Frame parent, boolean modal, String departamento) {
         super(parent, modal);
         initComponents();
+        this.departamento = departamento;
         lb_departamento.setText(departamento);
-        
-        PeticionSalidaDAO.obtenerArticulosDepartamento(tb_articulosDepartamento, departamento);
         this.pack();
         this.setLocationRelativeTo(null);
-
+        llenarTabla();
+    }
+    
+    private void llenarTabla() {
+        DefaultTableModel modelo = (DefaultTableModel) tb_articulosDepartamento.getModel();
+        modelo.setRowCount(0);
+        List<Object[]> datos = PeticionSalidaDAO.obtenerArticulosDepartamento(departamento);
+        for (Object[] fila : datos) {
+            modelo.addRow(fila);
+        }
     }
 
     /**

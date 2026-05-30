@@ -4,6 +4,8 @@
  */
 package proyectobd2.vista;
 
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
 import proyectobd2.modelo.DAO.FacturaDAO;
 import proyectobd2.modelo.beans.Factura;
 
@@ -14,19 +16,25 @@ import proyectobd2.modelo.beans.Factura;
 public class GUIArticulosFactura extends javax.swing.JDialog {
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(GUIArticulosFactura.class.getName());
+    private String folio;
 
-    /**
-     * Creates new form GUIArticulosFactura
-     */
     public GUIArticulosFactura(java.awt.Frame parent, boolean modal, String folio) {
         super(parent, modal);
         initComponents();
+        this.folio = folio;
         lb_folio.setText(folio);
-        
-        FacturaDAO.obtenerArticulosFolio(tb_articulosFolio, folio);
         this.pack();
         this.setLocationRelativeTo(null);
-        
+        llenarTabla();
+    }
+    
+    private void llenarTabla() {
+        DefaultTableModel modelo = (DefaultTableModel) tb_articulosFolio.getModel();
+        modelo.setRowCount(0);
+        List<Object[]> datos = FacturaDAO.obtenerArticulosFolio(folio);
+        for (Object[] fila : datos) {
+            modelo.addRow(fila);
+        }
     }
 
     /**

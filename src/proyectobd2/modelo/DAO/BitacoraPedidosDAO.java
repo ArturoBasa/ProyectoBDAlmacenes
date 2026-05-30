@@ -12,8 +12,8 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.sql.PreparedStatement;
-import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
+import java.sql.ResultSet;
+import java.util.List;
 import proyectobd2.modelo.Conexion;
 import proyectobd2.modelo.beans.BitacoraPedidos;
 
@@ -114,11 +114,9 @@ public class BitacoraPedidosDAO {
         return valor;
     }
     
-    public static void obtenerItemsStockMinimo(JTable tb_stockMinimo, int idSucursal) {
-
+    public static List<Object[]> obtenerItemsStockMinimo(int idSucursal) {
+        List<Object[]> listaFilas = new ArrayList<>();
         String statement = "SELECT nombreItem , existencias , stockMinimo, diferencia FROM itemsStockMinimoPorSucursal WHERE idSucursal = ?";
-        DefaultTableModel modelo = (DefaultTableModel) tb_stockMinimo.getModel();
-        modelo.setRowCount(0);
 
         try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
             ps.setInt(1, idSucursal);
@@ -129,25 +127,22 @@ public class BitacoraPedidosDAO {
                 while (rs.next()) {
                     Object[] fila = new Object[columnas];
                     for (int i = 0; i < columnas; i++) {
-
                         fila[i] = rs.getObject(i + 1);
                     }
-                    modelo.addRow(fila);
-
+                    listaFilas.add(fila);
                 }
             }
 
         } catch (SQLException ex) {
             Logger.getLogger(FacturaDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        
+        return listaFilas;
     }
 
-    public static void obtenerItemsStockMinimoGlobales(JTable tb_stockMinimo) {
-
+    public static List<Object[]> obtenerItemsStockMinimoGlobales() {
+        List<Object[]> listaFilas = new ArrayList<>();
         String statement = "SELECT v.nombreItem , v.existencias , v.stockMinimo, v.diferencia, s.nombreSucursal FROM itemsStockMinimoPorSucursal v JOIN sucursal s ON v.idSucursal = s.idSucursal";
-        DefaultTableModel modelo = (DefaultTableModel) tb_stockMinimo.getModel();
-        modelo.setRowCount(0);
 
         try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
 
@@ -157,17 +152,16 @@ public class BitacoraPedidosDAO {
                 while (rs.next()) {
                     Object[] fila = new Object[columnas];
                     for (int i = 0; i < columnas; i++) {
-
                         fila[i] = rs.getObject(i + 1);
                     }
-                    modelo.addRow(fila);
-
+                    listaFilas.add(fila);
                 }
             }
 
         } catch (SQLException ex) {
             Logger.getLogger(FacturaDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        
+        return listaFilas;
     }
 }

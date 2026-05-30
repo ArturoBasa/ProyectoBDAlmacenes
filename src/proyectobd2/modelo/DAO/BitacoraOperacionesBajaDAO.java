@@ -12,8 +12,8 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.sql.PreparedStatement;
-import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
+import java.util.List;
+import java.sql.ResultSet;
 import proyectobd2.modelo.Conexion;
 import proyectobd2.modelo.beans.BitacoraOperacionesBaja;
 
@@ -122,11 +122,9 @@ public class BitacoraOperacionesBajaDAO {
         return valor;
     }
 
-    public static void obtenerBajasRegistradas(JTable tb_bajas, int idSucursal) {
-
+    public static List<Object[]> obtenerBajasRegistradas(int idSucursal) {
+        List<Object[]> listaFilas = new ArrayList<>();
         String statement = "SELECT fecha , nombreItem , razonBaja, cantidadSobrante FROM bajasRegistradas WHERE idSucursal = ?";
-        DefaultTableModel modelo = (DefaultTableModel) tb_bajas.getModel();
-        modelo.setRowCount(0);
 
         try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
             ps.setInt(1, idSucursal);
@@ -137,27 +135,24 @@ public class BitacoraOperacionesBajaDAO {
                 while (rs.next()) {
                     Object[] fila = new Object[columnas];
                     for (int i = 0; i < columnas; i++) {
-
                         fila[i] = rs.getObject(i + 1);
                     }
-                    modelo.addRow(fila);
-
+                    listaFilas.add(fila);
                 }
             }
 
         } catch (SQLException ex) {
             Logger.getLogger(FacturaDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        
+        return listaFilas;
     }
 
-    public static void obtenerBajasRegistradasGlobales(JTable tb_bajas) {
-
+    public static List<Object[]> obtenerBajasRegistradasGlobales() {
+        List<Object[]> listaFilas = new ArrayList<>();
         String statement = "SELECT v.fecha , v.nombreItem , v.razonBaja, "
                 + "v.cantidadSobrante, s.nombreSucursal "
                 + "FROM bajasRegistradas v JOIN sucursal s ON v.idSucursal = s.idSucursal";
-        DefaultTableModel modelo = (DefaultTableModel) tb_bajas.getModel();
-        modelo.setRowCount(0);
 
         try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
 
@@ -167,17 +162,16 @@ public class BitacoraOperacionesBajaDAO {
                 while (rs.next()) {
                     Object[] fila = new Object[columnas];
                     for (int i = 0; i < columnas; i++) {
-
                         fila[i] = rs.getObject(i + 1);
                     }
-                    modelo.addRow(fila);
-
+                    listaFilas.add(fila);
                 }
             }
 
         } catch (SQLException ex) {
             Logger.getLogger(FacturaDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        
+        return listaFilas;
     }
 }

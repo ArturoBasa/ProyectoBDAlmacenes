@@ -139,7 +139,7 @@ public class GUINuevaEntrada extends javax.swing.JDialog {
         jLabel5.setText("jLabel5");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(1000, 690));
+        setPreferredSize(new java.awt.Dimension(1030, 690));
 
         jPanel1.setPreferredSize(new java.awt.Dimension(1060, 720));
 
@@ -292,7 +292,8 @@ public class GUINuevaEntrada extends javax.swing.JDialog {
                                 .addGap(144, 144, 144)
                                 .addComponent(btn_agregarArticulo)))
                         .addGap(29, 29, 29)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 475, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(38, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

@@ -7,6 +7,8 @@ package proyectobd2.vista.vistascentral.salidas;
 import proyectobd2.vista.GUIArticulosPeticion;
 import proyectobd2.vista.vistassucursal.vistassalidas.*;
 import java.sql.SQLException;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import proyectobd2.modelo.DAO.PeticionSalidaDAO;
@@ -30,7 +32,12 @@ public class GUISalidasCentral extends javax.swing.JPanel {
     }
 
     private void llenarTabla() {
-        PeticionSalidaDAO.obtenerSalidasGlobales(tb_salidas);
+        DefaultTableModel modelo = (DefaultTableModel) tb_salidas.getModel();
+        modelo.setRowCount(0);
+        List<Object[]> datos = PeticionSalidaDAO.obtenerSalidasGlobales();
+        for (Object[] fila : datos) {
+            modelo.addRow(fila);
+        }
     }
 
     /**
@@ -103,8 +110,14 @@ public class GUISalidasCentral extends javax.swing.JPanel {
         String departamento = txt_departamento.getText();
         if (!departamento.isEmpty()) {
             try {
-                PeticionSalidaDAO.buscarGlobal(departamento, tb_salidas);
+                DefaultTableModel modelo = (DefaultTableModel) tb_salidas.getModel();
+                modelo.setRowCount(0);
+                List<Object[]> datos = PeticionSalidaDAO.buscarGlobal(departamento);
+                for (Object[] fila : datos) {
+                    modelo.addRow(fila);
+                }
             } catch (SQLException ex) {
+                ex.printStackTrace();
             }
 
         } else {

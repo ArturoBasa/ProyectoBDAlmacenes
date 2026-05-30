@@ -57,15 +57,7 @@ public class DetalleSalidaDAO {
         return listaDetalles;
     }
 
-    /**
-     * Nota: Al ser una tabla intermedia, buscar por un solo ID suele devolver
-     * una lista. Este método busca una combinación específica de Item y
-     * Petición.
-     */
-    public static DetalleSalida buscar(int id) throws SQLException {
-        
-        return null;
-    }
+
 
     public static DetalleSalida buscar(int idItem, int idPeticion) throws SQLException {
         DetalleSalida ds = null;
@@ -91,9 +83,6 @@ public class DetalleSalidaDAO {
         return ds;
     }
 
-    public static int eliminar(int id){
-        return 0;
-    }
     
     public static int eliminar(int idItem, int idPeticion) {
 

@@ -12,8 +12,8 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.sql.PreparedStatement;
-import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
+import java.util.ArrayList;
+import java.util.List;
 import proyectobd2.modelo.Conexion;
 import proyectobd2.modelo.beans.PeticionSalida;
 
@@ -60,11 +60,9 @@ public class PeticionSalidaDAO {
         return null;
     }
 
-    public static void buscar(String departamento, int idSucursal, JTable tb_salidas) throws SQLException {
-
+    public static List<Object[]> buscar(String departamento, int idSucursal) throws SQLException {
+        List<Object[]> listaFilas = new ArrayList<>();
         String statement = "SELECT DISTINCT fecha , departamento , encargado , descripcion FROM salidasView WHERE idSucursal = ? AND LOWER(departamento) LIKE LOWER(?)";
-        DefaultTableModel modelo = (DefaultTableModel) tb_salidas.getModel();
-        modelo.setRowCount(0);
 
         try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
             ps.setInt(1, idSucursal);
@@ -76,24 +74,22 @@ public class PeticionSalidaDAO {
                 while (rs.next()) {
                     Object[] fila = new Object[columnas];
                     for (int i = 0; i < columnas; i++) {
-
                         fila[i] = rs.getObject(i + 1);
                     }
-                    modelo.addRow(fila);
-
+                    listaFilas.add(fila);
                 }
             }
 
         } catch (SQLException ex) {
             Logger.getLogger(FacturaDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        return listaFilas;
     }
 
-    public static void buscarGlobal(String departamento, JTable tb_salidas) throws SQLException {
-
+    public static List<Object[]> buscarGlobal(String departamento) throws SQLException {
+        List<Object[]> listaFilas = new ArrayList<>();
         String statement = "SELECT DISTINCT v.fecha , v.departamento , v.encargado , v.descripcion, s.nombreSucursal FROM salidasView v JOIN sucursal s ON v.idSucursal = s.idSucursal WHERE LOWER(v.departamento) LIKE LOWER(?)";
-        DefaultTableModel modelo = (DefaultTableModel) tb_salidas.getModel();
-        modelo.setRowCount(0);
 
         try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
             ps.setString(1, departamento + "%");
@@ -106,13 +102,15 @@ public class PeticionSalidaDAO {
                     for (int i = 0; i < columnas; i++) {
                         fila[i] = rs.getObject(i + 1);
                     }
-                    modelo.addRow(fila);
+                    listaFilas.add(fila);
                 }
             }
 
         } catch (SQLException ex) {
             Logger.getLogger(PeticionSalidaDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        return listaFilas;
     }
 
     public static int eliminar(int idPeticion) {
@@ -141,15 +139,12 @@ public class PeticionSalidaDAO {
         return valor;
     }
 
-    public static void obtenerSalidas(JTable tb_salidas, int idSucursal) {
-
+    public static List<Object[]> obtenerSalidas(int idSucursal) {
+        List<Object[]> listaFilas = new ArrayList<>();
         String statement = "SELECT DISTINCT fecha , departamento , encargado , descripcion FROM salidasView WHERE idSucursal = ?";
-        DefaultTableModel modelo = (DefaultTableModel) tb_salidas.getModel();
-        modelo.setRowCount(0);
 
         try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
             ps.setInt(1, idSucursal);
-            //ps.setString(2, "EN ESPERA");
 
             try (ResultSet rs = ps.executeQuery();) {
                 int columnas = rs.getMetaData().getColumnCount();
@@ -157,27 +152,24 @@ public class PeticionSalidaDAO {
                 while (rs.next()) {
                     Object[] fila = new Object[columnas];
                     for (int i = 0; i < columnas; i++) {
-
                         fila[i] = rs.getObject(i + 1);
                     }
-                    modelo.addRow(fila);
-
+                    listaFilas.add(fila);
                 }
             }
 
         } catch (SQLException ex) {
             Logger.getLogger(FacturaDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        
+        return listaFilas;
     }
 
-    public static void obtenerSalidasGlobales(JTable tb_salidas) {
-
+    public static List<Object[]> obtenerSalidasGlobales() {
+        List<Object[]> listaFilas = new ArrayList<>();
         String statement = "SELECT DISTINCT v.fecha , v.departamento , "
                 + "v.encargado , v.descripcion, s.nombreSucursal "
                 + "FROM salidasView v JOIN sucursal s ON v.idSucursal = s.idSucursal";
-        DefaultTableModel modelo = (DefaultTableModel) tb_salidas.getModel();
-        modelo.setRowCount(0);
 
         try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
 
@@ -189,38 +181,38 @@ public class PeticionSalidaDAO {
                     for (int i = 0; i < columnas; i++) {
                         fila[i] = rs.getObject(i + 1);
                     }
-                    modelo.addRow(fila);
+                    listaFilas.add(fila);
                 }
             }
 
         } catch (SQLException ex) {
             Logger.getLogger(PeticionSalidaDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        
+        return listaFilas;
     }
 
-    public static void obtenerArticulosDepartamento(JTable tb_articulosDepartamento, String departamento) {
+    public static List<Object[]> obtenerArticulosDepartamento(String departamento) {
+        List<Object[]> listaFilas = new ArrayList<>();
         String statement = "SELECT item, cantidad, sucursal FROM itemPorDepartamento WHERE departamento = ?";
-        DefaultTableModel modelo = (DefaultTableModel) tb_articulosDepartamento.getModel();
-        modelo.setRowCount(0);
 
         try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
             ps.setString(1, departamento);
             try (ResultSet rs = ps.executeQuery()) {
                 int columnas = rs.getMetaData().getColumnCount();
-                Object[] fila = new Object[columnas];
                 while (rs.next()) {
+                    Object[] fila = new Object[columnas];
                     for (int i = 0; i < columnas; i++) {
-
                         fila[i] = rs.getObject(i + 1);
                     }
-                    modelo.addRow(fila);
-
+                    listaFilas.add(fila);
                 }
             }
 
         } catch (SQLException ex) {
             Logger.getLogger(FacturaDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        return listaFilas;
     }
 }

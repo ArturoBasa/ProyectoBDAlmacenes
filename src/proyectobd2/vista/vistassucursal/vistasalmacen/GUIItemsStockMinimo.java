@@ -5,6 +5,8 @@
 package proyectobd2.vista.vistassucursal.vistasalmacen;
 
 import java.io.IOException;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
 import proyectobd2.modelo.DAO.BitacoraPedidosDAO;
 import proyectobd2.modelo.ExportarExcel;
 
@@ -23,7 +25,16 @@ public class GUIItemsStockMinimo extends javax.swing.JPanel {
     public GUIItemsStockMinimo(int idSucursal) {
         initComponents();
         this.idSucursal = idSucursal;
-        BitacoraPedidosDAO.obtenerItemsStockMinimo(tb_stockMinimo, idSucursal);
+        llenarTabla();
+    }
+    
+    private void llenarTabla() {
+        DefaultTableModel modelo = (DefaultTableModel) tb_stockMinimo.getModel();
+        modelo.setRowCount(0);
+        List<Object[]> datos = BitacoraPedidosDAO.obtenerItemsStockMinimo(idSucursal);
+        for (Object[] fila : datos) {
+            modelo.addRow(fila);
+        }
     }
 
     /**

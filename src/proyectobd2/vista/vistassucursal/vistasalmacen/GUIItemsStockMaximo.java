@@ -5,6 +5,8 @@
 package proyectobd2.vista.vistassucursal.vistasalmacen;
 
 import java.io.IOException;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
 import proyectobd2.modelo.DAO.AlertaStockMaximoDAO;
 import proyectobd2.modelo.ExportarExcel;
 
@@ -23,7 +25,16 @@ public class GUIItemsStockMaximo extends javax.swing.JPanel {
     public GUIItemsStockMaximo(int idSucursal) {
         initComponents();
         this.idSucursal = idSucursal;
-        AlertaStockMaximoDAO.obtenerItemsStockMaximo(tb_stockMaximo, idSucursal);
+        llenarTabla();
+    }
+    
+    private void llenarTabla() {
+        DefaultTableModel modelo = (DefaultTableModel) tb_stockMaximo.getModel();
+        modelo.setRowCount(0);
+        List<Object[]> datos = AlertaStockMaximoDAO.obtenerItemsStockMaximo(idSucursal);
+        for (Object[] fila : datos) {
+            modelo.addRow(fila);
+        }
     }
 
     /**

@@ -7,6 +7,8 @@ package proyectobd2.vista.vistascentral.entradas;
 import proyectobd2.vista.GUIArticulosFactura;
 import proyectobd2.vista.vistassucursal.vistasentradas.*;
 import java.sql.SQLException;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import proyectobd2.modelo.DAO.FacturaDAO;
@@ -25,7 +27,16 @@ public class GUIEntradasCentral extends javax.swing.JPanel {
      */
     public GUIEntradasCentral() {
         initComponents();
-        FacturaDAO.obtenerEntradasGlobales(tb_entradas);
+        llenarTabla();
+    }
+    
+    private void llenarTabla() {
+        DefaultTableModel modelo = (DefaultTableModel) tb_entradas.getModel();
+        modelo.setRowCount(0);
+        List<Object[]> datos = FacturaDAO.obtenerEntradasGlobales();
+        for (Object[] fila : datos) {
+            modelo.addRow(fila);
+        }
     }
 
     /**
@@ -123,13 +134,18 @@ public class GUIEntradasCentral extends javax.swing.JPanel {
         String folio = txt_folio.getText();
         if (!folio.isEmpty()) {
             try {
-                FacturaDAO.rellenarTablaEntradasGlobal(folio, tb_entradas);
+                DefaultTableModel modelo = (DefaultTableModel) tb_entradas.getModel();
+                modelo.setRowCount(0);
+                List<Object[]> datos = FacturaDAO.rellenarTablaEntradasGlobal(folio);
+                for (Object[] fila : datos) {
+                    modelo.addRow(fila);
+                }
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
 
-        }else{
-            FacturaDAO.obtenerEntradasGlobales(tb_entradas);
+        } else {
+            llenarTabla();
         }
     }//GEN-LAST:event_btn_buscarActionPerformed
 

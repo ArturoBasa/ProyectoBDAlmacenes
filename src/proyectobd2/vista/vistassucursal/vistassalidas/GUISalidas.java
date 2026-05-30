@@ -8,6 +8,8 @@ import proyectobd2.vista.GUIArticulosPeticion;
 import java.sql.SQLException;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
 import proyectobd2.modelo.DAO.PeticionSalidaDAO;
 
 /**
@@ -27,13 +29,17 @@ public class GUISalidas extends javax.swing.JPanel {
      */
     public GUISalidas(int idSucursal) {
         initComponents();
-        llenarTabla();
         this.idSucursal = idSucursal;
-        PeticionSalidaDAO.obtenerSalidas(tb_salidas, idSucursal);
+        llenarTabla();
     }
 
     private void llenarTabla() {
-        PeticionSalidaDAO.obtenerSalidas(tb_salidas, this.idSucursal);
+        DefaultTableModel modelo = (DefaultTableModel) tb_salidas.getModel();
+        modelo.setRowCount(0);
+        List<Object[]> datos = PeticionSalidaDAO.obtenerSalidas(idSucursal);
+        for (Object[] fila : datos) {
+            modelo.addRow(fila);
+        }
     }
 
     /**
@@ -113,10 +119,17 @@ public class GUISalidas extends javax.swing.JPanel {
 
     private void btn_buscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_buscarActionPerformed
         String departamento = txt_departamento.getText();
+
         if (!departamento.isEmpty()) {
             try {
-                PeticionSalidaDAO.buscar(departamento, idSucursal, tb_salidas);
+                DefaultTableModel modelo = (DefaultTableModel) tb_salidas.getModel();
+                modelo.setRowCount(0);
+                List<Object[]> datos = PeticionSalidaDAO.buscar(departamento, idSucursal);
+                for (Object[] fila : datos) {
+                    modelo.addRow(fila);
+                }
             } catch (SQLException ex) {
+                ex.printStackTrace();
             }
 
         } else {

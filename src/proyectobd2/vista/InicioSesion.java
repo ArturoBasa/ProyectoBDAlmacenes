@@ -6,13 +6,12 @@ package proyectobd2.vista;
 
 import proyectobd2.vista.vistassucursal.GUIPrincipalSucursal;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import javax.swing.JOptionPane;
 import proyectobd2.modelo.DAO.EmpleadoDAO;
 import proyectobd2.modelo.HasheoContrasenia;
 import proyectobd2.modelo.beans.Empleado;
 import proyectobd2.vista.vistascentral.GUIPrincipalCentral;
+import proyectobd2.vista.vistassalidas.GUIPrincipalSalidas;
 
 /**
  *
@@ -156,17 +155,13 @@ public class InicioSesion extends javax.swing.JFrame {
         if (!nombre.isEmpty() && !contraseniaPlana.isEmpty()) {
             String contraseniaHasheada = HasheoContrasenia.hashPassword(contraseniaPlana);
 
-            
             try {
                 Empleado empleado = EmpleadoDAO.login(nombre, contraseniaHasheada);
 
                 if (empleado != null) {
 
-                    //Mostrar la ventana que le corresponde al usuario
-                    //VentanaPrincipal principal = new VentanaPrincipal(empleado);
-                    //principal.setVisible(true);
                     if (empleado.getRol().equals("Usuario central")) {
-                        //Mostrar la GUI de usuario central
+
                         try {
 
                             GUIPrincipalCentral central = new GUIPrincipalCentral(empleado);
@@ -179,8 +174,8 @@ public class InicioSesion extends javax.swing.JFrame {
                     } else if (empleado.getRol().equals("Usuario sucursal")) {
                         try {
 
-                            GUIPrincipalSucursal principal = new GUIPrincipalSucursal(empleado);
-                            principal.setVisible(true);
+                            GUIPrincipalSucursal sucursal = new GUIPrincipalSucursal(empleado);
+                            sucursal.setVisible(true);
 
                         } catch (NumberFormatException ex) {
                             System.out.println("No se pudo obtener correctamente la información del usuario.");
@@ -188,12 +183,21 @@ public class InicioSesion extends javax.swing.JFrame {
 
                         this.dispose();
                     } else if (empleado.getRol().equals("Usuario salidas")) {
-                        //Mostrar el GUI de este usuario
+
+                        try {
+
+                            GUIPrincipalSalidas salidas = new GUIPrincipalSalidas(empleado);
+                            salidas.setVisible(true);
+
+                        } catch (NumberFormatException ex) {
+                            System.out.println("No se pudo obtener correctamente la información del usuario.");
+                        }
+
                         this.dispose();
                     } else if (empleado.getRol().equals("Usuario departamento")) {
-                        //Mostrar la GUI de este usuario
+
                         this.dispose();
-                    } 
+                    }
 
                 } else {
                     JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrectos", "Aviso", 1);

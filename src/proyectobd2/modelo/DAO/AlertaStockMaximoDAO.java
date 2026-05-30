@@ -10,8 +10,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
+import java.util.ArrayList;
+import java.util.List;
 import proyectobd2.modelo.Conexion;
 
 /**
@@ -20,11 +20,9 @@ import proyectobd2.modelo.Conexion;
  */
 public class AlertaStockMaximoDAO {
 
-    public static void obtenerItemsStockMaximo(JTable tb_stockMaximo, int idSucursal) {
-
+    public static List<Object[]> obtenerItemsStockMaximo(int idSucursal) {
+        List<Object[]> listaFilas = new ArrayList<>();
         String statement = "SELECT nombreItem , existencias , stockMaximo, excedente FROM itemsStockMaximoPorSucursal WHERE idSucursal = ?";
-        DefaultTableModel modelo = (DefaultTableModel) tb_stockMaximo.getModel();
-        modelo.setRowCount(0);
 
         try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
             ps.setInt(1, idSucursal);
@@ -35,25 +33,22 @@ public class AlertaStockMaximoDAO {
                 while (rs.next()) {
                     Object[] fila = new Object[columnas];
                     for (int i = 0; i < columnas; i++) {
-
                         fila[i] = rs.getObject(i + 1);
                     }
-                    modelo.addRow(fila);
-
+                    listaFilas.add(fila);
                 }
             }
 
         } catch (SQLException ex) {
             Logger.getLogger(FacturaDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        
+        return listaFilas;
     }
 
-    public static void obtenerItemsStockMaximoGlobales(JTable tb_stockMaximo) {
-
+    public static List<Object[]> obtenerItemsStockMaximoGlobales() {
+        List<Object[]> listaFilas = new ArrayList<>();
         String statement = "SELECT v.nombreItem , v.existencias , v.stockMaximo, v.excedente, s.nombreSucursal FROM itemsStockMaximoPorSucursal v JOIN sucursal s ON v.idSucursal = s.idSucursal";
-        DefaultTableModel modelo = (DefaultTableModel) tb_stockMaximo.getModel();
-        modelo.setRowCount(0);
 
         try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
 
@@ -63,17 +58,16 @@ public class AlertaStockMaximoDAO {
                 while (rs.next()) {
                     Object[] fila = new Object[columnas];
                     for (int i = 0; i < columnas; i++) {
-
                         fila[i] = rs.getObject(i + 1);
                     }
-                    modelo.addRow(fila);
-
+                    listaFilas.add(fila);
                 }
             }
 
         } catch (SQLException ex) {
             Logger.getLogger(FacturaDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        
+        return listaFilas;
     }
 }

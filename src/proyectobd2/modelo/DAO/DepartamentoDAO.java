@@ -23,7 +23,7 @@ public class DepartamentoDAO {
 
     public static int insertar(Departamento departamento) {
         int valor = 0;
-        // Nota: He omitido Sucursal_idSucursal porque no está en tu Bean.
+        
         String statement = "INSERT INTO departamento (nombreDepartamento, Sucursal_idSucursal, Empleado_idEncargado) VALUES (?,?,?)";
 
         try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
