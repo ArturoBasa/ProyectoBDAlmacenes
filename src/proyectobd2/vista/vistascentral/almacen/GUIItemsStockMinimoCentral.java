@@ -15,16 +15,13 @@ import proyectobd2.modelo.ExportarExcel;
  */
 public class GUIItemsStockMinimoCentral extends javax.swing.JPanel {
 
-    
-    private int idSucursal;
 
     /**
      * Creates new form GUIItemsStockMinimo
      */
-    public GUIItemsStockMinimoCentral(int idSucursal) {
+    public GUIItemsStockMinimoCentral() {
         initComponents();
-        this.idSucursal = idSucursal;
-        BitacoraPedidosDAO.obtenerItemsStockMinimo(tb_stockMinimo, idSucursal);
+        BitacoraPedidosDAO.obtenerItemsStockMinimoGlobales(tb_stockMinimo);
     }
 
     /**

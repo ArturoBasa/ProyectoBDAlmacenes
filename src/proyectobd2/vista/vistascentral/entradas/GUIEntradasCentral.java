@@ -4,6 +4,7 @@
  */
 package proyectobd2.vista.vistascentral.entradas;
 
+import proyectobd2.vista.GUIArticulosFactura;
 import proyectobd2.vista.vistassucursal.vistasentradas.*;
 import java.sql.SQLException;
 import javax.swing.JFrame;
@@ -18,16 +19,13 @@ public class GUIEntradasCentral extends javax.swing.JPanel {
     
     private JFrame framePadre = (JFrame) SwingUtilities.getAncestorOfClass(JFrame.class, this);
     
-    private final int idSucursal;
 
     /**
      * Creates new form Dashboard
-     * @param idSucursal
      */
-    public GUIEntradasCentral(int idSucursal) {
+    public GUIEntradasCentral() {
         initComponents();
-        this.idSucursal = idSucursal;
-        FacturaDAO.obtenerEntradas(tb_entradas, this.idSucursal);
+        FacturaDAO.obtenerEntradasGlobales(tb_entradas);
     }
 
     /**
@@ -125,13 +123,13 @@ public class GUIEntradasCentral extends javax.swing.JPanel {
         String folio = txt_folio.getText();
         if (!folio.isEmpty()) {
             try {
-                FacturaDAO.rellenarTablaEntradas(folio, idSucursal, tb_entradas);
+                FacturaDAO.rellenarTablaEntradasGlobal(folio, tb_entradas);
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
 
         }else{
-            FacturaDAO.obtenerEntradas(tb_entradas, this.idSucursal);
+            FacturaDAO.obtenerEntradasGlobales(tb_entradas);
         }
     }//GEN-LAST:event_btn_buscarActionPerformed
 

@@ -8,6 +8,7 @@ import proyectobd2.vista.vistascentral.almacen.GUIBajasRegistradasCentral;
 import proyectobd2.vista.vistascentral.almacen.GUIItemsStockMaximoCentral;
 import proyectobd2.vista.vistascentral.almacen.GUIItemsStockMinimoCentral;
 import proyectobd2.vista.vistascentral.entradas.GUIEntradasCentral;
+import proyectobd2.vista.vistascentral.salidas.GUISalidasCentral;
 
 
 /**
@@ -27,11 +28,11 @@ public class GUIPrincipalCentral extends javax.swing.JFrame {
         int idSucursal = empleado.getIdSucursal();
         lb_nombreEmpleado.setText(empleado.getNombre() + empleado.getApellidos());
         
-        GUIEntradasCentral panelEntradas = new GUIEntradasCentral(idSucursal);
-        GUISalidas panelSalidas = new GUISalidas(idSucursal);
-        GUIItemsStockMinimoCentral panelItemsMinimo = new GUIItemsStockMinimoCentral(idSucursal);
-        GUIItemsStockMaximoCentral panelItemsMaximo = new GUIItemsStockMaximoCentral(idSucursal);
-        GUIBajasRegistradasCentral panelBajasRegistradas = new GUIBajasRegistradasCentral(idSucursal);
+        GUIEntradasCentral panelEntradas = new GUIEntradasCentral();
+        GUISalidasCentral panelSalidas = new GUISalidasCentral();
+        GUIItemsStockMinimoCentral panelItemsMinimo = new GUIItemsStockMinimoCentral();
+        GUIItemsStockMaximoCentral panelItemsMaximo = new GUIItemsStockMaximoCentral();
+        GUIBajasRegistradasCentral panelBajasRegistradas = new GUIBajasRegistradasCentral();
 
         pnl_cuerpo.add(panelItemsMinimo, "itemsStockMinimo");
         pnl_cuerpo.add(panelItemsMaximo, "itemsStockMaximo");

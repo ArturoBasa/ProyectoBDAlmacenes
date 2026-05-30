@@ -4,6 +4,7 @@
  */
 package proyectobd2.vista.vistassucursal.vistasentradas;
 
+import proyectobd2.vista.GUIArticulosFactura;
 import java.sql.SQLException;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;

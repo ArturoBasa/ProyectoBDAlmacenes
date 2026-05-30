@@ -4,6 +4,7 @@
  */
 package proyectobd2.vista.vistascentral.salidas;
 
+import proyectobd2.vista.GUIArticulosPeticion;
 import proyectobd2.vista.vistassucursal.vistassalidas.*;
 import java.sql.SQLException;
 import javax.swing.JFrame;
@@ -18,22 +19,18 @@ public class GUISalidasCentral extends javax.swing.JPanel {
 
     private JFrame framePadre = (JFrame) SwingUtilities.getAncestorOfClass(JFrame.class, this);
 
-    int idSucursal;
 
     /**
      * Creates new form Salidas
      *
-     * @param idSucursal
      */
-    public GUISalidasCentral(int idSucursal) {
+    public GUISalidasCentral() {
         initComponents();
         llenarTabla();
-        this.idSucursal = idSucursal;
-        PeticionSalidaDAO.obtenerSalidas(tb_salidas, idSucursal);
     }
 
     private void llenarTabla() {
-        PeticionSalidaDAO.obtenerSalidas(tb_salidas, this.idSucursal);
+        PeticionSalidaDAO.obtenerSalidasGlobales(tb_salidas);
     }
 
     /**
@@ -106,7 +103,7 @@ public class GUISalidasCentral extends javax.swing.JPanel {
         String departamento = txt_departamento.getText();
         if (!departamento.isEmpty()) {
             try {
-                PeticionSalidaDAO.buscar(departamento, idSucursal, tb_salidas);
+                PeticionSalidaDAO.buscarGlobal(departamento, tb_salidas);
             } catch (SQLException ex) {
             }
 

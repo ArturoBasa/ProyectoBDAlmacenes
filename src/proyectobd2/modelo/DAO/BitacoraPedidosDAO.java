@@ -142,4 +142,32 @@ public class BitacoraPedidosDAO {
         }
 
     }
+
+    public static void obtenerItemsStockMinimoGlobales(JTable tb_stockMinimo) {
+
+        String statement = "SELECT v.nombreItem , v.existencias , v.stockMinimo, v.diferencia, s.nombreSucursal FROM itemsStockMinimoPorSucursal v JOIN sucursal s ON v.idSucursal = s.idSucursal";
+        DefaultTableModel modelo = (DefaultTableModel) tb_stockMinimo.getModel();
+        modelo.setRowCount(0);
+
+        try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
+
+            try (ResultSet rs = ps.executeQuery();) {
+                int columnas = rs.getMetaData().getColumnCount();
+
+                while (rs.next()) {
+                    Object[] fila = new Object[columnas];
+                    for (int i = 0; i < columnas; i++) {
+
+                        fila[i] = rs.getObject(i + 1);
+                    }
+                    modelo.addRow(fila);
+
+                }
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(FacturaDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
 }

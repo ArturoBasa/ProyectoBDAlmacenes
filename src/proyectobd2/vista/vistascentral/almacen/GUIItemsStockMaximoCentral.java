@@ -15,16 +15,13 @@ import proyectobd2.modelo.ExportarExcel;
  */
 public class GUIItemsStockMaximoCentral extends javax.swing.JPanel {
 
-    
-    int idSucursal;
 
     /**
      * Creates new form GUIItemsStockMaximo
      */
-    public GUIItemsStockMaximoCentral(int idSucursal) {
+    public GUIItemsStockMaximoCentral() {
         initComponents();
-        this.idSucursal = idSucursal;
-        AlertaStockMaximoDAO.obtenerItemsStockMaximo(tb_stockMaximo, idSucursal);
+        AlertaStockMaximoDAO.obtenerItemsStockMaximoGlobales(tb_stockMaximo);
     }
 
     /**

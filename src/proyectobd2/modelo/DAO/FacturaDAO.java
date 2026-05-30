@@ -96,6 +96,32 @@ public class FacturaDAO {
         }
     }
 
+    public static void rellenarTablaEntradasGlobal(String folioFactura, JTable tb_entradas) throws SQLException {
+
+        String statement = "SELECT v.folio, v.fechaFactura, v.proveedor, v.rfc, v.total, s.nombreSucursal FROM entradasView v JOIN sucursal s ON v.sucursal = s.idSucursal WHERE v.folio LIKE ?";
+        DefaultTableModel modelo = (DefaultTableModel) tb_entradas.getModel();
+        modelo.setRowCount(0);
+
+        try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
+            ps.setString(1, folioFactura + "%");
+
+            try (ResultSet rs = ps.executeQuery();) {
+                int columnas = rs.getMetaData().getColumnCount();
+
+                while (rs.next()) {
+                    Object[] fila = new Object[columnas];
+                    for (int i = 0; i < columnas; i++) {
+                        fila[i] = rs.getObject(i + 1);
+                    }
+                    modelo.addRow(fila);
+                }
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(FacturaDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     public static Factura buscarPorFolio(String folio) throws SQLException {
         String statement = "SELECT idFactura, folioFactura, fechaFactura, precioTotal, Proveedor_idProveedor FROM factura WHERE folioFactura = ?";
 
@@ -187,6 +213,32 @@ public class FacturaDAO {
                     }
                     modelo.addRow(fila);
 
+                }
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(FacturaDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+
+    public static void obtenerEntradasGlobales(JTable tb_entradas) {
+
+        String statement = "SELECT v.folio, v.fechaFactura, v.proveedor, v.rfc, v.total, s.nombreSucursal FROM entradasView v JOIN sucursal s ON v.sucursal = s.idSucursal";
+        DefaultTableModel modelo = (DefaultTableModel) tb_entradas.getModel();
+        modelo.setRowCount(0);
+
+        try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
+
+            try (ResultSet rs = ps.executeQuery();) {
+                int columnas = rs.getMetaData().getColumnCount();
+
+                while (rs.next()) {
+                    Object[] fila = new Object[columnas];
+                    for (int i = 0; i < columnas; i++) {
+                        fila[i] = rs.getObject(i + 1);
+                    }
+                    modelo.addRow(fila);
                 }
             }
 

@@ -48,4 +48,32 @@ public class AlertaStockMaximoDAO {
         }
 
     }
+
+    public static void obtenerItemsStockMaximoGlobales(JTable tb_stockMaximo) {
+
+        String statement = "SELECT v.nombreItem , v.existencias , v.stockMaximo, v.excedente, s.nombreSucursal FROM itemsStockMaximoPorSucursal v JOIN sucursal s ON v.idSucursal = s.idSucursal";
+        DefaultTableModel modelo = (DefaultTableModel) tb_stockMaximo.getModel();
+        modelo.setRowCount(0);
+
+        try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
+
+            try (ResultSet rs = ps.executeQuery();) {
+                int columnas = rs.getMetaData().getColumnCount();
+
+                while (rs.next()) {
+                    Object[] fila = new Object[columnas];
+                    for (int i = 0; i < columnas; i++) {
+
+                        fila[i] = rs.getObject(i + 1);
+                    }
+                    modelo.addRow(fila);
+
+                }
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(FacturaDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
 }

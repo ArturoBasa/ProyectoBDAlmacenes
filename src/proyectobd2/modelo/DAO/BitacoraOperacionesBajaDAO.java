@@ -26,16 +26,15 @@ public class BitacoraOperacionesBajaDAO {
     public static int insertar(BitacoraOperacionesBaja bitacora) {
         int valor = 0;
         String statement = "INSERT INTO bitacoraoperacionesbajas (fecha, razonBaja, descripcion, cantidadSobrante, Item_idItem) VALUES (?,?,?,?,?)";
-        
-        try (Connection conn = new Conexion().getConnection();
-             PreparedStatement ps = conn.prepareStatement(statement)) {
-            
+
+        try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
+
             ps.setDate(1, new java.sql.Date(bitacora.getFecha().getTime()));
             ps.setString(2, bitacora.getRazonBaja());
             ps.setString(3, bitacora.getDescripcion());
             ps.setInt(4, bitacora.getCantidadSobrante());
             ps.setInt(5, bitacora.getIdItem());
-            
+
             valor = ps.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(BitacoraOperacionesBajaDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -46,11 +45,9 @@ public class BitacoraOperacionesBajaDAO {
     public static List<BitacoraOperacionesBaja> obtenerListaObjetos() throws SQLException {
         List<BitacoraOperacionesBaja> listaBitacora = new ArrayList<>();
         String statement = "SELECT idBitacoraOperacionesBajas, fecha, razonBaja, descripcion, cantidadSobrante, Item_idItem FROM bitacoraoperacionesbajas";
-        
-        try (Connection conn = new Conexion().getConnection();
-             PreparedStatement ps = conn.prepareStatement(statement);
-             ResultSet rs = ps.executeQuery()) {
-            
+
+        try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement); ResultSet rs = ps.executeQuery()) {
+
             while (rs.next()) {
                 BitacoraOperacionesBaja b = new BitacoraOperacionesBaja();
                 b.setIdBitacoraOperacionesBaja(rs.getInt("idBitacoraOperacionesBajas"));
@@ -70,10 +67,9 @@ public class BitacoraOperacionesBajaDAO {
     public static BitacoraOperacionesBaja buscar(int idBitacora) throws SQLException {
         BitacoraOperacionesBaja b = null;
         String statement = "SELECT idBitacoraOperacionesBajas, fecha, razonBaja, descripcion, cantidadSobrante, Item_idItem FROM bitacoraoperacionesbajas WHERE idBitacoraOperacionesBajas = ?";
-        
-        try (Connection conn = new Conexion().getConnection();
-             PreparedStatement ps = conn.prepareStatement(statement)) {
-            
+
+        try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
+
             ps.setInt(1, idBitacora);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
@@ -95,10 +91,9 @@ public class BitacoraOperacionesBajaDAO {
     public static int eliminar(int idBitacora) {
         int valor = 0;
         String statement = "DELETE FROM bitacoraoperacionesbajas WHERE idBitacoraOperacionesBajas = ?";
-        
-        try (Connection conn = new Conexion().getConnection();
-             PreparedStatement ps = conn.prepareStatement(statement)) {
-            
+
+        try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
+
             ps.setInt(1, idBitacora);
             valor = ps.executeUpdate();
         } catch (SQLException ex) {
@@ -110,23 +105,23 @@ public class BitacoraOperacionesBajaDAO {
     public static int modificar(BitacoraOperacionesBaja b) {
         int valor = 0;
         String statement = "UPDATE bitacoraoperacionesbajas SET fecha = ?, razonBaja = ?, descripcion = ?, cantidadSobrante = ?, Item_idItem = ? WHERE idBitacoraOperacionesBajas = ?";
-        
-        try (Connection conn = new Conexion().getConnection();
-             PreparedStatement ps = conn.prepareStatement(statement)) {
-            
+
+        try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
+
             ps.setDate(1, new java.sql.Date(b.getFecha().getTime()));
             ps.setString(2, b.getRazonBaja());
             ps.setString(3, b.getDescripcion());
             ps.setInt(4, b.getCantidadSobrante());
             ps.setInt(5, b.getIdItem());
             ps.setInt(6, b.getIdBitacoraOperacionesBaja());
-            
+
             valor = ps.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(BitacoraOperacionesBajaDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return valor;
     }
+
     public static void obtenerBajasRegistradas(JTable tb_bajas, int idSucursal) {
 
         String statement = "SELECT fecha , nombreItem , razonBaja, cantidadSobrante FROM bajasRegistradas WHERE idSucursal = ?";
@@ -135,6 +130,36 @@ public class BitacoraOperacionesBajaDAO {
 
         try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
             ps.setInt(1, idSucursal);
+
+            try (ResultSet rs = ps.executeQuery();) {
+                int columnas = rs.getMetaData().getColumnCount();
+
+                while (rs.next()) {
+                    Object[] fila = new Object[columnas];
+                    for (int i = 0; i < columnas; i++) {
+
+                        fila[i] = rs.getObject(i + 1);
+                    }
+                    modelo.addRow(fila);
+
+                }
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(FacturaDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+
+    public static void obtenerBajasRegistradasGlobales(JTable tb_bajas) {
+
+        String statement = "SELECT v.fecha , v.nombreItem , v.razonBaja, "
+                + "v.cantidadSobrante, s.nombreSucursal "
+                + "FROM bajasRegistradas v JOIN sucursal s ON v.idSucursal = s.idSucursal";
+        DefaultTableModel modelo = (DefaultTableModel) tb_bajas.getModel();
+        modelo.setRowCount(0);
+
+        try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
 
             try (ResultSet rs = ps.executeQuery();) {
                 int columnas = rs.getMetaData().getColumnCount();
