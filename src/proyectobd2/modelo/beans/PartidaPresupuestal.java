@@ -40,7 +40,9 @@ public class PartidaPresupuestal {
     public void setPresupuesto(Double presupuesto) {
         this.presupuesto = presupuesto;
     }
-
-   
-
+    
+    @Override
+    public String toString() {
+        return this.nombrePartida;
+    }
 }

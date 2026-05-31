@@ -18,6 +18,7 @@ public class Kardex {
     private Double costoPromedio;
     private int idItem;
     private int idFactura;
+    private String folio;
 
     public Kardex() {
     }
@@ -70,4 +71,13 @@ public class Kardex {
         this.idFactura = idFactura;
     }
 
+    public String getFolio() {
+        return folio;
+    }
+
+    public void setFolio(String folio) {
+        this.folio = folio;
+    }
+
+    
 }

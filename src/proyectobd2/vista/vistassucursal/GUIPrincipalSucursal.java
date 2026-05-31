@@ -1,8 +1,7 @@
 package proyectobd2.vista.vistassucursal;
 
-import proyectobd2.vista.vistassucursal.vistasreporte.GUIReportes;
-import proyectobd2.vista.vistassucursal.vistaskardex.GUIKardex;
-import proyectobd2.vista.vistassucursal.vistascatalogos.GUICatalogo;
+
+
 import proyectobd2.vista.vistassucursal.vistasalmacen.GUIItemsStockMaximo;
 import proyectobd2.vista.vistassucursal.vistasalmacen.GUIItemsStockMinimo;
 import proyectobd2.vista.vistassucursal.vistasalmacen.GUIBajasRegistradas;
@@ -11,6 +10,9 @@ import java.awt.CardLayout;
 import java.sql.SQLException;
 import proyectobd2.modelo.DAO.SucursalDAO;
 import proyectobd2.modelo.beans.Empleado;
+import proyectobd2.vista.vistassucursal.vistascatalogos.GUICatalogo;
+import proyectobd2.vista.vistassucursal.vistaskardex.GUIKardex;
+import proyectobd2.vista.vistassucursal.vistasreporte.GUIReportes;
 import proyectobd2.vista.vistassucursal.vistassalidas.GUISalidas;
 
 /**
@@ -45,9 +47,9 @@ public class GUIPrincipalSucursal extends javax.swing.JFrame {
         pnl_cuerpo.add(panelEntradas, "entradas");
         pnl_cuerpo.add(panelSalidas, "salidas");
 
-        pnl_cuerpo.add(new GUIReportes(), "CARD_REPORTES");
-        pnl_cuerpo.add(new GUIKardex(), "CARD_KARDEX");
-        pnl_cuerpo.add(new GUICatalogo(), "CARD_CATALOGOS");
+        pnl_cuerpo.add(new GUIReportes(idSucursal), "CARD_REPORTES");
+        pnl_cuerpo.add(new GUIKardex(idSucursal), "CARD_KARDEX");
+        pnl_cuerpo.add(new GUICatalogo(idSucursal), "CARD_CATALOGOS");
         
         card.show(pnl_cuerpo, "entradas");
     }

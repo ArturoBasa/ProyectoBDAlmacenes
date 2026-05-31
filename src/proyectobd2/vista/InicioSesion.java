@@ -11,6 +11,7 @@ import proyectobd2.modelo.DAO.EmpleadoDAO;
 import proyectobd2.modelo.HasheoContrasenia;
 import proyectobd2.modelo.beans.Empleado;
 import proyectobd2.vista.vistascentral.GUIPrincipalCentral;
+import proyectobd2.vista.vistasdepartamento.GUIPrincipalDepartamento;
 import proyectobd2.vista.vistassalidas.GUIPrincipalSalidas;
 
 /**
@@ -195,7 +196,14 @@ public class InicioSesion extends javax.swing.JFrame {
 
                         this.dispose();
                     } else if (empleado.getRol().equals("Usuario departamento")) {
+                        try {
 
+                            GUIPrincipalDepartamento departamento = new GUIPrincipalDepartamento(empleado);
+                            departamento.setVisible(true);
+
+                        } catch (NumberFormatException ex) {
+                            System.out.println("No se pudo obtener correctamente la información del usuario.");
+                        }
                         this.dispose();
                     }
 

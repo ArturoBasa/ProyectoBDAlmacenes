@@ -4,17 +4,32 @@
  */
 package proyectobd2.vista.vistassucursal.vistaskardex;
 
+import java.sql.SQLException;
+import java.util.List;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import proyectobd2.modelo.DAO.ItemDAO;
+import proyectobd2.modelo.DAO.KardexDAO;
+import proyectobd2.modelo.beans.Item;
+import proyectobd2.modelo.beans.Kardex;
+
 /**
  *
  * @author basa2
  */
 public class GUIKardex extends javax.swing.JPanel {
-
+    int idSucursal;
+    int idItem;
+    ItemDAO itemDAO = new ItemDAO();
     /**
      * Creates new form GUIKardex
      */
-    public GUIKardex() {
+    public GUIKardex(int idSucursal) {
         initComponents();
+        this.idSucursal = idSucursal;
+        llenarCombo();
     }
 
     /**
@@ -32,11 +47,11 @@ public class GUIKardex extends javax.swing.JPanel {
         jLabel2 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        cbxArticulo = new javax.swing.JComboBox<>();
         jPanel4 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        tblKardex = new javax.swing.JTable();
 
         jLabel3.setText("jLabel3");
 
@@ -64,10 +79,9 @@ public class GUIKardex extends javax.swing.JPanel {
         jLabel4.setText("Seleccione un artículo");
         jPanel3.add(jLabel4);
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jComboBox1.setAlignmentX(0.0F);
-        jComboBox1.addActionListener(this::jComboBox1ActionPerformed);
-        jPanel3.add(jComboBox1);
+        cbxArticulo.setAlignmentX(0.0F);
+        cbxArticulo.addActionListener(this::cbxArticuloActionPerformed);
+        jPanel3.add(cbxArticulo);
 
         jPanel1.add(jPanel3);
 
@@ -77,31 +91,78 @@ public class GUIKardex extends javax.swing.JPanel {
         jPanel4.setLayout(new java.awt.BorderLayout());
 
         jLabel5.setFont(new java.awt.Font("Segoe UI Semibold", 0, 16)); // NOI18N
-        jLabel5.setText("aa");
+        jLabel5.setText("Histórico de precios");
         jPanel4.add(jLabel5, java.awt.BorderLayout.NORTH);
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        tblKardex.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
                 "Folio", "Fecha", "Precio de compra", "Precio promedio"
             }
-        ));
-        jScrollPane2.setViewportView(jTable2);
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.Double.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        jScrollPane2.setViewportView(tblKardex);
 
         jPanel4.add(jScrollPane2, java.awt.BorderLayout.CENTER);
 
         add(jPanel4, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox1ActionPerformed
+    private void cbxArticuloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxArticuloActionPerformed
+        KardexDAO kardexDao = new KardexDAO();
+        try {
+            Item itemSeleccionado = (Item) cbxArticulo.getSelectedItem();
+            if (itemSeleccionado != null) {
+                int idItemEspecifico = itemSeleccionado.getIdItem();
+                List<Kardex> lista = kardexDao.obtenerKardexEspecifico(idItemEspecifico);
+                DefaultTableModel modelo = new DefaultTableModel();
+                modelo.addColumn("Folio");
+                modelo.addColumn("Fecha");
+                modelo.addColumn("Precio de compra");
+                modelo.addColumn("Precio promedio");
+                for (Kardex kardex : lista) {
+                    Object[] fila = new Object[4]; 
 
+                    fila[0] = kardex.getFolio();
+                    fila[1] = kardex.getFecha();
+                    fila[2] = kardex.getCosto();
+                    fila[3] = kardex.getCostoPromedio();
+                    modelo.addRow(fila);
+                }
+                tblKardex.setModel(modelo);
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this, "Error al cargar los datos: " + ex.getMessage());
+        }
+    }//GEN-LAST:event_cbxArticuloActionPerformed
+
+    private void llenarCombo(){
+        try{
+            List<Item> listaItems = itemDAO.obtenerListaObjetos();
+            DefaultComboBoxModel<Item> modeloCombo = new DefaultComboBoxModel<>();
+            for (Item item : listaItems) {
+                if(item.getIdSucursal() == idSucursal){
+                    modeloCombo.addElement(item);
+                    idItem = item.getIdItem();
+                }
+            }
+            cbxArticulo.setModel(modeloCombo);
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JComboBox<Item> cbxArticulo;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -111,6 +172,6 @@ public class GUIKardex extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable2;
+    private javax.swing.JTable tblKardex;
     // End of variables declaration//GEN-END:variables
 }

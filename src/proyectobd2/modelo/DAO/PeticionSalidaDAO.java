@@ -4,10 +4,8 @@
  */
 package proyectobd2.modelo.DAO;
 
-import java.util.List;
 import java.sql.ResultSet;
 import java.sql.Connection;
-import java.util.ArrayList;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -83,7 +81,7 @@ public class PeticionSalidaDAO {
         } catch (SQLException ex) {
             Logger.getLogger(FacturaDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         return listaFilas;
     }
 
@@ -109,7 +107,7 @@ public class PeticionSalidaDAO {
         } catch (SQLException ex) {
             Logger.getLogger(PeticionSalidaDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         return listaFilas;
     }
 
@@ -139,9 +137,14 @@ public class PeticionSalidaDAO {
         return valor;
     }
 
-    public static List<Object[]> obtenerSalidas(int idSucursal) {
+    public static List<Object[]> obtenerSalidas(int idSucursal, String tipo) {
         List<Object[]> listaFilas = new ArrayList<>();
-        String statement = "SELECT DISTINCT fecha , departamento , encargado , descripcion FROM salidasView WHERE idSucursal = ?";
+        String statement;
+        if (tipo.equalsIgnoreCase("Pendiente")) {
+            statement = "SELECT DISTINCT fecha , departamento , encargado , descripcion FROM salidasView WHERE idSucursal = ? AND descripcion = 'EN ESPERA'";
+        } else {
+            statement = "SELECT DISTINCT fecha , departamento , encargado , descripcion FROM salidasView WHERE idSucursal = ?";
+        }
 
         try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
             ps.setInt(1, idSucursal);
@@ -161,7 +164,7 @@ public class PeticionSalidaDAO {
         } catch (SQLException ex) {
             Logger.getLogger(FacturaDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         return listaFilas;
     }
 
@@ -188,7 +191,7 @@ public class PeticionSalidaDAO {
         } catch (SQLException ex) {
             Logger.getLogger(PeticionSalidaDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         return listaFilas;
     }
 
@@ -212,7 +215,7 @@ public class PeticionSalidaDAO {
         } catch (SQLException ex) {
             Logger.getLogger(FacturaDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         return listaFilas;
     }
 }

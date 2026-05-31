@@ -1,33 +1,29 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package proyectobd2.vista.vistassucursal.vistassalidas;
+package proyectobd2.vista.vistasdepartamento;
 
-import java.awt.Frame;
-import proyectobd2.vista.vistassucursal.vistasentradas.GUISeleccionarItem;
-import java.sql.SQLException;
-import java.util.List;
+import java.awt.Dialog;
+import java.util.Date;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import proyectobd2.modelo.beans.Departamento;
-import proyectobd2.modelo.beans.Empleado;
-import proyectobd2.modelo.beans.Item;
-import proyectobd2.modelo.DAO.DepartamentoDAO;
-import proyectobd2.modelo.DAO.EmpleadoDAO;
-import proyectobd2.modelo.DAO.ItemDAO;
-import proyectobd2.modelo.beans.PeticionSalida;
-import proyectobd2.modelo.beans.DetalleSalida;
-import proyectobd2.modelo.DAO.PeticionSalidaDAO;
 import proyectobd2.modelo.DAO.DetalleSalidaDAO;
-import java.util.Date;
+import proyectobd2.modelo.DAO.PeticionSalidaDAO;
+import proyectobd2.modelo.beans.Departamento;
+import proyectobd2.modelo.beans.DetalleSalida;
+import proyectobd2.modelo.beans.Item;
+import proyectobd2.modelo.beans.PeticionSalida;
+import java.sql.SQLException;
+import java.util.List;
+import proyectobd2.modelo.DAO.ItemDAO;
+import proyectobd2.vista.vistassucursal.vistasentradas.GUISeleccionarItem;
 
 /**
  *
  * @author endri
  */
-public class GUINuevaSalida extends javax.swing.JDialog {
-    
+public class GUINuevaSalidaDepartamento extends javax.swing.JPanel {
 
     private int idSucursal;
     private Item itemSeleccionado;
@@ -35,15 +31,9 @@ public class GUINuevaSalida extends javax.swing.JDialog {
 
     /**
      * Creates new form GUINuevaSalida
-     * @param parent
-     * @param modal
-     * @param idSucursal
      */
-    public GUINuevaSalida(java.awt.Frame parent, boolean modal, int idSucursal) {
-        super(parent, modal);
-        this.idSucursal = idSucursal;
+    public GUINuevaSalidaDepartamento() {
         initComponents();
-        cargarDepartamentos();
     }
 
     /**
@@ -55,7 +45,6 @@ public class GUINuevaSalida extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -63,7 +52,6 @@ public class GUINuevaSalida extends javax.swing.JDialog {
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
-        btn_cancelar = new javax.swing.JButton();
         btn_guardar = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
         spn_cantidad = new javax.swing.JSpinner();
@@ -75,10 +63,6 @@ public class GUINuevaSalida extends javax.swing.JDialog {
         lb_nombreItem = new javax.swing.JLabel();
         btn_buscarItem = new javax.swing.JButton();
         lb_personaEncargada = new javax.swing.JLabel();
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-
-        jPanel1.setPreferredSize(new java.awt.Dimension(1050, 700));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel1.setText("Información de la solicitud");
@@ -95,15 +79,6 @@ public class GUINuevaSalida extends javax.swing.JDialog {
         jLabel8.setText("Cantidad:");
 
         jLabel9.setText("Artículo");
-
-        btn_cancelar.setBackground(new java.awt.Color(255, 0, 51));
-        btn_cancelar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        btn_cancelar.setText("Cancelar");
-        btn_cancelar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_cancelarActionPerformed(evt);
-            }
-        });
 
         btn_guardar.setBackground(new java.awt.Color(0, 204, 0));
         btn_guardar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -157,70 +132,68 @@ public class GUINuevaSalida extends javax.swing.JDialog {
             }
         });
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
                         .addGap(31, 31, 31)
                         .addComponent(jLabel1))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
                                 .addGap(6, 6, 6)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 490, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addGroup(layout.createSequentialGroup()
                                         .addGap(25, 25, 25)
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(jLabel2)
                                             .addComponent(spn_fecha, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addComponent(jLabel7)
                                             .addComponent(jLabel9)
-                                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                            .addGroup(layout.createSequentialGroup()
                                                 .addComponent(btn_buscarItem)
                                                 .addGap(67, 67, 67)
                                                 .addComponent(lb_nombreItem, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))
                                             .addComponent(jLabel8)
                                             .addComponent(spn_cantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                     .addComponent(jLabel5)
                                                     .addComponent(cb_departamentoSolicitante, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE))
                                                 .addGap(18, 18, 18)
-                                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                     .addComponent(jLabel4)
                                                     .addComponent(lb_personaEncargada, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(31, 31, 31)
-                                .addComponent(btn_cancelar)
-                                .addGap(36, 36, 36)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(144, 144, 144)
                                 .addComponent(btn_guardar)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(btn_agregarArticulo)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(476, 476, 476))
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
                 .addGap(6, 6, 6)
                 .addComponent(jLabel1)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel2)
                 .addGap(6, 6, 6)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(spn_fecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(86, 86, 86)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel5)
                             .addComponent(jLabel4))
                         .addGap(6, 6, 6)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(lb_personaEncargada, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(cb_departamentoSolicitante))
                         .addGap(23, 23, 23)
@@ -230,7 +203,7 @@ public class GUINuevaSalida extends javax.swing.JDialog {
                         .addGap(25, 25, 25)
                         .addComponent(jLabel9)
                         .addGap(11, 11, 11)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(btn_buscarItem)
                             .addComponent(lb_nombreItem, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(12, 12, 12)
@@ -239,75 +212,11 @@ public class GUINuevaSalida extends javax.swing.JDialog {
                         .addComponent(spn_cantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 510, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(40, 40, 40)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btn_cancelar)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(btn_guardar)
-                        .addComponent(btn_agregarArticulo))))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btn_guardar)
+                    .addComponent(btn_agregarArticulo)))
         );
-
-        getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
-
-        pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void btn_buscarItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_buscarItemActionPerformed
-        GUISeleccionarItem seleccionarItem = new GUISeleccionarItem(this, true, this.idSucursal);
-        seleccionarItem.setVisible(true);
-        String seleccionado = seleccionarItem.getItemSeleccionado();
-        if (seleccionado != null) {
-            try {
-                this.itemSeleccionado = ItemDAO.buscarPorNombre(seleccionado, this.idSucursal);
-                if (this.itemSeleccionado != null) {
-                    lb_nombreItem.setText(this.itemSeleccionado.getNombreItem());
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-    }//GEN-LAST:event_btn_buscarItemActionPerformed
-
-    private void btn_cancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cancelarActionPerformed
-        // TODO add your handling code here:
-        this.dispose();
-    }//GEN-LAST:event_btn_cancelarActionPerformed
-
-    private void btn_agregarArticuloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_agregarArticuloActionPerformed
-        if (itemSeleccionado == null) {
-            JOptionPane.showMessageDialog(this, "Debe seleccionar un artículo.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-        
-        int cantidad = (int) spn_cantidad.getValue();
-        if (cantidad <= 0) {
-            JOptionPane.showMessageDialog(this, "La cantidad debe ser mayor a 0.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-        
-        if (cantidad > itemSeleccionado.getExistencias()) {
-            JOptionPane.showMessageDialog(this, "El máximo de existencias de este ítem son: " + itemSeleccionado.getExistencias(), "Advertencia", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-
-        DefaultTableModel modelo = (DefaultTableModel) tb_articulos.getModel();
-        
-        for (int i = 0; i < modelo.getRowCount(); i++) {
-            if (modelo.getValueAt(i, 0).equals(itemSeleccionado.getNombreItem())) {
-                JOptionPane.showMessageDialog(this, "El artículo ya está en la lista.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-                return;
-            }
-        }
-
-        Object[] fila = new Object[2];
-        fila[0] = itemSeleccionado.getNombreItem();
-        fila[1] = cantidad;
-        
-        modelo.addRow(fila);
-        
-        itemSeleccionado = null;
-        lb_nombreItem.setText("");
-        spn_cantidad.setValue(0);
-    }//GEN-LAST:event_btn_agregarArticuloActionPerformed
 
     private void btn_guardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_guardarActionPerformed
         DefaultTableModel modelo = (DefaultTableModel) tb_articulos.getModel();
@@ -323,7 +232,7 @@ public class GUINuevaSalida extends javax.swing.JDialog {
         }
 
         Departamento deptoSeleccionado = departamentosSucursal.get(index);
-        
+
         PeticionSalida peticion = new PeticionSalida();
         try {
             Date fechaSeleccionada = (Date) spn_fecha.getValue();
@@ -332,19 +241,19 @@ public class GUINuevaSalida extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(this, "Fecha inválida.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        
+
         peticion.setIdEmpleadoAlmacen(deptoSeleccionado.getIdEncargado());
-        peticion.setIdEstadoPeticion(2); 
+        peticion.setIdEstadoPeticion(2);
 
         int idPeticionGenerado = PeticionSalidaDAO.insertar(peticion);
-        
+
         if (idPeticionGenerado > 0) {
             boolean errorEnDetalles = false;
-            
+
             for (int i = 0; i < modelo.getRowCount(); i++) {
                 String nombreArticulo = modelo.getValueAt(i, 0).toString();
                 int cantidadArticulo = Integer.parseInt(modelo.getValueAt(i, 1).toString());
-                
+
                 try {
                     Item itemActual = ItemDAO.buscarPorNombre(nombreArticulo, this.idSucursal);
                     if (itemActual != null) {
@@ -352,7 +261,7 @@ public class GUINuevaSalida extends javax.swing.JDialog {
                         detalle.setIdItem(itemActual.getIdItem());
                         detalle.setIdPeticionSalida(idPeticionGenerado);
                         detalle.setCantidad(cantidadArticulo);
-                        
+
                         DetalleSalidaDAO.insertar(detalle);
                     }
                 } catch (SQLException e) {
@@ -360,65 +269,76 @@ public class GUINuevaSalida extends javax.swing.JDialog {
                     e.printStackTrace();
                 }
             }
-            
+
             if (errorEnDetalles) {
                 JOptionPane.showMessageDialog(this, "La petición se creó, pero hubo un error guardando algunos detalles.", "Advertencia", JOptionPane.WARNING_MESSAGE);
             } else {
                 JOptionPane.showMessageDialog(this, "Petición de salida guardada exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
             }
-            this.dispose();
-            
+
+
         } else {
             JOptionPane.showMessageDialog(this, "Error al guardar la petición.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btn_guardarActionPerformed
 
-
-    private void cargarDepartamentos() {
-        try {
-            departamentosSucursal = DepartamentoDAO.obtenerPorSucursal(this.idSucursal);
-            cb_departamentoSolicitante.removeAllItems();
-            for (Departamento d : departamentosSucursal) {
-                cb_departamentoSolicitante.addItem(d.getNombreDepartamento());
-            }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
+    private void btn_agregarArticuloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_agregarArticuloActionPerformed
+        if (itemSeleccionado == null) {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar un artículo.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return;
         }
-        
-        cb_departamentoSolicitante.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                if (evt.getStateChange() == java.awt.event.ItemEvent.SELECTED) {
-                    actualizarEncargado();
-                }
-            }
-        });
-        
-        if (!departamentosSucursal.isEmpty()) {
-            actualizarEncargado();
-        }
-    }
 
-    private void actualizarEncargado() {
-        int index = cb_departamentoSolicitante.getSelectedIndex();
-        if (index >= 0 && index < departamentosSucursal.size()) {
-            Departamento d = departamentosSucursal.get(index);
+        int cantidad = (int) spn_cantidad.getValue();
+        if (cantidad <= 0) {
+            JOptionPane.showMessageDialog(this, "La cantidad debe ser mayor a 0.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        if (cantidad > itemSeleccionado.getExistencias()) {
+            JOptionPane.showMessageDialog(this, "El máximo de existencias de este ítem son: " + itemSeleccionado.getExistencias(), "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        DefaultTableModel modelo = (DefaultTableModel) tb_articulos.getModel();
+
+        for (int i = 0; i < modelo.getRowCount(); i++) {
+            if (modelo.getValueAt(i, 0).equals(itemSeleccionado.getNombreItem())) {
+                JOptionPane.showMessageDialog(this, "El artículo ya está en la lista.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+        }
+
+        Object[] fila = new Object[2];
+        fila[0] = itemSeleccionado.getNombreItem();
+        fila[1] = cantidad;
+
+        modelo.addRow(fila);
+
+        itemSeleccionado = null;
+        lb_nombreItem.setText("");
+        spn_cantidad.setValue(0);
+    }//GEN-LAST:event_btn_agregarArticuloActionPerformed
+
+    private void btn_buscarItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_buscarItemActionPerformed
+        GUISeleccionarItem seleccionarItem = new GUISeleccionarItem((Dialog) this.getParent(), true, this.idSucursal);
+        seleccionarItem.setVisible(true);
+        String seleccionado = seleccionarItem.getItemSeleccionado();
+        if (seleccionado != null) {
             try {
-                Empleado e = EmpleadoDAO.buscar(d.getIdEncargado());
-                if (e != null) {
-                    lb_personaEncargada.setText(e.getNombre() + " " + e.getApellidos());
+                this.itemSeleccionado = ItemDAO.buscarPorNombre(seleccionado, this.idSucursal);
+                if (this.itemSeleccionado != null) {
+                    lb_nombreItem.setText(this.itemSeleccionado.getNombreItem());
                 }
-            } catch (SQLException ex) {
-                ex.printStackTrace();
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
         }
-    }
-
+    }//GEN-LAST:event_btn_buscarItemActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_agregarArticulo;
     private javax.swing.JButton btn_buscarItem;
-    private javax.swing.JButton btn_cancelar;
     private javax.swing.JButton btn_guardar;
     private javax.swing.JComboBox<String> cb_departamentoSolicitante;
     private javax.swing.JLabel jLabel1;
@@ -428,7 +348,6 @@ public class GUINuevaSalida extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JLabel lb_nombreItem;

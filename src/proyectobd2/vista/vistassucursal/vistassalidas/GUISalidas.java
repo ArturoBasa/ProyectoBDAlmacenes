@@ -36,7 +36,7 @@ public class GUISalidas extends javax.swing.JPanel {
     private void llenarTabla() {
         DefaultTableModel modelo = (DefaultTableModel) tb_salidas.getModel();
         modelo.setRowCount(0);
-        List<Object[]> datos = PeticionSalidaDAO.obtenerSalidas(idSucursal);
+        List<Object[]> datos = PeticionSalidaDAO.obtenerSalidas(idSucursal, "Todos");
         for (Object[] fila : datos) {
             modelo.addRow(fila);
         }
@@ -52,7 +52,7 @@ public class GUISalidas extends javax.swing.JPanel {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
+        txt_titulo = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         txt_departamento = new javax.swing.JTextField();
         btn_buscar = new javax.swing.JButton();
@@ -63,9 +63,9 @@ public class GUISalidas extends javax.swing.JPanel {
         setPreferredSize(new java.awt.Dimension(874, 720));
         setLayout(new java.awt.BorderLayout());
 
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel2.setText("PANEL SALIDAS");
-        jPanel1.add(jLabel2);
+        txt_titulo.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        txt_titulo.setText("PANEL SALIDAS");
+        jPanel1.add(txt_titulo);
 
         jLabel1.setText("Buscar por departamento:");
         jPanel1.add(jLabel1);
@@ -161,10 +161,10 @@ public class GUISalidas extends javax.swing.JPanel {
     private javax.swing.JButton btn_buscar;
     private javax.swing.JButton btn_nuevaSalida;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tb_salidas;
     private javax.swing.JTextField txt_departamento;
+    private javax.swing.JLabel txt_titulo;
     // End of variables declaration//GEN-END:variables
 }
