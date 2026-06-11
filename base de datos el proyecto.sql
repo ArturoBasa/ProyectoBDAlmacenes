@@ -238,25 +238,7 @@ LOCK TABLES `detalle_salida` WRITE;
 INSERT INTO `detalle_salida` VALUES (2,1,'5');
 /*!40000 ALTER TABLE `detalle_salida` ENABLE KEYS */;
 UNLOCK TABLES;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8mb4 */ ;
-/*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'REAL_AS_FLOAT,PIPES_AS_CONCAT,ANSI_QUOTES,IGNORE_SPACE,ONLY_FULL_GROUP_BY,ANSI,STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 */ /*!50003 TRIGGER `detalle_salida_AFTER_INSERT` AFTER INSERT ON `detalle_salida` FOR EACH ROW BEGIN
-    UPDATE item 
-    SET existencias = existencias - NEW.cantidad 
-    WHERE idItem = NEW.Item_idItem;
-END */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
+
 
 --
 -- Table structure for table `empleado`
@@ -583,6 +565,28 @@ LOCK TABLES `peticionsalida` WRITE;
 INSERT INTO `peticionsalida` VALUES (1,'2025-08-01',1,1);
 /*!40000 ALTER TABLE `peticionsalida` ENABLE KEYS */;
 UNLOCK TABLES;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'REAL_AS_FLOAT,PIPES_AS_CONCAT,ANSI_QUOTES,IGNORE_SPACE,ONLY_FULL_GROUP_BY,ANSI,STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 */ /*!50003 TRIGGER `peticionsalida_AFTER_UPDATE` AFTER UPDATE ON `peticionsalida` FOR EACH ROW BEGIN
+    IF NEW.idEstadoPeticion = 1 AND OLD.idEstadoPeticion != 1 THEN
+        UPDATE item i
+        JOIN detalle_salida ds ON i.idItem = ds.Item_idItem
+        SET i.existencias = i.existencias - ds.cantidad
+        WHERE ds.PeticionSalida_idPeticionSalida = NEW.idPeticionSalida;
+    END IF;
+END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 
 --
 -- Table structure for table `proveedor`
@@ -644,6 +648,7 @@ DROP TABLE IF EXISTS `salidasView`;
 SET @saved_cs_client     = @@character_set_client;
 /*!50503 SET character_set_client = utf8mb4 */;
 /*!50001 CREATE VIEW `salidasView` AS SELECT 
+ 1 AS `idPeticionSalida`,
  1 AS `fecha`,
  1 AS `departamento`,
  1 AS `encargado`,
@@ -868,7 +873,7 @@ DELIMITER ;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013  SQL SECURITY DEFINER */
-/*!50001 VIEW `salidasView` (`fecha`,`departamento`,`encargado`,`descripcion`,`idSucursal`) AS select `ps`.`fecha` AS `fecha`,`d`.`nombreDepartamento` AS `departamento`,`e`.`nombre` AS `encargado`,`ep`.`descripcion` AS `descripcion`,`s`.`idSucursal` AS `idSucursal` from ((((`peticionsalida` `ps` join `empleado` `e` on((`ps`.`idEmpleadoAlmacen` = `e`.`idEmpleado`))) join `departamento` `d` on((`d`.`idDepartamento` = `e`.`idDepartamentoEncargado`))) join `estadoPeticion` `ep` on((`ep`.`idestadoPeticion` = `ps`.`idEstadoPeticion`))) join `sucursal` `s` on((`d`.`Sucursal_idSucursal` = `s`.`idSucursal`))) */;
+/*!50001 VIEW `salidasView` (`idPeticionSalida`,`fecha`,`departamento`,`encargado`,`descripcion`,`idSucursal`) AS select `ps`.`idPeticionSalida` AS `idPeticionSalida`,`ps`.`fecha` AS `fecha`,`d`.`nombreDepartamento` AS `departamento`,`e`.`nombre` AS `encargado`,`ep`.`descripcion` AS `descripcion`,`s`.`idSucursal` AS `idSucursal` from ((((`peticionsalida` `ps` join `empleado` `e` on((`ps`.`idEmpleadoAlmacen` = `e`.`idEmpleado`))) join `departamento` `d` on((`d`.`idDepartamento` = `e`.`idDepartamentoEncargado`))) join `estadoPeticion` `ep` on((`ep`.`idestadoPeticion` = `ps`.`idEstadoPeticion`))) join `sucursal` `s` on((`d`.`Sucursal_idSucursal` = `s`.`idSucursal`))) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;

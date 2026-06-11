@@ -55,12 +55,28 @@ public class PeticionSalidaDAO {
     }
 
     public static PeticionSalida buscar(int idPeticion) throws SQLException {
-        return null;
+        PeticionSalida p = null;
+        String statement = "SELECT idPeticionSalida, fecha, idEmpleadoAlmacen, idEstadoPeticion FROM peticionsalida WHERE idPeticionSalida = ?";
+        try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
+            ps.setInt(1, idPeticion);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    p = new PeticionSalida();
+                    p.setIdPeticionSalida(rs.getInt("idPeticionSalida"));
+                    p.setFecha(rs.getDate("fecha"));
+                    p.setIdEmpleadoAlmacen(rs.getInt("idEmpleadoAlmacen"));
+                    p.setIdEstadoPeticion(rs.getInt("idEstadoPeticion"));
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(PeticionSalidaDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return p;
     }
 
     public static List<Object[]> buscar(String departamento, int idSucursal) throws SQLException {
         List<Object[]> listaFilas = new ArrayList<>();
-        String statement = "SELECT DISTINCT fecha , departamento , encargado , descripcion FROM salidasView WHERE idSucursal = ? AND LOWER(departamento) LIKE LOWER(?)";
+        String statement = "SELECT DISTINCT idPeticionSalida, fecha , departamento , encargado , descripcion FROM salidasView WHERE idSucursal = ? AND LOWER(departamento) LIKE LOWER(?)";
 
         try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
             ps.setInt(1, idSucursal);
@@ -87,7 +103,7 @@ public class PeticionSalidaDAO {
 
     public static List<Object[]> buscarGlobal(String departamento) throws SQLException {
         List<Object[]> listaFilas = new ArrayList<>();
-        String statement = "SELECT DISTINCT v.fecha , v.departamento , v.encargado , v.descripcion, s.nombreSucursal FROM salidasView v JOIN sucursal s ON v.idSucursal = s.idSucursal WHERE LOWER(v.departamento) LIKE LOWER(?)";
+        String statement = "SELECT DISTINCT v.idPeticionSalida, v.fecha , v.departamento , v.encargado , v.descripcion, s.nombreSucursal FROM salidasView v JOIN sucursal s ON v.idSucursal = s.idSucursal WHERE LOWER(v.departamento) LIKE LOWER(?)";
 
         try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
             ps.setString(1, departamento + "%");
@@ -125,11 +141,12 @@ public class PeticionSalidaDAO {
 
     public static int modificar(PeticionSalida peticion) {
         int valor = 0;
-        String statement = "UPDATE peticionsalida SET fecha=?, idEmpleadoAlmacen=? WHERE idPeticionSalida=?";
+        String statement = "UPDATE peticionsalida SET fecha=?, idEmpleadoAlmacen=?, idEstadoPeticion=? WHERE idPeticionSalida=?";
         try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
             ps.setDate(1, new java.sql.Date(peticion.getFecha().getTime()));
             ps.setInt(2, peticion.getIdEmpleadoAlmacen());
-            ps.setInt(3, peticion.getIdPeticionSalida());
+            ps.setInt(3, peticion.getIdEstadoPeticion());
+            ps.setInt(4, peticion.getIdPeticionSalida());
             valor = ps.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(PeticionSalidaDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -141,9 +158,9 @@ public class PeticionSalidaDAO {
         List<Object[]> listaFilas = new ArrayList<>();
         String statement;
         if (tipo.equalsIgnoreCase("Pendiente")) {
-            statement = "SELECT DISTINCT fecha , departamento , encargado , descripcion FROM salidasView WHERE idSucursal = ? AND descripcion = 'EN ESPERA'";
+            statement = "SELECT DISTINCT idPeticionSalida, fecha , departamento , encargado , descripcion FROM salidasView WHERE idSucursal = ? AND descripcion = 'EN ESPERA'";
         } else {
-            statement = "SELECT DISTINCT fecha , departamento , encargado , descripcion FROM salidasView WHERE idSucursal = ?";
+            statement = "SELECT DISTINCT idPeticionSalida, fecha , departamento , encargado , descripcion FROM salidasView WHERE idSucursal = ?";
         }
 
         try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
@@ -170,7 +187,7 @@ public class PeticionSalidaDAO {
 
     public static List<Object[]> obtenerSalidasGlobales() {
         List<Object[]> listaFilas = new ArrayList<>();
-        String statement = "SELECT DISTINCT v.fecha , v.departamento , "
+        String statement = "SELECT DISTINCT v.idPeticionSalida, v.fecha , v.departamento , "
                 + "v.encargado , v.descripcion, s.nombreSucursal "
                 + "FROM salidasView v JOIN sucursal s ON v.idSucursal = s.idSucursal";
 

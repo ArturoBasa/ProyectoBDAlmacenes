@@ -2,9 +2,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
  */
-package proyectobd2.vista.vistassucursal.vistassalidas;
+package proyectobd2.vista.vistassalidas;
 
-import java.awt.Frame;
 import proyectobd2.vista.vistassucursal.vistasentradas.GUISeleccionarItem;
 import java.sql.SQLException;
 import java.util.List;
@@ -26,24 +25,65 @@ import java.util.Date;
  *
  * @author endri
  */
-public class GUINuevaSalida extends javax.swing.JDialog {
+public class GUIEditarSalida extends javax.swing.JDialog {
 
     private int idSucursal;
     private Item itemSeleccionado;
     private List<Departamento> departamentosSucursal;
 
+    private int idPeticion;
+
     /**
-     * Creates new form GUINuevaSalida
+     * Creates new form GUIEditarSalida
      *
      * @param parent
      * @param modal
      * @param idSucursal
+     * @param idPeticion
      */
-    public GUINuevaSalida(java.awt.Frame parent, boolean modal, int idSucursal) {
+    public GUIEditarSalida(java.awt.Frame parent, boolean modal, int idSucursal, int idPeticion) {
         super(parent, modal);
         this.idSucursal = idSucursal;
+        this.idPeticion = idPeticion;
         initComponents();
         cargarDepartamentos();
+        cargarDatosPeticion();
+    }
+
+    private void cargarDatosPeticion() {
+        try {
+            PeticionSalida peticion = PeticionSalidaDAO.buscar(this.idPeticion);
+            if (peticion != null) {
+                spn_fecha.setValue(peticion.getFecha());
+
+                for (int i = 0; i < departamentosSucursal.size(); i++) {
+                    if (departamentosSucursal.get(i).getIdEncargado() == peticion.getIdEmpleadoAlmacen()) {
+                        cb_departamentoSolicitante.setSelectedIndex(i);
+                        break;
+                    }
+                }
+
+                if (peticion.getIdEstadoPeticion() == 1) {
+                    cb_estadoPeticion.setSelectedItem("ACEPTADA");
+                } else if (peticion.getIdEstadoPeticion() == 2) {
+                    cb_estadoPeticion.setSelectedItem("EN ESPERA");
+                } else if (peticion.getIdEstadoPeticion() == 3) {
+                    cb_estadoPeticion.setSelectedItem("DENEGADA");
+                }
+
+                DefaultTableModel modelo = (DefaultTableModel) tb_articulos.getModel();
+                modelo.setRowCount(0);
+                List<DetalleSalida> detalles = DetalleSalidaDAO.obtenerDetallesPorPeticion(this.idPeticion);
+                for (DetalleSalida ds : detalles) {
+                    Item item = ItemDAO.buscar(ds.getIdItem());
+                    if (item != null) {
+                        modelo.addRow(new Object[]{item.getNombreItem(), ds.getCantidad()});
+                    }
+                }
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
     }
 
     /**
@@ -78,6 +118,7 @@ public class GUINuevaSalida extends javax.swing.JDialog {
         txt_usoMaterial = new javax.swing.JTextField();
         lbl_usoMaterial = new javax.swing.JLabel();
         btn_eliminarItem = new javax.swing.JButton();
+        cb_estadoPeticion = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -160,7 +201,6 @@ public class GUINuevaSalida extends javax.swing.JDialog {
             }
         });
 
-        txt_usoMaterial.setEditable(false);
         txt_usoMaterial.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txt_usoMaterialActionPerformed(evt);
@@ -178,48 +218,57 @@ public class GUINuevaSalida extends javax.swing.JDialog {
             }
         });
 
+        cb_estadoPeticion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ACEPTADA", "EN ESPERA", "DENEGADA" }));
+        cb_estadoPeticion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cb_estadoPeticionActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addGap(6, 6, 6)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 490, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGroup(jPanel1Layout.createSequentialGroup()
-                                    .addGap(25, 25, 25)
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel2)
-                                        .addComponent(spn_fecha, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jLabel7)
-                                        .addComponent(jLabel9)
-                                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                            .addComponent(btn_buscarItem)
-                                            .addGap(67, 67, 67)
-                                            .addComponent(lb_nombreItem, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addComponent(jLabel8)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 490, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(25, 25, 25)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel2)
+                                    .addComponent(spn_fecha, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel7)
+                                    .addComponent(jLabel9)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(btn_buscarItem)
+                                        .addGap(67, 67, 67)
+                                        .addComponent(lb_nombreItem, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(jLabel8)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel5)
+                                            .addComponent(cb_departamentoSolicitante, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGap(18, 18, 18)
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel4)
+                                            .addComponent(lb_personaEncargada, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addComponent(spn_cantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addComponent(jLabel5)
-                                                .addComponent(cb_departamentoSolicitante, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addGap(18, 18, 18)
-                                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addComponent(jLabel4)
-                                                .addComponent(lb_personaEncargada, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addGap(31, 31, 31)
-                            .addComponent(btn_cancelar)
-                            .addGap(36, 36, 36)
-                            .addComponent(btn_guardar))
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                            .addContainerGap()
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(lbl_usoMaterial)
-                                .addComponent(txt_usoMaterial, javax.swing.GroupLayout.PREFERRED_SIZE, 465, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(cb_estadoPeticion, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(31, 31, 31)
+                        .addComponent(btn_cancelar)
+                        .addGap(36, 36, 36)
+                        .addComponent(btn_guardar))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lbl_usoMaterial)
+                            .addComponent(txt_usoMaterial, javax.swing.GroupLayout.PREFERRED_SIZE, 465, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(31, 31, 31)
                         .addComponent(jLabel1)))
@@ -272,7 +321,9 @@ public class GUINuevaSalida extends javax.swing.JDialog {
                         .addGap(12, 12, 12)
                         .addComponent(jLabel8)
                         .addGap(6, 6, 6)
-                        .addComponent(spn_cantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(spn_cantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cb_estadoPeticion)))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 510, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(40, 40, 40)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -371,12 +422,29 @@ public class GUINuevaSalida extends javax.swing.JDialog {
         }
 
         peticion.setIdEmpleadoAlmacen(deptoSeleccionado.getIdEncargado());
-        peticion.setIdEstadoPeticion(2);
+        String estadoSel = cb_estadoPeticion.getSelectedItem().toString();
+        if (estadoSel.equals("ACEPTADA")) {
+            peticion.setIdEstadoPeticion(1);
+        } else if (estadoSel.equals("EN ESPERA")) {
+            peticion.setIdEstadoPeticion(2);
+        } else if (estadoSel.equals("DENEGADA")) {
+            peticion.setIdEstadoPeticion(3);
+        }
+        peticion.setIdPeticionSalida(this.idPeticion);
 
-        int idPeticionGenerado = PeticionSalidaDAO.insertar(peticion);
+        int rowsAffected = PeticionSalidaDAO.modificar(peticion);
 
-        if (idPeticionGenerado > 0) {
+        if (rowsAffected > 0) {
             boolean errorEnDetalles = false;
+
+            try {
+                List<DetalleSalida> oldDetalles = DetalleSalidaDAO.obtenerDetallesPorPeticion(this.idPeticion);
+                for (DetalleSalida oldDs : oldDetalles) {
+                    DetalleSalidaDAO.eliminar(oldDs.getIdItem(), this.idPeticion);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
 
             for (int i = 0; i < modelo.getRowCount(); i++) {
                 String nombreArticulo = modelo.getValueAt(i, 0).toString();
@@ -387,7 +455,7 @@ public class GUINuevaSalida extends javax.swing.JDialog {
                     if (itemActual != null) {
                         DetalleSalida detalle = new DetalleSalida();
                         detalle.setIdItem(itemActual.getIdItem());
-                        detalle.setIdPeticionSalida(idPeticionGenerado);
+                        detalle.setIdPeticionSalida(this.idPeticion);
                         detalle.setCantidad(cantidadArticulo);
 
                         DetalleSalidaDAO.insertar(detalle);
@@ -399,14 +467,14 @@ public class GUINuevaSalida extends javax.swing.JDialog {
             }
 
             if (errorEnDetalles) {
-                JOptionPane.showMessageDialog(this, "La petición se creó, pero hubo un error guardando algunos detalles.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(this, "La petición se actualizó, pero hubo un error guardando algunos detalles.", "Advertencia", JOptionPane.WARNING_MESSAGE);
             } else {
-                JOptionPane.showMessageDialog(this, "Petición de salida guardada exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Petición de salida actualizada exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
             }
             this.dispose();
 
         } else {
-            JOptionPane.showMessageDialog(this, "Error al guardar la petición.", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Error al actualizar la petición.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btn_guardarActionPerformed
 
@@ -428,6 +496,10 @@ public class GUINuevaSalida extends javax.swing.JDialog {
         DefaultTableModel modelo = (DefaultTableModel) tb_articulos.getModel();
         modelo.removeRow(fila);
     }//GEN-LAST:event_btn_eliminarItemActionPerformed
+
+    private void cb_estadoPeticionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cb_estadoPeticionActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cb_estadoPeticionActionPerformed
 
     private void cargarDepartamentos() {
         try {
@@ -476,6 +548,7 @@ public class GUINuevaSalida extends javax.swing.JDialog {
     private javax.swing.JButton btn_eliminarItem;
     private javax.swing.JButton btn_guardar;
     private javax.swing.JComboBox<String> cb_departamentoSolicitante;
+    private javax.swing.JComboBox<String> cb_estadoPeticion;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;

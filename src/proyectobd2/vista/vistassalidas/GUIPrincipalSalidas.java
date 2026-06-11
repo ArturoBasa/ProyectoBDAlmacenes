@@ -4,7 +4,6 @@ import java.awt.CardLayout;
 import java.sql.SQLException;
 import proyectobd2.modelo.DAO.SucursalDAO;
 import proyectobd2.modelo.beans.Empleado;
-import proyectobd2.vista.vistassucursal.vistassalidas.GUISalidas;
 
 /**
  *
@@ -22,12 +21,13 @@ public class GUIPrincipalSalidas extends javax.swing.JFrame {
      */
     public GUIPrincipalSalidas(Empleado empleado) throws SQLException {
         initComponents();
+        
         lb_nombreEmpleado.setText(empleado.getNombre() + empleado.getApellidos());
         int idSucursal = empleado.getIdSucursal();
         lb_nombreSucursal.setText(SucursalDAO.buscar(idSucursal).getNombreSucursal());
         card = (CardLayout) pnl_cuerpo.getLayout();
 
-        GUISalidas panelSalidas = new GUISalidas(idSucursal);
+        GUISalidasUsuarioSalidas panelSalidas = new GUISalidasUsuarioSalidas(idSucursal);
 
         pnl_cuerpo.add(panelSalidas, "salidas");
         
@@ -56,7 +56,6 @@ public class GUIPrincipalSalidas extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu2 = new javax.swing.JMenu();
         mi_salidas = new javax.swing.JMenuItem();
-        mi_revisarSolicitudes = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         mi_cerrarSesion = new javax.swing.JMenuItem();
 
@@ -95,10 +94,6 @@ public class GUIPrincipalSalidas extends javax.swing.JFrame {
         mi_salidas.setText("Salidas");
         mi_salidas.addActionListener(this::mi_salidasActionPerformed);
         jMenu2.add(mi_salidas);
-
-        mi_revisarSolicitudes.setText("Revisar solicitudes");
-        mi_revisarSolicitudes.addActionListener(this::mi_revisarSolicitudesActionPerformed);
-        jMenu2.add(mi_revisarSolicitudes);
         jMenu2.add(jSeparator1);
 
         mi_cerrarSesion.setText("Cerrar sesión");
@@ -122,10 +117,6 @@ public class GUIPrincipalSalidas extends javax.swing.JFrame {
         card.show(pnl_cuerpo, "salidas");
     }//GEN-LAST:event_mi_salidasActionPerformed
 
-    private void mi_revisarSolicitudesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mi_revisarSolicitudesActionPerformed
-        
-    }//GEN-LAST:event_mi_revisarSolicitudesActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.Box.Filler filler1;
     private javax.swing.Box.Filler filler2;
@@ -139,7 +130,6 @@ public class GUIPrincipalSalidas extends javax.swing.JFrame {
     private javax.swing.JLabel lb_nombreEmpleado;
     private javax.swing.JLabel lb_nombreSucursal;
     private javax.swing.JMenuItem mi_cerrarSesion;
-    private javax.swing.JMenuItem mi_revisarSolicitudes;
     private javax.swing.JMenuItem mi_salidas;
     private javax.swing.JPanel pnl_cuerpo;
     // End of variables declaration//GEN-END:variables

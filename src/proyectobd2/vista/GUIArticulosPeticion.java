@@ -15,19 +15,19 @@ import proyectobd2.modelo.DAO.PeticionSalidaDAO;
 public class GUIArticulosPeticion extends javax.swing.JDialog {
 
 
-    private String departamento;
+    private int idPeticion;
 
     /**
      * Creates new form GUIArticulosPeticion
      * @param parent
      * @param modal
-     * @param departamento
+     * @param idPeticion
      */
-    public GUIArticulosPeticion(java.awt.Frame parent, boolean modal, String departamento) {
+    public GUIArticulosPeticion(java.awt.Frame parent, boolean modal, int idPeticion) {
         super(parent, modal);
         initComponents();
-        this.departamento = departamento;
-        lb_departamento.setText(departamento);
+        this.idPeticion = idPeticion;
+        lb_departamento.setText("Petición #" + idPeticion);
         this.pack();
         this.setLocationRelativeTo(null);
         llenarTabla();
@@ -36,9 +36,16 @@ public class GUIArticulosPeticion extends javax.swing.JDialog {
     private void llenarTabla() {
         DefaultTableModel modelo = (DefaultTableModel) tb_articulosDepartamento.getModel();
         modelo.setRowCount(0);
-        List<Object[]> datos = PeticionSalidaDAO.obtenerArticulosDepartamento(departamento);
-        for (Object[] fila : datos) {
-            modelo.addRow(fila);
+        try {
+            java.util.List<proyectobd2.modelo.beans.DetalleSalida> detalles = proyectobd2.modelo.DAO.DetalleSalidaDAO.obtenerDetallesPorPeticion(this.idPeticion);
+            for (proyectobd2.modelo.beans.DetalleSalida ds : detalles) {
+                proyectobd2.modelo.beans.Item item = proyectobd2.modelo.DAO.ItemDAO.buscar(ds.getIdItem());
+                if (item != null) {
+                    modelo.addRow(new Object[]{item.getNombreItem(), ds.getCantidad(), item.getIdSucursal()}); // Assuming columns fit
+                }
+            }
+        } catch (java.sql.SQLException ex) {
+            ex.printStackTrace();
         }
     }
 

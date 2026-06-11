@@ -12,8 +12,12 @@ import proyectobd2.modelo.beans.PartidaPresupuestal;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
+import proyectobd2.excepciones.PresupuestoInsuficienteException;
+import proyectobd2.modelo.DAO.DetalleFacturaDAO;
 import proyectobd2.modelo.DAO.FacturaDAO;
+import proyectobd2.modelo.DAO.ItemDAO;
 import proyectobd2.modelo.DAO.ProveedorDAO;
+import proyectobd2.modelo.beans.DetalleFactura;
 import proyectobd2.modelo.beans.Factura;
 import proyectobd2.modelo.beans.Item;
 import proyectobd2.modelo.beans.Proveedor;
@@ -392,6 +396,20 @@ public class GUINuevaEntrada extends javax.swing.JDialog {
                     JOptionPane.WARNING_MESSAGE);
             return;
         }
+        try {
+            String nombrePartida = cbx_partidaPresupuestal.getSelectedItem().toString();
+            PartidaPresupuestal partida = PartidaPresupuestalDAO.buscarPorNombre(nombrePartida);
+            if (partida == null) {
+                JOptionPane.showMessageDialog(this, "No se ha podido encontrar la partida presupuestal seleccionada.");
+            }
+            Double precioParcial = (Integer) spn_cantidad.getValue() * (Double) spn_costoUnitario.getValue();
+            if ((partida.getPresupuesto() - precioParcial) < 0) {
+                JOptionPane.showMessageDialog(this, "Esta partida presupuestal no cuenta con el presupuesto suficiente para este pedido", "Presupuesto insuficiente", 1);
+                return;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
         DefaultTableModel modelo = (DefaultTableModel) tb_articulos.getModel();
         Object[] fila = new Object[4];
@@ -439,16 +457,16 @@ public class GUINuevaEntrada extends javax.swing.JDialog {
         }
 
         Factura f = prepararFactura();
-        if(f == null){
+        if (f == null) {
             JOptionPane.showMessageDialog(this, "El folio ya está registrado o hay un error en los datos...");
             return;
         }
-        
+
         if (FacturaDAO.insertar(f) == 0) {
             JOptionPane.showMessageDialog(this, "Error al guardar la factura.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        
+
         try {
             f = FacturaDAO.buscarPorFolio(f.getFolioFactura());
         } catch (SQLException ex) {
@@ -463,26 +481,30 @@ public class GUINuevaEntrada extends javax.swing.JDialog {
             String descripcion = modelo.getValueAt(i, 0).toString();
             int cantidad = (Integer) modelo.getValueAt(i, 1);
             double costoUnitario = (Double) modelo.getValueAt(i, 2);
-
+            String partidaPresupuestal = modelo.getValueAt(i, 3).toString();
+            double costoParcial = cantidad + costoUnitario;
             try {
-                Item item = proyectobd2.modelo.DAO.ItemDAO.buscarPorNombre(descripcion, this.idSucursal);
-                if (item != null) {
+                Item item = ItemDAO.buscarPorNombre(descripcion, this.idSucursal);
+                PartidaPresupuestal partida = PartidaPresupuestalDAO.buscarPorNombre(partidaPresupuestal);
+                if (item != null && partida != null) {
                     item.setExistencias(item.getExistencias() + cantidad);
-                    proyectobd2.modelo.DAO.ItemDAO.modificar(item);
-                    
-                    proyectobd2.modelo.beans.DetalleFactura detalle = new proyectobd2.modelo.beans.DetalleFactura();
+                    ItemDAO.modificar(item);
+                    partida.setPresupuesto(partida.getPresupuesto() - costoParcial);
+                    PartidaPresupuestalDAO.modificar(partida);
+
+                    DetalleFactura detalle = new DetalleFactura();
                     detalle.setIdFactura(f.getIdFactura());
                     detalle.setIdItem(item.getIdItem());
                     detalle.setCantidad(cantidad);
                     detalle.setCosto(costoUnitario);
                     detalle.setFolioFactura(f.getFolioFactura());
-                    proyectobd2.modelo.DAO.DetalleFacturaDAO.insertar(detalle);
+                    DetalleFacturaDAO.insertar(detalle);
                 }
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
         }
-        
+
         JOptionPane.showMessageDialog(this, "Entrada registrada exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
         this.dispose();
     }//GEN-LAST:event_btn_guardarActionPerformed

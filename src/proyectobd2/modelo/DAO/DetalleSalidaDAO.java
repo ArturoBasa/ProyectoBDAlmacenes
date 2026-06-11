@@ -57,7 +57,25 @@ public class DetalleSalidaDAO {
         return listaDetalles;
     }
 
+    public static List<DetalleSalida> obtenerDetallesPorPeticion(int idPeticion) throws SQLException {
+        List<DetalleSalida> listaDetalles = new ArrayList<>();
+        String statement = "SELECT Item_idItem, PeticionSalida_idPeticionSalida, cantidad FROM detalle_salida WHERE PeticionSalida_idPeticionSalida = ?";
 
+        try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
+            ps.setInt(1, idPeticion);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                DetalleSalida ds = new DetalleSalida();
+                ds.setIdItem(rs.getInt("Item_idItem"));
+                ds.setIdPeticionSalida(rs.getInt("PeticionSalida_idPeticionSalida"));
+                ds.setCantidad(rs.getInt("cantidad"));
+                listaDetalles.add(ds);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DetalleSalidaDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return listaDetalles;
+    }
 
     public static DetalleSalida buscar(int idItem, int idPeticion) throws SQLException {
         DetalleSalida ds = null;

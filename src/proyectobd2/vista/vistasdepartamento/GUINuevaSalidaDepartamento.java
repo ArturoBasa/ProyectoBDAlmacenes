@@ -63,6 +63,8 @@ public class GUINuevaSalidaDepartamento extends javax.swing.JPanel {
         lb_nombreItem = new javax.swing.JLabel();
         btn_buscarItem = new javax.swing.JButton();
         lb_personaEncargada = new javax.swing.JLabel();
+        txt_usoMaterial = new javax.swing.JTextField();
+        lbl_usoMaterial = new javax.swing.JLabel();
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel1.setText("Información de la solicitud");
@@ -132,6 +134,14 @@ public class GUINuevaSalidaDepartamento extends javax.swing.JPanel {
             }
         });
 
+        txt_usoMaterial.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_usoMaterialActionPerformed(evt);
+            }
+        });
+
+        lbl_usoMaterial.setText("Uso del material:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -170,7 +180,12 @@ public class GUINuevaSalidaDepartamento extends javax.swing.JPanel {
                                                     .addComponent(lb_personaEncargada, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(144, 144, 144)
-                                .addComponent(btn_guardar)))
+                                .addComponent(btn_guardar))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lbl_usoMaterial)
+                                    .addComponent(txt_usoMaterial, javax.swing.GroupLayout.PREFERRED_SIZE, 465, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(btn_agregarArticulo)
@@ -188,7 +203,11 @@ public class GUINuevaSalidaDepartamento extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(spn_fecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(86, 86, 86)
+                        .addGap(26, 26, 26)
+                        .addComponent(lbl_usoMaterial)
+                        .addGap(4, 4, 4)
+                        .addComponent(txt_usoMaterial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel5)
                             .addComponent(jLabel4))
@@ -328,12 +347,17 @@ public class GUINuevaSalidaDepartamento extends javax.swing.JPanel {
                 this.itemSeleccionado = ItemDAO.buscarPorNombre(seleccionado, this.idSucursal);
                 if (this.itemSeleccionado != null) {
                     lb_nombreItem.setText(this.itemSeleccionado.getNombreItem());
+                    txt_usoMaterial.setText(itemSeleccionado.getDescripcionUso());
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
     }//GEN-LAST:event_btn_buscarItemActionPerformed
+
+    private void txt_usoMaterialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_usoMaterialActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_usoMaterialActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -352,8 +376,10 @@ public class GUINuevaSalidaDepartamento extends javax.swing.JPanel {
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JLabel lb_nombreItem;
     private javax.swing.JLabel lb_personaEncargada;
+    private javax.swing.JLabel lbl_usoMaterial;
     private javax.swing.JSpinner spn_cantidad;
     private javax.swing.JSpinner spn_fecha;
     private javax.swing.JTable tb_articulos;
+    private javax.swing.JTextField txt_usoMaterial;
     // End of variables declaration//GEN-END:variables
 }

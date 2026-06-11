@@ -30,7 +30,7 @@ public class Conexion {
     private static Conexion conexion;
 
     public Conexion() {
-        try (InputStream input = Conexion.class.getClassLoader().getResourceAsStream("resources/database.properties")) {
+        try (InputStream input = Conexion.class.getClassLoader().getResourceAsStream("database.properties")) {
             if (input == null) {
                 throw new RuntimeException("Unable to find database properties.");
             }

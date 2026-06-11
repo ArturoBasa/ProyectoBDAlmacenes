@@ -19,7 +19,8 @@ import proyectobd2.modelo.DAO.PeticionSalidaDAO;
  */
 public class GUISalidasCentral extends javax.swing.JPanel {
 
-    private JFrame framePadre = (JFrame) SwingUtilities.getAncestorOfClass(JFrame.class, this);
+    private java.awt.Frame framePadre;
+    private java.util.List<Integer> idsPeticiones = new java.util.ArrayList<>();
 
 
     /**
@@ -34,9 +35,11 @@ public class GUISalidasCentral extends javax.swing.JPanel {
     private void llenarTabla() {
         DefaultTableModel modelo = (DefaultTableModel) tb_salidas.getModel();
         modelo.setRowCount(0);
+        idsPeticiones.clear();
         List<Object[]> datos = PeticionSalidaDAO.obtenerSalidasGlobales();
         for (Object[] fila : datos) {
-            modelo.addRow(fila);
+            idsPeticiones.add((Integer) fila[0]);
+            modelo.addRow(new Object[]{fila[1], fila[2], fila[3], fila[4], fila[5]});
         }
     }
 
@@ -112,9 +115,11 @@ public class GUISalidasCentral extends javax.swing.JPanel {
             try {
                 DefaultTableModel modelo = (DefaultTableModel) tb_salidas.getModel();
                 modelo.setRowCount(0);
+                idsPeticiones.clear();
                 List<Object[]> datos = PeticionSalidaDAO.buscarGlobal(departamento);
                 for (Object[] fila : datos) {
-                    modelo.addRow(fila);
+                    idsPeticiones.add((Integer) fila[0]);
+                    modelo.addRow(new Object[]{fila[1], fila[2], fila[3], fila[4], fila[5]});
                 }
             } catch (SQLException ex) {
                 ex.printStackTrace();
@@ -130,9 +135,10 @@ public class GUISalidasCentral extends javax.swing.JPanel {
             int fila = tb_salidas.getSelectedRow();
 
             if (fila != -1) {
-                String departamento = tb_salidas.getValueAt(fila, 1).toString();
+                int modelRow = tb_salidas.convertRowIndexToModel(fila);
+                int idPeticion = idsPeticiones.get(modelRow);
 
-                GUIArticulosPeticion articulosPeticion = new GUIArticulosPeticion(this.framePadre, true, departamento);
+                GUIArticulosPeticion articulosPeticion = new GUIArticulosPeticion(this.framePadre, true, idPeticion);
                 articulosPeticion.setVisible(true);
 
             }
