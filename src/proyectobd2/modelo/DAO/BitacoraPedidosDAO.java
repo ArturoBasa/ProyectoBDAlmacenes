@@ -96,6 +96,31 @@ public class BitacoraPedidosDAO {
         return valor;
     }
 
+    public static int vaciarTodos() {
+        int valor = 0;
+        String statement = "DELETE FROM bitacorapedidos";
+
+        try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
+            valor = ps.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(BitacoraPedidosDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return valor;
+    }
+
+    public static int vaciarPorSucursal(int idSucursal) {
+        int valor = 0;
+        String statement = "DELETE bp FROM bitacorapedidos bp JOIN item i ON bp.Item_idItem = i.idItem WHERE i.Sucursal_idSucursal = ?";
+
+        try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
+            ps.setInt(1, idSucursal);
+            valor = ps.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(BitacoraPedidosDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return valor;
+    }
+
     public static int modificar(BitacoraPedidos b) {
         int valor = 0;
         String statement = "UPDATE bitacorapedidos SET fecha = ?, cantidadPedir = ?, Item_idItem = ? WHERE idBitacoraPedidos = ?";
