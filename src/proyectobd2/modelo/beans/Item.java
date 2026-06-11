@@ -20,6 +20,8 @@ public class Item {
     private int idSucursal;
     private String estado;
     private String descripcionUso;
+    
+    private String nombrePartida;
 
     public Item() {
     }
@@ -107,6 +109,14 @@ public class Item {
 
     public void setDescripcionUso(String descripcion) {
         this.descripcionUso = descripcion;
+    }
+
+    public String getNombrePartida() {
+        return nombrePartida;
+    }
+
+    public void setNombrePartida(String nombrePartida) {
+        this.nombrePartida = nombrePartida;
     }
 
 }

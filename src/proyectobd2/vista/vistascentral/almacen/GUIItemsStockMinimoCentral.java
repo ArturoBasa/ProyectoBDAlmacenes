@@ -91,6 +91,14 @@ public class GUIItemsStockMinimoCentral extends javax.swing.JPanel {
         try {
             obj = new ExportarExcel();
             obj.exportarExcel(tb_stockMinimo);
+            
+            int confirm = javax.swing.JOptionPane.showConfirmDialog(this, "¿Desea limpiar la bitácora de pedidos ahora que se ha exportado a Excel?", "Limpiar Bitácora", javax.swing.JOptionPane.YES_NO_OPTION);
+            if (confirm == javax.swing.JOptionPane.YES_OPTION) {
+                BitacoraPedidosDAO.vaciarTodos();
+                llenarTabla();
+                javax.swing.JOptionPane.showMessageDialog(this, "Bitácora limpiada exitosamente.");
+            }
+            
         } catch (IOException ex) {
             ex.printStackTrace();
         }

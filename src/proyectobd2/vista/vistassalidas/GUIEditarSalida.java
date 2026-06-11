@@ -423,6 +423,30 @@ public class GUIEditarSalida extends javax.swing.JDialog {
 
         peticion.setIdEmpleadoAlmacen(deptoSeleccionado.getIdEncargado());
         String estadoSel = cb_estadoPeticion.getSelectedItem().toString();
+        
+        if (estadoSel.equals("ACEPTADA")) {
+            for (int i = 0; i < modelo.getRowCount(); i++) {
+                String nombreArticulo = modelo.getValueAt(i, 0).toString();
+                int cantidadArticulo = Integer.parseInt(modelo.getValueAt(i, 1).toString());
+                try {
+                    proyectobd2.modelo.beans.Item itemActual = proyectobd2.modelo.DAO.ItemDAO.buscarPorNombre(nombreArticulo, this.idSucursal);
+                    if (itemActual != null) {
+                        if (itemActual.getExistencias() < cantidadArticulo) {
+                            JOptionPane.showMessageDialog(this, 
+                                "No se puede aceptar la solicitud. No hay suficientes existencias del artículo " + nombreArticulo + 
+                                " (Disponibles: " + itemActual.getExistencias() + ", Solicitados: " + cantidadArticulo + ").", 
+                                "Inventario Insuficiente", JOptionPane.WARNING_MESSAGE);
+                            return;
+                        }
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                    JOptionPane.showMessageDialog(this, "Error al verificar existencias.", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+            }
+        }
+        
         if (estadoSel.equals("ACEPTADA")) {
             peticion.setIdEstadoPeticion(1);
         } else if (estadoSel.equals("EN ESPERA")) {

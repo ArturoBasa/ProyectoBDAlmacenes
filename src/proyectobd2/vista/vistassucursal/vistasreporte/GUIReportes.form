@@ -102,9 +102,8 @@
             <Component class="javax.swing.JFormattedTextField" name="txfFechaInicio">
               <Properties>
                 <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor">
-                  <Format subtype="1" type="1"/>
+                  <Format format="yyyy-MM-dd" subtype="-1" type="1"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="dd/mm/aaaa"/>
                 <Property name="alignmentX" type="float" value="0.0"/>
               </Properties>
             </Component>
@@ -134,9 +133,8 @@
             <Component class="javax.swing.JFormattedTextField" name="txfFechaFin">
               <Properties>
                 <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor">
-                  <Format subtype="1" type="1"/>
+                  <Format format="yyyy-MM-dd" subtype="-1" type="1"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="dd/mm/aaaa"/>
                 <Property name="alignmentX" type="float" value="0.0"/>
               </Properties>
             </Component>
@@ -186,6 +184,21 @@
           </Properties>
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
+          <SubComponents>
+            <Component class="javax.swing.JButton" name="btnBuscar">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Buscar"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnBuscarActionPerformed"/>
+              </Events>
+              <Constraints>
+                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
+                  <BorderConstraints direction="First"/>
+                </Constraint>
+              </Constraints>
+            </Component>
+          </SubComponents>
         </Container>
       </SubComponents>
     </Container>
@@ -223,6 +236,9 @@
                       <Dimension value="[75, 40]"/>
                     </Property>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnExportarPdfIngresosActionPerformed"/>
+                  </Events>
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
                       <BorderConstraints direction="First"/>
@@ -244,13 +260,49 @@
                     <Component class="javax.swing.JTable" name="tblIngresos">
                       <Properties>
                         <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                          <Table columnCount="5" rowCount="4">
-                            <Column editable="false" title="Folio" type="java.lang.String"/>
-                            <Column editable="false" title="Fecha" type="java.lang.String"/>
-                            <Column editable="false" title="Proveedor" type="java.lang.String"/>
-                            <Column editable="false" title="Partida presupuestal" type="java.lang.String"/>
-                            <Column editable="false" title="Total" type="java.lang.Double"/>
+                          <Table columnCount="9" rowCount="4">
+                            <Column editable="false" title="Folio" type="java.lang.Object"/>
+                            <Column editable="false" title="Fecha" type="java.lang.Object"/>
+                            <Column editable="false" title="Proveedor" type="java.lang.Object"/>
+                            <Column editable="false" title="RFC" type="java.lang.Object"/>
+                            <Column editable="false" title="Partida presupuestal" type="java.lang.Object"/>
+                            <Column editable="false" title="Art&#xed;culo" type="java.lang.Object"/>
+                            <Column editable="false" title="Cantidad" type="java.lang.Object"/>
+                            <Column editable="false" title="PrecioUnitario" type="java.lang.Object"/>
+                            <Column editable="false" title="SubTotal" type="java.lang.Object"/>
                           </Table>
+                        </Property>
+                        <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
+                          <TableColumnModel selectionModel="0">
+                            <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                              <Title/>
+                              <Editor/>
+                              <Renderer/>
+                            </Column>
+                            <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                              <Title/>
+                              <Editor/>
+                              <Renderer/>
+                            </Column>
+                            <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                              <Title/>
+                              <Editor/>
+                              <Renderer/>
+                            </Column>
+                            <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                              <Title/>
+                              <Editor/>
+                              <Renderer/>
+                            </Column>
+                            <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                              <Title/>
+                              <Editor/>
+                              <Renderer/>
+                            </Column>
+                          </TableColumnModel>
+                        </Property>
+                        <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
+                          <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
                         </Property>
                       </Properties>
                     </Component>
@@ -303,11 +355,16 @@
                     <Component class="javax.swing.JTable" name="tblEgresos">
                       <Properties>
                         <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                          <Table columnCount="4" rowCount="4">
-                            <Column editable="false" title="Fecha" type="java.lang.String"/>
-                            <Column editable="false" title="Departamento" type="java.lang.String"/>
-                            <Column editable="false" title="Partida presupuestal" type="java.lang.String"/>
-                            <Column editable="false" title="Total" type="java.lang.Double"/>
+                          <Table columnCount="9" rowCount="4">
+                            <Column editable="false" title="Fecha" type="java.lang.Object"/>
+                            <Column editable="false" title="Departamento" type="java.lang.Object"/>
+                            <Column editable="false" title="Encargado" type="java.lang.Object"/>
+                            <Column editable="false" title="Descripcion" type="java.lang.Object"/>
+                            <Column editable="false" title="Art&#xed;culo" type="java.lang.Object"/>
+                            <Column editable="false" title="Partida presupuestal" type="java.lang.Object"/>
+                            <Column editable="false" title="Cantidad" type="java.lang.Object"/>
+                            <Column editable="false" title="Precio Unitario" type="java.lang.Object"/>
+                            <Column editable="false" title="Subtotal" type="java.lang.Object"/>
                           </Table>
                         </Property>
                       </Properties>

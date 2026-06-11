@@ -23,7 +23,7 @@ public class SucursalDAO {
 
     public static int insertar(Sucursal sucursal) {
         int valor = 0;
-        String statement = "INSERT INTO sucursal (nombreSucursal, ciudad, direccion) values (?,?,?)";
+        String statement = "INSERT INTO sucursal (nombreSucursal, ciudad, direccion, estado) values (?,?,?,'ACTIVO')";
 
         try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
 
@@ -41,7 +41,7 @@ public class SucursalDAO {
 
     public static List<Sucursal> obtenerListaObjetos() throws SQLException {
         List<Sucursal> listaSucursales = new ArrayList<>();
-        String statement = "SELECT idSucursal, nombreSucursal, ciudad, direccion FROM sucursal";
+        String statement = "SELECT idSucursal, nombreSucursal, ciudad, direccion, estado FROM sucursal WHERE estado = 'ACTIVO'";
 
         try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement); ResultSet rs = ps.executeQuery()) {
 
@@ -83,7 +83,7 @@ public class SucursalDAO {
 
     public static int eliminar(int idSucursal) {
         int valor = 0;
-        String statement = "DELETE FROM sucursal WHERE idSucursal = ?";
+        String statement = "UPDATE sucursal SET estado = 'INACTIVO' WHERE idSucursal = ?";
 
         try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
 
@@ -113,5 +113,27 @@ public class SucursalDAO {
             Logger.getLogger(SucursalDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return valor;
+    }
+    
+    public static List<Sucursal> obtenerListaID(int idSucursal) throws SQLException {
+        List<Sucursal> listaSucursales = new ArrayList<>();
+        String statement = "SELECT idSucursal, nombreSucursal, ciudad, direccion, estado FROM sucursal WHERE idSucursal = ? AND estado = 'ACTIVO'";
+
+        try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
+            ps.setInt(1,idSucursal);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Sucursal sucursal = new Sucursal();
+                    sucursal.setIdSucursal(rs.getInt("idSucursal"));
+                    sucursal.setNombreSucursal(rs.getString("nombreSucursal"));
+                    sucursal.setCiudad(rs.getString("ciudad"));
+                    sucursal.setDireccion(rs.getString("direccion"));
+                    listaSucursales.add(sucursal);
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(SucursalDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return listaSucursales;
     }
 }

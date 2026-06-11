@@ -5,6 +5,7 @@
 package proyectobd2.vista.vistassucursal.vistaskardex;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
@@ -21,14 +22,16 @@ import proyectobd2.modelo.beans.Kardex;
  */
 public class GUIKardex extends javax.swing.JPanel {
     int idSucursal;
+    String rol;
     int idItem;
     ItemDAO itemDAO = new ItemDAO();
     /**
      * Creates new form GUIKardex
      */
-    public GUIKardex(int idSucursal) {
+    public GUIKardex(int idSucursal, String rol) {
         initComponents();
         this.idSucursal = idSucursal;
+        this.rol = rol;
         llenarCombo();
     }
 
@@ -147,13 +150,16 @@ public class GUIKardex extends javax.swing.JPanel {
 
     private void llenarCombo(){
         try{
-            List<Item> listaItems = itemDAO.obtenerListaObjetos();
+            List<Item> listaItems = new ArrayList<>();
+            if ("Usuario central".equals(rol)) {
+                listaItems = itemDAO.obtenerListaObjetos();
+            } 
+            if ("Usuario sucursal".equals(rol) || "Usuario salidas".equals(rol)) {
+                listaItems = itemDAO.obtenerListaPorSucursal(idSucursal);
+            }
             DefaultComboBoxModel<Item> modeloCombo = new DefaultComboBoxModel<>();
             for (Item item : listaItems) {
-                if(item.getIdSucursal() == idSucursal){
                     modeloCombo.addElement(item);
-                    idItem = item.getIdItem();
-                }
             }
             cbxArticulo.setModel(modeloCombo);
         } catch (SQLException e){

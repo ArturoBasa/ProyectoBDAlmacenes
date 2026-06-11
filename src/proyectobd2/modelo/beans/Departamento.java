@@ -14,6 +14,8 @@ public class Departamento {
     private String nombreDepartamento;
     private int idSucursal;
     private int idEncargado;
+    private String nombreSucursal;
+    private String nombreEncargado;
 
     public Departamento() {
     }
@@ -50,6 +52,25 @@ public class Departamento {
         this.idEncargado = idEncargado;
     }
 
-    
+    public String getNombreSucursal() {
+        return nombreSucursal;
+    }
+
+    public void setNombreSucursal(String nombreSucursal) {
+        this.nombreSucursal = nombreSucursal;
+    }
+
+    public String getNombreEncargado() {
+        return nombreEncargado;
+    }
+
+    public void setNombreEncargado(String nombreEncargado) {
+        this.nombreEncargado = nombreEncargado;
+    }
+
+    @Override
+    public String toString() {
+        return this.nombreDepartamento;
+    }
 
 }

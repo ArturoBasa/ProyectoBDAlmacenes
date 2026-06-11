@@ -13,6 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.sql.PreparedStatement;
 import proyectobd2.modelo.Conexion;
+import proyectobd2.modelo.beans.Departamento;
 import proyectobd2.modelo.beans.Empleado;
 
 /**
@@ -65,7 +66,7 @@ public class EmpleadoDAO {
 
     public static int insertar(Empleado empleado) {
         int valor = 0;
-        String statement = "INSERT INTO empleado (nombre, apellidos, correoElectronico, telefonoFijo, telefonoCelular, fechaRegistro, contrasenia) VALUES (?,?,?,?,?,?,?)";
+        String statement = "INSERT INTO empleado (nombre, apellidos, correoElectronico, telefonoFijo, telefonoCelular, fechaRegistro, contrasenia,idDepartamentoEncargado, idRol, estado) VALUES (?,?,?,?,?,?,?,?,?,'ACTIVO')";
 
         try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
 
@@ -76,6 +77,8 @@ public class EmpleadoDAO {
             ps.setString(5, empleado.getTelefonoCelular());
             ps.setDate(6, new java.sql.Date(empleado.getFechaRegistro().getTime()));
             ps.setString(7, empleado.getContrasenia());
+            ps.setInt(8, empleado.getIdDepartamentoEncar());
+            ps.setInt(9, empleado.getIdRol());
 
             valor = ps.executeUpdate();
         } catch (SQLException ex) {
@@ -108,7 +111,93 @@ public class EmpleadoDAO {
         }
         return listaEmpleados;
     }
+    
+    public static List<Empleado> obtenerListaUsuarios() throws SQLException {
+        List<Empleado> listaEmpleados = new ArrayList<>();
+        String statement = "SELECT e.idEmpleado, e.nombre, e.apellidos, e.correoElectronico, "
+                         + "e.telefonoFijo, e.telefonoCelular, e.fechaRegistro, e.contrasenia, e.estado, "
+                         + "e.idDepartamentoEncargado, e.idRol, d.idDepartamento, d.nombreDepartamento, "
+                         + "d.Sucursal_idSucursal, d.Empleado_idEncargado, s.nombreSucursal, s.idSucursal "
+                         + "FROM empleado e "
+                         + "INNER JOIN departamento d ON e.idDepartamentoEncargado = d.idDepartamento "
+                         + " INNER JOIN sucursal s ON d.Sucursal_idSucursal = s.idSucursal"
+                         + " WHERE e.estado = 'ACTIVO';";
 
+        try (Connection conn = new Conexion().getConnection();
+            PreparedStatement ps = conn.prepareStatement(statement)) {
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Empleado e = new Empleado();
+                e.setIdEmpleado(rs.getInt("idEmpleado"));
+                e.setNombre(rs.getString("nombre"));
+                e.setApellidos(rs.getString("apellidos"));
+                e.setCorreoElectronico(rs.getString("correoElectronico"));
+                e.setTelefonoFijo(rs.getString("telefonoFijo"));
+                e.setTelefonoCelular(rs.getString("telefonoCelular"));
+                e.setFechaRegistro(rs.getDate("fechaRegistro"));
+                e.setContrasenia(rs.getString("contrasenia"));
+                e.setIdRol(rs.getInt("idRol"));
+                e.setSucursal(rs.getString("s.nombreSucursal"));
+                e.setIdSucursal(rs.getInt("s.idSucursal"));
+
+                Departamento d = new Departamento();
+                d.setIdDepartamento(rs.getInt("idDepartamento"));
+                d.setNombreDepartamento(rs.getString("nombreDepartamento"));
+                d.setIdSucursal(rs.getInt("Sucursal_idSucursal"));
+                d.setIdEncargado(rs.getInt("Empleado_idEncargado"));
+                e.setDepartamento(d); 
+                listaEmpleados.add(e);
+            }
+        }
+        return listaEmpleados;
+    }
+    
+    public static List<Empleado> obtenerListaUsuariosPorID(int idSucursal) throws SQLException {
+        List<Empleado> listaEmpleados = new ArrayList<>();
+        String statement = "SELECT e.idEmpleado, e.nombre, e.apellidos, e.correoElectronico, "
+                         + "e.telefonoFijo, e.telefonoCelular, e.fechaRegistro, e.contrasenia, "
+                         + "e.idDepartamentoEncargado, e.idRol, d.idDepartamento, d.nombreDepartamento, e.estado,"
+                         + "d.Sucursal_idSucursal, d.Empleado_idEncargado, s.nombreSucursal, s.idSucursal, r.descripcion "
+                         + "FROM empleado e "
+                         + " INNER JOIN departamento d ON e.idDepartamentoEncargado = d.idDepartamento "
+                         + " INNER JOIN sucursal s ON d.Sucursal_idSucursal = s.idSucursal"
+                         + " INNER JOIN rol r ON e.idRol = r.idRol "
+                         + " WHERE d.Sucursal_idSucursal = ? "
+                         + " AND e.estado = 'ACTIVO';";
+
+        try (Connection conn = new Conexion().getConnection(); 
+             PreparedStatement ps = conn.prepareStatement(statement)) {
+
+            ps.setInt(1, idSucursal);
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Empleado e = new Empleado();
+                e.setIdEmpleado(rs.getInt("idEmpleado"));
+                e.setNombre(rs.getString("nombre"));
+                e.setApellidos(rs.getString("apellidos"));
+                e.setCorreoElectronico(rs.getString("correoElectronico"));
+                e.setTelefonoFijo(rs.getString("telefonoFijo"));
+                e.setTelefonoCelular(rs.getString("telefonoCelular"));
+                e.setFechaRegistro(rs.getDate("fechaRegistro"));
+                e.setContrasenia(rs.getString("contrasenia"));
+                e.setIdRol(rs.getInt("idRol"));
+                e.setSucursal(rs.getString("s.nombreSucursal"));
+                e.setIdSucursal(rs.getInt("s.idSucursal"));
+                e.setDescripcionRol(rs.getString("r.descripcion"));
+
+                Departamento d = new Departamento();
+                d.setIdDepartamento(rs.getInt("idDepartamento"));
+                d.setNombreDepartamento(rs.getString("nombreDepartamento"));
+                d.setIdSucursal(rs.getInt("Sucursal_idSucursal"));
+                d.setIdEncargado(rs.getInt("Empleado_idEncargado"));
+                e.setDepartamento(d); 
+                listaEmpleados.add(e);
+            }
+        }
+        return listaEmpleados;
+    }
+    
     public static Empleado buscar(int idEmpleado) throws SQLException {
         Empleado e = null;
         String statement = "SELECT idEmpleado, nombre, apellidos, correoElectronico, telefonoFijo, telefonoCelular, fechaRegistro, contrasenia FROM empleado WHERE idEmpleado = ?";
@@ -137,7 +226,7 @@ public class EmpleadoDAO {
 
     public static int eliminar(int idEmpleado) {
         int valor = 0;
-        String statement = "DELETE FROM empleado WHERE idEmpleado = ?";
+        String statement = "UPDATE empleado SET estado = 'INACTIVO' WHERE idEmpleado = ?;";
 
         try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
 
@@ -149,9 +238,9 @@ public class EmpleadoDAO {
         return valor;
     }
 
-    public static int modificar(Empleado e) {
+    public static int modificarsincontra(Empleado e) {
         int valor = 0;
-        String statement = "UPDATE empleado SET nombre = ?, apellidos = ?, correoElectronico = ?, telefonoFijo = ?, telefonoCelular = ?, fechaRegistro = ?, contrasenia =? WHERE idEmpleado = ?";
+        String statement = "UPDATE empleado SET nombre = ?, apellidos = ?, correoElectronico = ?, telefonoFijo = ?, telefonoCelular = ?, idDepartamentoEncargado = ?, idRol = ? WHERE idEmpleado = ?";
 
         try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
 
@@ -160,9 +249,32 @@ public class EmpleadoDAO {
             ps.setString(3, e.getCorreoElectronico());
             ps.setString(4, e.getTelefonoFijo());
             ps.setString(5, e.getTelefonoCelular());
-            ps.setDate(6, new java.sql.Date(e.getFechaRegistro().getTime()));
-            ps.setString(7, e.getContrasenia());
+            ps.setInt(6, e.getIdDepartamentoEncar());
+            ps.setInt(7, e.getIdRol());
             ps.setInt(8, e.getIdEmpleado());
+
+            valor = ps.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(EmpleadoDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return valor;
+    }
+    
+    public static int modificarConCOntra(Empleado e) {
+        int valor = 0;
+        String statement = "UPDATE empleado SET nombre = ?, apellidos = ?, correoElectronico = ?, telefonoFijo = ?, telefonoCelular = ?, contrasenia =?, idDepartamentoEncargado = ?, idRol = ? WHERE idEmpleado = ?";
+
+        try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
+
+            ps.setString(1, e.getNombre());
+            ps.setString(2, e.getApellidos());
+            ps.setString(3, e.getCorreoElectronico());
+            ps.setString(4, e.getTelefonoFijo());
+            ps.setString(5, e.getTelefonoCelular());
+            ps.setString(6, e.getContrasenia());
+            ps.setInt(7, e.getIdDepartamentoEncar());
+            ps.setInt(8, e.getIdRol());
+            ps.setInt(9, e.getIdEmpleado());
 
             valor = ps.executeUpdate();
         } catch (SQLException ex) {
