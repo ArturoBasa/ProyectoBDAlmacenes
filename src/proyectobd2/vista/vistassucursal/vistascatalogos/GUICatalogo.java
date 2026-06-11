@@ -4,18 +4,68 @@
  */
 package proyectobd2.vista.vistassucursal.vistascatalogos;
 
+import java.sql.SQLException;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.JTabbedPane;
+import javax.swing.table.DefaultTableModel;
+import proyectobd2.modelo.DAO.DepartamentoDAO;
+import proyectobd2.modelo.DAO.EmpleadoDAO;
+import proyectobd2.modelo.DAO.ItemDAO;
+import proyectobd2.modelo.DAO.PartidaPresupuestalDAO;
+import proyectobd2.modelo.DAO.ProveedorDAO;
+import proyectobd2.modelo.DAO.SucursalDAO;
+import proyectobd2.modelo.beans.Departamento;
+import proyectobd2.modelo.beans.Empleado;
+import proyectobd2.modelo.beans.Item;
+import proyectobd2.modelo.beans.PartidaPresupuestal;
+import proyectobd2.modelo.beans.Proveedor;
+import proyectobd2.modelo.beans.Sucursal;
+
 /**
  *
  * @author basa2
  */
 public class GUICatalogo extends javax.swing.JPanel {
     int idSucursal;
+    String rol;
+    private List<Empleado> listaUsuario;
+    private List<Departamento> listaDepartamento;
+    private List<Proveedor> listaProveedores;
+    private List<PartidaPresupuestal> listaPartida;
+    private List<Item> listaItem;
+    private List<Sucursal> listaSucursal;
     /**
      * Creates new form GUICatalogo
      */
-    public GUICatalogo(int idSucursal) {
+    public GUICatalogo(int idSucursal, String rol) {
         initComponents();
         this.idSucursal = idSucursal;
+        this.rol = rol;
+        llenarTablaDepartamentos();
+        llenarTablaItems();
+        llenarTablaPartidas();
+        llenarTablaProveedores();
+        llenarTablaSucursal();
+        llenarTablaUsuarios();
+        if ("Usuario sucursal".equals(rol)) {
+            btnNuevoSucursal.setEnabled(false);
+            btnModificarSucursal.setEnabled(false);
+            btnNuevaPartida.setEnabled(false);
+            btnEliminarProveedores.setEnabled(false);
+            btnEliminarPartida.setEnabled(false);
+            btnModificarPartida.setEnabled(false);
+            btnEliminarSucursal.setEnabled(false);
+        }
+        if("Usuario salidas".equals(rol)){
+            tbpCatalogos.setEnabledAt(0, false);
+            tbpCatalogos.setEnabledAt(1, false);
+            tbpCatalogos.setEnabledAt(5, false);
+            btnEliminarPartida.setEnabled(false);
+            btnModificarPartida.setEnabled(false);
+            btnNuevaPartida.setEnabled(false);
+            btnEliminarProveedores.setEnabled(false);
+        }
     }
 
     /**
@@ -27,22 +77,888 @@ public class GUICatalogo extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel2 = new javax.swing.JPanel();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jPanel8 = new javax.swing.JPanel();
+        tbpCatalogos = new javax.swing.JTabbedPane();
+        jPanel5 = new javax.swing.JPanel();
+        jPanel9 = new javax.swing.JPanel();
+        btnModificarUsuario = new javax.swing.JButton();
+        filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(20, 0), new java.awt.Dimension(20, 0), new java.awt.Dimension(20, 0));
+        btnEliminarUsuarios = new javax.swing.JButton();
+        filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(20, 0), new java.awt.Dimension(20, 0), new java.awt.Dimension(20, 0));
+        btnNuevoUsuarios = new javax.swing.JButton();
+        jPanel10 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblUsuarios = new javax.swing.JTable();
+        jPanel3 = new javax.swing.JPanel();
+        jPanel11 = new javax.swing.JPanel();
+        btnModificarDepartamento = new javax.swing.JButton();
+        filler3 = new javax.swing.Box.Filler(new java.awt.Dimension(20, 0), new java.awt.Dimension(20, 0), new java.awt.Dimension(20, 0));
+        btnEliminarDepartamento = new javax.swing.JButton();
+        filler4 = new javax.swing.Box.Filler(new java.awt.Dimension(20, 0), new java.awt.Dimension(20, 0), new java.awt.Dimension(20, 0));
+        btnNuevoDepartamento = new javax.swing.JButton();
+        jPanel12 = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tblDepartamentos = new javax.swing.JTable();
+        jPanel4 = new javax.swing.JPanel();
+        jPanel13 = new javax.swing.JPanel();
+        btnModificarProveedores = new javax.swing.JButton();
+        filler5 = new javax.swing.Box.Filler(new java.awt.Dimension(20, 0), new java.awt.Dimension(20, 0), new java.awt.Dimension(20, 0));
+        btnEliminarProveedores = new javax.swing.JButton();
+        filler6 = new javax.swing.Box.Filler(new java.awt.Dimension(20, 0), new java.awt.Dimension(20, 0), new java.awt.Dimension(20, 0));
+        btnNuevoProveedores = new javax.swing.JButton();
+        jPanel16 = new javax.swing.JPanel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        tblProveedores = new javax.swing.JTable();
+        jPanel6 = new javax.swing.JPanel();
+        jPanel14 = new javax.swing.JPanel();
+        btnModificarPartida = new javax.swing.JButton();
+        filler7 = new javax.swing.Box.Filler(new java.awt.Dimension(20, 0), new java.awt.Dimension(20, 0), new java.awt.Dimension(20, 0));
+        btnEliminarPartida = new javax.swing.JButton();
+        filler8 = new javax.swing.Box.Filler(new java.awt.Dimension(20, 0), new java.awt.Dimension(20, 0), new java.awt.Dimension(20, 0));
+        btnNuevaPartida = new javax.swing.JButton();
+        jPanel17 = new javax.swing.JPanel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        tblPartidas = new javax.swing.JTable();
+        jPanel7 = new javax.swing.JPanel();
+        jPanel15 = new javax.swing.JPanel();
+        btnModificarItem = new javax.swing.JButton();
+        filler9 = new javax.swing.Box.Filler(new java.awt.Dimension(20, 0), new java.awt.Dimension(20, 0), new java.awt.Dimension(20, 0));
+        filler10 = new javax.swing.Box.Filler(new java.awt.Dimension(20, 0), new java.awt.Dimension(20, 0), new java.awt.Dimension(20, 0));
+        btnNuevoItem = new javax.swing.JButton();
+        jPanel18 = new javax.swing.JPanel();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        tblItems = new javax.swing.JTable();
+        jPanel19 = new javax.swing.JPanel();
+        jPanel20 = new javax.swing.JPanel();
+        btnModificarSucursal = new javax.swing.JButton();
+        filler11 = new javax.swing.Box.Filler(new java.awt.Dimension(20, 0), new java.awt.Dimension(20, 0), new java.awt.Dimension(20, 0));
+        btnEliminarSucursal = new javax.swing.JButton();
+        filler12 = new javax.swing.Box.Filler(new java.awt.Dimension(20, 0), new java.awt.Dimension(20, 0), new java.awt.Dimension(20, 0));
+        btnNuevoSucursal = new javax.swing.JButton();
+        jPanel21 = new javax.swing.JPanel();
+        jScrollPane6 = new javax.swing.JScrollPane();
+        tblSucursal = new javax.swing.JTable();
+
         setMinimumSize(new java.awt.Dimension(1000, 720));
         setPreferredSize(new java.awt.Dimension(1280, 720));
+        setLayout(new javax.swing.BoxLayout(this, javax.swing.BoxLayout.Y_AXIS));
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1000, Short.MAX_VALUE)
+        jPanel2.setAlignmentX(0.0F);
+        jPanel2.setPreferredSize(new java.awt.Dimension(1280, 70));
+        jPanel2.setLayout(new java.awt.BorderLayout());
+
+        jPanel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        jPanel1.setMaximumSize(new java.awt.Dimension(1280, 32));
+        jPanel1.setMinimumSize(new java.awt.Dimension(481, 50));
+        jPanel1.setPreferredSize(new java.awt.Dimension(600, 70));
+        jPanel1.setLayout(new javax.swing.BoxLayout(jPanel1, javax.swing.BoxLayout.Y_AXIS));
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel1.setText("Aministración de Catálogos");
+        jPanel1.add(jLabel1);
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
+        jLabel2.setText("Gestione los catálogos auxiliares del sistema   ");
+        jPanel1.add(jLabel2);
+
+        jPanel2.add(jPanel1, java.awt.BorderLayout.WEST);
+
+        jPanel8.setPreferredSize(new java.awt.Dimension(680, 70));
+
+        javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
+        jPanel8.setLayout(jPanel8Layout);
+        jPanel8Layout.setHorizontalGroup(
+            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 680, Short.MAX_VALUE)
         );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 720, Short.MAX_VALUE)
+        jPanel8Layout.setVerticalGroup(
+            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 68, Short.MAX_VALUE)
         );
+
+        jPanel2.add(jPanel8, java.awt.BorderLayout.EAST);
+
+        add(jPanel2);
+
+        tbpCatalogos.setAlignmentX(0.0F);
+        tbpCatalogos.setPreferredSize(new java.awt.Dimension(1280, 700));
+
+        jPanel5.setLayout(new javax.swing.BoxLayout(jPanel5, javax.swing.BoxLayout.Y_AXIS));
+
+        jPanel9.setMinimumSize(new java.awt.Dimension(100, 10));
+        jPanel9.setPreferredSize(new java.awt.Dimension(1280, 30));
+        jPanel9.setLayout(new javax.swing.BoxLayout(jPanel9, javax.swing.BoxLayout.LINE_AXIS));
+
+        btnModificarUsuario.setText("Modificar");
+        btnModificarUsuario.setMaximumSize(new java.awt.Dimension(100, 30));
+        btnModificarUsuario.setMinimumSize(new java.awt.Dimension(100, 30));
+        btnModificarUsuario.addActionListener(this::btnModificarUsuarioActionPerformed);
+        jPanel9.add(btnModificarUsuario);
+        jPanel9.add(filler1);
+
+        btnEliminarUsuarios.setText("Eliminar");
+        btnEliminarUsuarios.setMaximumSize(new java.awt.Dimension(100, 30));
+        btnEliminarUsuarios.setMinimumSize(new java.awt.Dimension(100, 30));
+        btnEliminarUsuarios.addActionListener(this::btnEliminarUsuariosActionPerformed);
+        jPanel9.add(btnEliminarUsuarios);
+        jPanel9.add(filler2);
+
+        btnNuevoUsuarios.setText("Nuevo");
+        btnNuevoUsuarios.setMaximumSize(new java.awt.Dimension(100, 30));
+        btnNuevoUsuarios.setMinimumSize(new java.awt.Dimension(100, 30));
+        btnNuevoUsuarios.addActionListener(this::btnNuevoUsuariosActionPerformed);
+        jPanel9.add(btnNuevoUsuarios);
+
+        jPanel5.add(jPanel9);
+
+        jPanel10.setPreferredSize(new java.awt.Dimension(1280, 650));
+        jPanel10.setLayout(new java.awt.BorderLayout());
+
+        tblUsuarios.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
+            },
+            new String [] {
+                "Nombre", "Apellidos", "Departamento", "Sucursal", "Correo Electrónico", "Rol", "Fecha de Ingreso"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(tblUsuarios);
+
+        jPanel10.add(jScrollPane1, java.awt.BorderLayout.CENTER);
+
+        jPanel5.add(jPanel10);
+
+        tbpCatalogos.addTab("Empleado", jPanel5);
+
+        jPanel3.setLayout(new javax.swing.BoxLayout(jPanel3, javax.swing.BoxLayout.Y_AXIS));
+
+        jPanel11.setMinimumSize(new java.awt.Dimension(100, 10));
+        jPanel11.setPreferredSize(new java.awt.Dimension(1280, 30));
+        jPanel11.setLayout(new javax.swing.BoxLayout(jPanel11, javax.swing.BoxLayout.LINE_AXIS));
+
+        btnModificarDepartamento.setText("Modificar");
+        btnModificarDepartamento.setMaximumSize(new java.awt.Dimension(100, 30));
+        btnModificarDepartamento.setMinimumSize(new java.awt.Dimension(100, 30));
+        btnModificarDepartamento.addActionListener(this::btnModificarDepartamentoActionPerformed);
+        jPanel11.add(btnModificarDepartamento);
+        jPanel11.add(filler3);
+
+        btnEliminarDepartamento.setText("Eliminar");
+        btnEliminarDepartamento.setMaximumSize(new java.awt.Dimension(100, 30));
+        btnEliminarDepartamento.setMinimumSize(new java.awt.Dimension(100, 30));
+        btnEliminarDepartamento.addActionListener(this::btnEliminarDepartamentoActionPerformed);
+        jPanel11.add(btnEliminarDepartamento);
+        jPanel11.add(filler4);
+
+        btnNuevoDepartamento.setText("Nuevo");
+        btnNuevoDepartamento.setMaximumSize(new java.awt.Dimension(100, 30));
+        btnNuevoDepartamento.setMinimumSize(new java.awt.Dimension(100, 30));
+        btnNuevoDepartamento.addActionListener(this::btnNuevoDepartamentoActionPerformed);
+        jPanel11.add(btnNuevoDepartamento);
+
+        jPanel3.add(jPanel11);
+
+        jPanel12.setPreferredSize(new java.awt.Dimension(1280, 650));
+        jPanel12.setLayout(new java.awt.BorderLayout());
+
+        tblDepartamentos.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
+            },
+            new String [] {
+                "Nombre", "Sucursal", "Encargado"
+            }
+        ));
+        jScrollPane2.setViewportView(tblDepartamentos);
+
+        jPanel12.add(jScrollPane2, java.awt.BorderLayout.CENTER);
+
+        jPanel3.add(jPanel12);
+
+        tbpCatalogos.addTab("Departamentos", jPanel3);
+
+        jPanel4.setLayout(new javax.swing.BoxLayout(jPanel4, javax.swing.BoxLayout.Y_AXIS));
+
+        jPanel13.setMinimumSize(new java.awt.Dimension(100, 10));
+        jPanel13.setPreferredSize(new java.awt.Dimension(1280, 30));
+        jPanel13.setLayout(new javax.swing.BoxLayout(jPanel13, javax.swing.BoxLayout.LINE_AXIS));
+
+        btnModificarProveedores.setText("Modificar");
+        btnModificarProveedores.setMaximumSize(new java.awt.Dimension(100, 30));
+        btnModificarProveedores.setMinimumSize(new java.awt.Dimension(100, 30));
+        btnModificarProveedores.addActionListener(this::btnModificarProveedoresActionPerformed);
+        jPanel13.add(btnModificarProveedores);
+        jPanel13.add(filler5);
+
+        btnEliminarProveedores.setText("Eliminar");
+        btnEliminarProveedores.setMaximumSize(new java.awt.Dimension(100, 30));
+        btnEliminarProveedores.setMinimumSize(new java.awt.Dimension(100, 30));
+        btnEliminarProveedores.addActionListener(this::btnEliminarProveedoresActionPerformed);
+        jPanel13.add(btnEliminarProveedores);
+        jPanel13.add(filler6);
+
+        btnNuevoProveedores.setText("Nuevo");
+        btnNuevoProveedores.setMaximumSize(new java.awt.Dimension(100, 30));
+        btnNuevoProveedores.setMinimumSize(new java.awt.Dimension(100, 30));
+        btnNuevoProveedores.addActionListener(this::btnNuevoProveedoresActionPerformed);
+        jPanel13.add(btnNuevoProveedores);
+
+        jPanel4.add(jPanel13);
+
+        jPanel16.setPreferredSize(new java.awt.Dimension(1280, 650));
+        jPanel16.setLayout(new java.awt.BorderLayout());
+
+        tblProveedores.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Razón Social", "RFC", "Domicilio fiscal", "Teléfono"
+            }
+        ));
+        jScrollPane3.setViewportView(tblProveedores);
+
+        jPanel16.add(jScrollPane3, java.awt.BorderLayout.CENTER);
+
+        jPanel4.add(jPanel16);
+
+        tbpCatalogos.addTab("Proveedores", jPanel4);
+
+        jPanel6.setLayout(new javax.swing.BoxLayout(jPanel6, javax.swing.BoxLayout.Y_AXIS));
+
+        jPanel14.setMinimumSize(new java.awt.Dimension(100, 10));
+        jPanel14.setPreferredSize(new java.awt.Dimension(1280, 30));
+        jPanel14.setLayout(new javax.swing.BoxLayout(jPanel14, javax.swing.BoxLayout.LINE_AXIS));
+
+        btnModificarPartida.setText("Modificar");
+        btnModificarPartida.setMaximumSize(new java.awt.Dimension(100, 30));
+        btnModificarPartida.setMinimumSize(new java.awt.Dimension(100, 30));
+        btnModificarPartida.addActionListener(this::btnModificarPartidaActionPerformed);
+        jPanel14.add(btnModificarPartida);
+        jPanel14.add(filler7);
+
+        btnEliminarPartida.setText("Eliminar");
+        btnEliminarPartida.setMaximumSize(new java.awt.Dimension(100, 30));
+        btnEliminarPartida.setMinimumSize(new java.awt.Dimension(100, 30));
+        btnEliminarPartida.addActionListener(this::btnEliminarPartidaActionPerformed);
+        jPanel14.add(btnEliminarPartida);
+        jPanel14.add(filler8);
+
+        btnNuevaPartida.setText("Nuevo");
+        btnNuevaPartida.setMaximumSize(new java.awt.Dimension(100, 30));
+        btnNuevaPartida.setMinimumSize(new java.awt.Dimension(100, 30));
+        btnNuevaPartida.addActionListener(this::btnNuevaPartidaActionPerformed);
+        jPanel14.add(btnNuevaPartida);
+
+        jPanel6.add(jPanel14);
+
+        jPanel17.setPreferredSize(new java.awt.Dimension(1280, 650));
+        jPanel17.setLayout(new java.awt.BorderLayout());
+
+        tblPartidas.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
+            },
+            new String [] {
+                "Código", "Nombre", "Presupuesto"
+            }
+        ));
+        jScrollPane4.setViewportView(tblPartidas);
+
+        jPanel17.add(jScrollPane4, java.awt.BorderLayout.CENTER);
+
+        jPanel6.add(jPanel17);
+
+        tbpCatalogos.addTab("Partidas Presupuestales", jPanel6);
+
+        jPanel7.setLayout(new javax.swing.BoxLayout(jPanel7, javax.swing.BoxLayout.Y_AXIS));
+
+        jPanel15.setMinimumSize(new java.awt.Dimension(100, 10));
+        jPanel15.setPreferredSize(new java.awt.Dimension(1280, 30));
+        jPanel15.setLayout(new javax.swing.BoxLayout(jPanel15, javax.swing.BoxLayout.LINE_AXIS));
+
+        btnModificarItem.setText("Modificar");
+        btnModificarItem.setMaximumSize(new java.awt.Dimension(100, 30));
+        btnModificarItem.setMinimumSize(new java.awt.Dimension(100, 30));
+        btnModificarItem.addActionListener(this::btnModificarItemActionPerformed);
+        jPanel15.add(btnModificarItem);
+        jPanel15.add(filler9);
+        jPanel15.add(filler10);
+
+        btnNuevoItem.setText("Nuevo");
+        btnNuevoItem.setMaximumSize(new java.awt.Dimension(100, 30));
+        btnNuevoItem.setMinimumSize(new java.awt.Dimension(100, 30));
+        btnNuevoItem.addActionListener(this::btnNuevoItemActionPerformed);
+        jPanel15.add(btnNuevoItem);
+
+        jPanel7.add(jPanel15);
+
+        jPanel18.setPreferredSize(new java.awt.Dimension(1280, 650));
+        jPanel18.setLayout(new java.awt.BorderLayout());
+
+        tblItems.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
+            },
+            new String [] {
+                "Nombre", "Descripción", "Stock mínimo", "Stock máximo", "Partida", "Estado"
+            }
+        ));
+        jScrollPane5.setViewportView(tblItems);
+
+        jPanel18.add(jScrollPane5, java.awt.BorderLayout.CENTER);
+
+        jPanel7.add(jPanel18);
+
+        tbpCatalogos.addTab("Ítems", jPanel7);
+
+        jPanel19.setLayout(new javax.swing.BoxLayout(jPanel19, javax.swing.BoxLayout.Y_AXIS));
+
+        jPanel20.setMinimumSize(new java.awt.Dimension(100, 10));
+        jPanel20.setPreferredSize(new java.awt.Dimension(1280, 30));
+        jPanel20.setLayout(new javax.swing.BoxLayout(jPanel20, javax.swing.BoxLayout.LINE_AXIS));
+
+        btnModificarSucursal.setText("Modificar");
+        btnModificarSucursal.setMaximumSize(new java.awt.Dimension(100, 30));
+        btnModificarSucursal.setMinimumSize(new java.awt.Dimension(100, 30));
+        btnModificarSucursal.addActionListener(this::btnModificarSucursalActionPerformed);
+        jPanel20.add(btnModificarSucursal);
+        jPanel20.add(filler11);
+
+        btnEliminarSucursal.setText("Eliminar");
+        btnEliminarSucursal.setMaximumSize(new java.awt.Dimension(100, 30));
+        btnEliminarSucursal.setMinimumSize(new java.awt.Dimension(100, 30));
+        btnEliminarSucursal.addActionListener(this::btnEliminarSucursalActionPerformed);
+        jPanel20.add(btnEliminarSucursal);
+        jPanel20.add(filler12);
+
+        btnNuevoSucursal.setText("Nuevo");
+        btnNuevoSucursal.setMaximumSize(new java.awt.Dimension(100, 30));
+        btnNuevoSucursal.setMinimumSize(new java.awt.Dimension(100, 30));
+        btnNuevoSucursal.addActionListener(this::btnNuevoSucursalActionPerformed);
+        jPanel20.add(btnNuevoSucursal);
+
+        jPanel19.add(jPanel20);
+
+        jPanel21.setPreferredSize(new java.awt.Dimension(1280, 650));
+        jPanel21.setLayout(new java.awt.BorderLayout());
+
+        tblSucursal.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "ID Sucursal", "Nombre", "Ciudad", "Dirección"
+            }
+        ));
+        jScrollPane6.setViewportView(tblSucursal);
+
+        jPanel21.add(jScrollPane6, java.awt.BorderLayout.CENTER);
+
+        jPanel19.add(jPanel21);
+
+        tbpCatalogos.addTab("Sucursal", jPanel19);
+
+        add(tbpCatalogos);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnModificarProveedoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarProveedoresActionPerformed
+        int fila = tblProveedores.getSelectedRow();
+        if (fila != -1) {
+            Proveedor prov = listaProveedores.get(fila);
+            java.awt.Frame parent = (java.awt.Frame) javax.swing.SwingUtilities.getWindowAncestor(tblProveedores);
+            NuevoProveedor dialog = new NuevoProveedor(parent, true, prov);
+            dialog.setVisible(true);
+            llenarTablaProveedores();
+        } else {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar un proveedor de la tabla.", "Aviso", JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_btnModificarProveedoresActionPerformed
+
+    private void btnModificarPartidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarPartidaActionPerformed
+        int fila = tblPartidas.getSelectedRow();
+        if (fila != -1) {
+            PartidaPresupuestal partida = listaPartida.get(fila);
+            java.awt.Frame parent = (java.awt.Frame) javax.swing.SwingUtilities.getWindowAncestor(tblPartidas);
+            NuevaPartida dialog = new NuevaPartida(parent, true, partida);
+            dialog.setVisible(true);
+            llenarTablaPartidas();
+        } else {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar una partida de la tabla.", "Aviso", JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_btnModificarPartidaActionPerformed
+
+    private void btnEliminarProveedoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarProveedoresActionPerformed
+        int filaSeleccionada = tblProveedores.getSelectedRow();
+        if (filaSeleccionada != -1) {
+            Proveedor prove = listaProveedores.get(filaSeleccionada);
+            int id = prove.getIdProveedor();
+            int confirmacion = JOptionPane.showConfirmDialog(this, 
+                    "¿Está seguro de eliminar este registro?", 
+                    "Confirmar eliminación", 
+                    JOptionPane.YES_NO_OPTION);
+            if (confirmacion == JOptionPane.YES_OPTION) {
+                int resultado = ProveedorDAO.eliminar(id);
+                if (resultado > 0) {
+                    JOptionPane.showMessageDialog(this, "Proveedor eliminado");
+                    llenarTablaProveedores();
+                } else {
+                    JOptionPane.showMessageDialog(this, "Error al eliminar el proveedor", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar un proveedor de la tabla.", "Aviso", JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_btnEliminarProveedoresActionPerformed
+
+    private void btnNuevoProveedoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoProveedoresActionPerformed
+        java.awt.Frame parent = (java.awt.Frame) javax.swing.SwingUtilities.getWindowAncestor(tblProveedores);
+        NuevoProveedor dialog = new NuevoProveedor(parent, true);
+        dialog.setVisible(true);
+        llenarTablaProveedores();
+    }//GEN-LAST:event_btnNuevoProveedoresActionPerformed
+
+    private void btnNuevoItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoItemActionPerformed
+        java.awt.Frame parent = (java.awt.Frame) javax.swing.SwingUtilities.getWindowAncestor(tblItems);
+        NuevoItem dialog = new NuevoItem(parent, true, listaSucursal, listaPartida);
+        dialog.setVisible(true);
+        llenarTablaItems();
+    }//GEN-LAST:event_btnNuevoItemActionPerformed
+
+    private void btnNuevoSucursalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoSucursalActionPerformed
+        java.awt.Frame parent = (java.awt.Frame) javax.swing.SwingUtilities.getWindowAncestor(tblSucursal);
+        NuevaSucursal dialog = new NuevaSucursal(parent, true);
+        dialog.setVisible(true);
+        llenarTablaSucursal();
+    }//GEN-LAST:event_btnNuevoSucursalActionPerformed
+
+    private void btnNuevaPartidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevaPartidaActionPerformed
+        java.awt.Frame parent = (java.awt.Frame) javax.swing.SwingUtilities.getWindowAncestor(tblPartidas);
+        NuevaPartida dialog = new NuevaPartida(parent, true);
+        dialog.setVisible(true);
+        llenarTablaPartidas();
+    }//GEN-LAST:event_btnNuevaPartidaActionPerformed
+
+    private void btnModificarItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarItemActionPerformed
+        int fila = tblItems.getSelectedRow();
+        if (fila != -1) {
+            Item item = listaItem.get(fila);
+            java.awt.Frame parent = (java.awt.Frame) javax.swing.SwingUtilities.getWindowAncestor(tblItems);
+            NuevoItem dialog = new NuevoItem(parent, true, listaSucursal, listaPartida, item);
+            dialog.setVisible(true);
+            llenarTablaItems();
+        } else {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar un ítem de la tabla.", "Aviso", JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_btnModificarItemActionPerformed
+
+    private void btnModificarSucursalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarSucursalActionPerformed
+        int fila = tblSucursal.getSelectedRow();
+        if (fila != -1) {
+            Sucursal sucursal = listaSucursal.get(fila);
+            java.awt.Frame parent = (java.awt.Frame) javax.swing.SwingUtilities.getWindowAncestor(tblSucursal);
+            NuevaSucursal dialog = new NuevaSucursal(parent, true, sucursal);
+            dialog.setVisible(true);
+            llenarTablaSucursal();
+        } else {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar una sucursal de la tabla.", "Aviso", JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_btnModificarSucursalActionPerformed
+
+    private void btnModificarDepartamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarDepartamentoActionPerformed
+        int fila = tblDepartamentos.getSelectedRow();
+        if (fila != -1) {
+            Departamento dep = listaDepartamento.get(fila);
+            java.awt.Frame parent = (java.awt.Frame) javax.swing.SwingUtilities.getWindowAncestor(tblDepartamentos);
+            NuevoDepartamento dialog = new NuevoDepartamento(parent, true, listaSucursal, listaUsuario, dep);
+            dialog.setVisible(true);
+            llenarTablaDepartamentos();
+        } else {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar un departamento de la tabla.", "Aviso", JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_btnModificarDepartamentoActionPerformed
+
+    private void btnNuevoDepartamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoDepartamentoActionPerformed
+        java.awt.Frame parent = (java.awt.Frame) javax.swing.SwingUtilities.getWindowAncestor(tblDepartamentos);
+        NuevoDepartamento dialog = new NuevoDepartamento(parent, true, listaSucursal, listaUsuario); 
+        dialog.setVisible(true);
+        llenarTablaDepartamentos();
+    }//GEN-LAST:event_btnNuevoDepartamentoActionPerformed
+
+    private void btnModificarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarUsuarioActionPerformed
+        int filaSeleccionada = tblUsuarios.getSelectedRow();
+        if (filaSeleccionada != -1) {
+            Empleado empleadoSeleccionado = listaUsuario.get(filaSeleccionada);
+            java.awt.Frame parentFrame = (java.awt.Frame) javax.swing.SwingUtilities.getWindowAncestor(tblUsuarios);
+            NuevoEmpleado dialog = new NuevoEmpleado(parentFrame, true, listaSucursal, listaDepartamento, rol, empleadoSeleccionado);
+            dialog.setVisible(true);
+            llenarTablaUsuarios();
+        }else {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar un empleado de la tabla.", "Aviso", JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_btnModificarUsuarioActionPerformed
+
+    private void btnNuevoUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoUsuariosActionPerformed
+        NuevoEmpleado dialog = new NuevoEmpleado(new javax.swing.JFrame(), true, listaSucursal, listaDepartamento, rol);
+        dialog.setVisible(true);
+        llenarTablaUsuarios();
+    }//GEN-LAST:event_btnNuevoUsuariosActionPerformed
+
+    private void btnEliminarUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarUsuariosActionPerformed
+        int filaSeleccionada = tblUsuarios.getSelectedRow();
+        if (filaSeleccionada != -1) {
+            Empleado empleadoSeleccionado = listaUsuario.get(filaSeleccionada);
+            int id = empleadoSeleccionado.getIdEmpleado();
+            int confirmacion = JOptionPane.showConfirmDialog(this, 
+                    "¿Está seguro de eliminar este registro?", 
+                    "Confirmar eliminación", 
+                    JOptionPane.YES_NO_OPTION);
+            if (confirmacion == JOptionPane.YES_OPTION) {
+                int resultado = EmpleadoDAO.eliminar(id);
+                if (resultado > 0) {
+                    JOptionPane.showMessageDialog(this, "Empleado eliminado");
+                    llenarTablaUsuarios();
+                } else {
+                    JOptionPane.showMessageDialog(this, "Error al eliminar el empleado", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar un empleado de la tabla.", "Aviso", JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_btnEliminarUsuariosActionPerformed
+
+    private void btnEliminarDepartamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarDepartamentoActionPerformed
+        int filaSeleccionada = tblDepartamentos.getSelectedRow();
+        if (filaSeleccionada != -1) {
+            Departamento depto = listaDepartamento.get(filaSeleccionada);
+            int id = depto.getIdDepartamento();
+            int confirmacion = JOptionPane.showConfirmDialog(this, 
+                    "¿Está seguro de eliminar este registro?", 
+                    "Confirmar eliminación", 
+                    JOptionPane.YES_NO_OPTION);
+            if (confirmacion == JOptionPane.YES_OPTION) {
+                int resultado = DepartamentoDAO.eliminar(id);
+                if (resultado > 0) {
+                    JOptionPane.showMessageDialog(this, "Departamento eliminado");
+                    llenarTablaDepartamentos();
+                } else {
+                    JOptionPane.showMessageDialog(this, "Error al eliminar el departamento", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar un departamento de la tabla.", "Aviso", JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_btnEliminarDepartamentoActionPerformed
+
+    private void btnEliminarPartidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarPartidaActionPerformed
+        int filaSeleccionada = tblPartidas.getSelectedRow();
+        if (filaSeleccionada != -1) {
+            PartidaPresupuestal par = listaPartida.get(filaSeleccionada);
+            int id = par.getIdPartidaPresupuestal();
+            int confirmacion = JOptionPane.showConfirmDialog(this, 
+                    "¿Está seguro de eliminar este registro?", 
+                    "Confirmar eliminación", 
+                    JOptionPane.YES_NO_OPTION);
+            if (confirmacion == JOptionPane.YES_OPTION) {
+                int resultado = PartidaPresupuestalDAO.eliminar(id);
+                if (resultado > 0) {
+                    JOptionPane.showMessageDialog(this, "Partida Presupuestal eliminada");
+                    llenarTablaPartidas();
+                } else {
+                    JOptionPane.showMessageDialog(this, "Error al eliminar la Partida Presupuestal", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar una Partida Presupuestal de la tabla.", "Aviso", JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_btnEliminarPartidaActionPerformed
+
+    private void btnEliminarSucursalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarSucursalActionPerformed
+        int filaSeleccionada = tblSucursal.getSelectedRow();
+        if (filaSeleccionada != -1) {
+            Sucursal suc = listaSucursal.get(filaSeleccionada);
+            int id = suc.getIdSucursal();
+            int confirmacion = JOptionPane.showConfirmDialog(this, 
+                    "¿Está seguro de eliminar este registro?", 
+                    "Confirmar eliminación", 
+                    JOptionPane.YES_NO_OPTION);
+            if (confirmacion == JOptionPane.YES_OPTION) {
+                int resultado = SucursalDAO.eliminar(id);
+                if (resultado > 0) {
+                    JOptionPane.showMessageDialog(this, "Sucursal de baja en baja");
+                    llenarTablaSucursal();
+                } else {
+                    JOptionPane.showMessageDialog(this, "Error al eliminar la sucursal", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar una sucursal de la tabla.", "Aviso", JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_btnEliminarSucursalActionPerformed
+
+    private void llenarTablaUsuarios (){
+        try {
+            if ("Usuario central".equals(rol)) {
+                this.listaUsuario = new EmpleadoDAO().obtenerListaUsuarios();
+            } 
+            if ("Usuario sucursal".equals(rol)) {
+                this.listaUsuario = new EmpleadoDAO().obtenerListaUsuariosPorID(idSucursal);
+            }
+            if ("Usuario salidas".equals(rol)){
+                this.listaUsuario = null;
+            }
+            actualizarTablaUSuario(this.listaUsuario);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Error al cargar datos: " + e.getMessage());
+        }
+    }
+    private void llenarTablaDepartamentos (){
+        try {
+            if ("Usuario central".equals(rol)) {
+                this.listaDepartamento = new DepartamentoDAO().obtenerListaObjetosCatalogo();
+            }
+            if ("Usuario sucursal".equals(rol)) {
+                this.listaDepartamento = new DepartamentoDAO().obtenerPorSucursalCatalogo(idSucursal);
+            }
+            if ("Usuario salidas".equals(rol)){
+                this.listaDepartamento = null;
+            }
+            actualizarTablaDepartamento(this.listaDepartamento);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Error al cargar datos: " + e.getMessage());
+        }
+    }
+    private void llenarTablaProveedores (){
+        try {
+            this.listaProveedores = new ProveedorDAO().obtenerListaObjetos();
+            actualizarTablaProvedor(this.listaProveedores);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Error al cargar datos: " + e.getMessage());
+        }
+    }
+    private void llenarTablaPartidas (){
+        try {
+            this.listaPartida = new PartidaPresupuestalDAO().obtenerListaObjetos();
+            actualizarTablaPartida(this.listaPartida);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Error al cargar datos: " + e.getMessage());
+        }
+    }
+    private void llenarTablaItems (){
+        try {
+            if ("Usuario central".equals(rol)) {
+                this.listaItem = new ItemDAO().obtenerListaObjetos();
+            }
+            if ("Usuario sucursal".equals(rol) || "Usuario salidas".equals(rol)) {
+                this.listaItem = new ItemDAO().obtenerListaPorSucursal(idSucursal);
+            }
+            actualizarTablaItem(this.listaItem);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Error al cargar datos: " + e.getMessage());
+        }
+    }
+    private void llenarTablaSucursal (){
+        try {
+            if ("Usuario central".equals(rol)) {
+                this.listaSucursal = new SucursalDAO().obtenerListaObjetos();
+            }
+            if ("Usuario sucursal".equals(rol)) {
+                this.listaSucursal = new SucursalDAO().obtenerListaID(idSucursal);
+            }
+            if ("Usuario salidas".equals(rol)){
+                this.listaSucursal = new SucursalDAO().obtenerListaID(idSucursal);;
+            }
+            actualizarTablaSucursal(this.listaSucursal);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Error al cargar datos: " + e.getMessage());
+        }
+    }
+    
+    private void actualizarTablaUSuario(List<Empleado> lista) {
+        DefaultTableModel model = (DefaultTableModel) tblUsuarios.getModel();
+        model.setRowCount(0);
+        
+        if (lista == null ){
+            return;
+        }
+
+        for (Empleado e : lista) {
+            model.addRow(new Object[]{
+                e.getNombre(),
+                e.getApellidos(),
+                e.getDepartamento() != null ? e.getDepartamento().getNombreDepartamento() : "Sin depto",
+                e.getSucursal(),
+                e.getCorreoElectronico(),
+                e.getDescripcionRol(), 
+                e.getFechaRegistro()
+            });
+        }
+    }
+    
+    private void actualizarTablaDepartamento(List<Departamento> lista) {
+        DefaultTableModel model = (DefaultTableModel) tblDepartamentos.getModel();
+        model.setRowCount(0);
+        
+        if(lista == null){
+            return;
+        }
+        
+        for (Departamento d : lista) {
+            model.addRow(new Object[]{ d.getNombreDepartamento(),
+                d.getNombreSucursal(),
+                d.getNombreEncargado()
+            });
+        }
+    }
+    
+    private void actualizarTablaProvedor(List<Proveedor> lista) {
+        DefaultTableModel model = (DefaultTableModel) tblProveedores.getModel();
+        model.setRowCount(0);
+        for (Proveedor p : lista) {
+            model.addRow(new Object[]{
+                p.getRazonSocial(),
+                p.getRFCProveedor(),
+                p.getDomicilioFiscal(),
+                p.getTelefono()
+            });
+        }
+    }
+    
+    private void actualizarTablaPartida(List<PartidaPresupuestal> lista) {
+        DefaultTableModel model = (DefaultTableModel) tblPartidas.getModel();
+        model.setRowCount(0);
+        for (PartidaPresupuestal pp : lista) {
+            model.addRow(new Object[]{
+                pp.getIdPartidaPresupuestal(),
+                pp.getNombrePartida(),
+                pp.getPresupuesto()
+            });
+        }
+    }
+    
+    private void actualizarTablaItem(List<Item> lista) {
+        DefaultTableModel model = (DefaultTableModel) tblItems.getModel();
+        model.setRowCount(0);
+        for (Item i : lista) {
+            model.addRow(new Object[]{
+                i.getNombreItem(),
+                i.getDescripcionUso(),
+                i.getStockMinimo(),
+                i.getStockMaximo(),
+                i.getNombrePartida(),
+                i.getEstado(),
+            });
+        }
+    }
+    
+    private void actualizarTablaSucursal(List<Sucursal> lista) {
+        DefaultTableModel model = (DefaultTableModel) tblSucursal.getModel();
+        model.setRowCount(0);
+        for (Sucursal s : lista) {
+            model.addRow(new Object[]{
+                s.getIdSucursal(),
+                s.getNombreSucursal(),
+                s.getCiudad(),
+                s.getDireccion()
+            });
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnEliminarDepartamento;
+    private javax.swing.JButton btnEliminarPartida;
+    private javax.swing.JButton btnEliminarProveedores;
+    private javax.swing.JButton btnEliminarSucursal;
+    private javax.swing.JButton btnEliminarUsuarios;
+    private javax.swing.JButton btnModificarDepartamento;
+    private javax.swing.JButton btnModificarItem;
+    private javax.swing.JButton btnModificarPartida;
+    private javax.swing.JButton btnModificarProveedores;
+    private javax.swing.JButton btnModificarSucursal;
+    private javax.swing.JButton btnModificarUsuario;
+    private javax.swing.JButton btnNuevaPartida;
+    private javax.swing.JButton btnNuevoDepartamento;
+    private javax.swing.JButton btnNuevoItem;
+    private javax.swing.JButton btnNuevoProveedores;
+    private javax.swing.JButton btnNuevoSucursal;
+    private javax.swing.JButton btnNuevoUsuarios;
+    private javax.swing.Box.Filler filler1;
+    private javax.swing.Box.Filler filler10;
+    private javax.swing.Box.Filler filler11;
+    private javax.swing.Box.Filler filler12;
+    private javax.swing.Box.Filler filler2;
+    private javax.swing.Box.Filler filler3;
+    private javax.swing.Box.Filler filler4;
+    private javax.swing.Box.Filler filler5;
+    private javax.swing.Box.Filler filler6;
+    private javax.swing.Box.Filler filler7;
+    private javax.swing.Box.Filler filler8;
+    private javax.swing.Box.Filler filler9;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel10;
+    private javax.swing.JPanel jPanel11;
+    private javax.swing.JPanel jPanel12;
+    private javax.swing.JPanel jPanel13;
+    private javax.swing.JPanel jPanel14;
+    private javax.swing.JPanel jPanel15;
+    private javax.swing.JPanel jPanel16;
+    private javax.swing.JPanel jPanel17;
+    private javax.swing.JPanel jPanel18;
+    private javax.swing.JPanel jPanel19;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel20;
+    private javax.swing.JPanel jPanel21;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel jPanel8;
+    private javax.swing.JPanel jPanel9;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JScrollPane jScrollPane6;
+    private javax.swing.JTable tblDepartamentos;
+    private javax.swing.JTable tblItems;
+    private javax.swing.JTable tblPartidas;
+    private javax.swing.JTable tblProveedores;
+    private javax.swing.JTable tblSucursal;
+    private javax.swing.JTable tblUsuarios;
+    private javax.swing.JTabbedPane tbpCatalogos;
     // End of variables declaration//GEN-END:variables
 }

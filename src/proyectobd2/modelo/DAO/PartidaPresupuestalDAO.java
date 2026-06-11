@@ -20,7 +20,7 @@ public class PartidaPresupuestalDAO {
 
     public static int insertar(PartidaPresupuestal partida) {
         int valor = 0;
-        String statement = "INSERT INTO partidapresupuestal (nombrePartida, presupuesto) values (?,?)";
+        String statement = "INSERT INTO partidapresupuestal (nombrePartida, presupuesto, estado) values (?,?,'ACTIVO')";
         try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
             ps.setString(1, partida.getNombrePartida());
             ps.setDouble(2, partida.getPresupuesto());
@@ -33,7 +33,7 @@ public class PartidaPresupuestalDAO {
 
     public static List<PartidaPresupuestal> obtenerListaObjetos() throws SQLException {
         List<PartidaPresupuestal> listaPartidas = new ArrayList<>();
-        String statement = "SELECT idPartidaPresupuestal, nombrePartida, presupuesto FROM partidapresupuestal";
+        String statement = "SELECT idPartidaPresupuestal, nombrePartida, presupuesto, estado FROM partidapresupuestal WHERE estado = 'ACTIVO'";
         try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement); ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 PartidaPresupuestal p = new PartidaPresupuestal();
@@ -87,7 +87,7 @@ public class PartidaPresupuestalDAO {
 
     public static int eliminar(int idPartida) {
         int valor = 0;
-        String statement = "DELETE FROM partidapresupuestal WHERE idPartidaPresupuestal=?";
+        String statement = "UPDATE partidapresupuestal SET estado = 'INACTIVO' WHERE idPartidaPresupuestal=?";
         try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
             ps.setInt(1, idPartida);
             valor = ps.executeUpdate();

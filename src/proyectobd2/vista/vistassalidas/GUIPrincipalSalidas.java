@@ -4,6 +4,9 @@ import java.awt.CardLayout;
 import java.sql.SQLException;
 import proyectobd2.modelo.DAO.SucursalDAO;
 import proyectobd2.modelo.beans.Empleado;
+import proyectobd2.vista.vistassucursal.vistascatalogos.GUICatalogo;
+import proyectobd2.vista.vistassucursal.vistaskardex.GUIKardex;
+import proyectobd2.vista.vistassucursal.vistasreporte.GUIReportes;
 import proyectobd2.vista.vistassucursal.vistassalidas.GUISalidas;
 
 /**
@@ -28,9 +31,15 @@ public class GUIPrincipalSalidas extends javax.swing.JFrame {
         card = (CardLayout) pnl_cuerpo.getLayout();
 
         GUISalidas panelSalidas = new GUISalidas(idSucursal);
+        GUIReportes panelReportes = new GUIReportes(idSucursal, empleado.getRol());
+        GUIKardex panelKardex = new GUIKardex(idSucursal, empleado.getRol());
+        GUICatalogo panelCatalogo = new GUICatalogo(idSucursal, empleado.getRol());
 
         pnl_cuerpo.add(panelSalidas, "salidas");
-        
+        pnl_cuerpo.add(panelReportes, "CARD_REPORTES");
+        pnl_cuerpo.add(panelKardex, "CARD_KARDEX");
+        pnl_cuerpo.add(panelCatalogo, "CARD_CATALOGOS");
+       
 
         card.show(pnl_cuerpo, "salidas");
     }
@@ -57,6 +66,9 @@ public class GUIPrincipalSalidas extends javax.swing.JFrame {
         jMenu2 = new javax.swing.JMenu();
         mi_salidas = new javax.swing.JMenuItem();
         mi_revisarSolicitudes = new javax.swing.JMenuItem();
+        mniKardex = new javax.swing.JMenuItem();
+        mniReportes = new javax.swing.JMenuItem();
+        mniCatalogos = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         mi_cerrarSesion = new javax.swing.JMenuItem();
 
@@ -99,6 +111,18 @@ public class GUIPrincipalSalidas extends javax.swing.JFrame {
         mi_revisarSolicitudes.setText("Revisar solicitudes");
         mi_revisarSolicitudes.addActionListener(this::mi_revisarSolicitudesActionPerformed);
         jMenu2.add(mi_revisarSolicitudes);
+
+        mniKardex.setText("Kárdex");
+        mniKardex.addActionListener(this::mniKardexActionPerformed);
+        jMenu2.add(mniKardex);
+
+        mniReportes.setText("Reportes");
+        mniReportes.addActionListener(this::mniReportesActionPerformed);
+        jMenu2.add(mniReportes);
+
+        mniCatalogos.setText("Catálogos");
+        mniCatalogos.addActionListener(this::mniCatalogosActionPerformed);
+        jMenu2.add(mniCatalogos);
         jMenu2.add(jSeparator1);
 
         mi_cerrarSesion.setText("Cerrar sesión");
@@ -118,13 +142,26 @@ public class GUIPrincipalSalidas extends javax.swing.JFrame {
 
     private void mi_salidasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mi_salidasActionPerformed
         card = (CardLayout) pnl_cuerpo.getLayout();
-
         card.show(pnl_cuerpo, "salidas");
     }//GEN-LAST:event_mi_salidasActionPerformed
 
     private void mi_revisarSolicitudesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mi_revisarSolicitudesActionPerformed
         
     }//GEN-LAST:event_mi_revisarSolicitudesActionPerformed
+
+    private void mniKardexActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniKardexActionPerformed
+        card = (CardLayout) pnl_cuerpo.getLayout();
+        card.show(pnl_cuerpo, "CARD_KARDEX");    }//GEN-LAST:event_mniKardexActionPerformed
+
+    private void mniReportesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniReportesActionPerformed
+        card = (CardLayout) pnl_cuerpo.getLayout();
+        card.show(pnl_cuerpo, "CARD_REPORTES");
+    }//GEN-LAST:event_mniReportesActionPerformed
+
+    private void mniCatalogosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniCatalogosActionPerformed
+        card = (CardLayout) pnl_cuerpo.getLayout();
+        card.show(pnl_cuerpo, "CARD_CATALOGOS");
+    }//GEN-LAST:event_mniCatalogosActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.Box.Filler filler1;
@@ -141,6 +178,9 @@ public class GUIPrincipalSalidas extends javax.swing.JFrame {
     private javax.swing.JMenuItem mi_cerrarSesion;
     private javax.swing.JMenuItem mi_revisarSolicitudes;
     private javax.swing.JMenuItem mi_salidas;
+    private javax.swing.JMenuItem mniCatalogos;
+    private javax.swing.JMenuItem mniKardex;
+    private javax.swing.JMenuItem mniReportes;
     private javax.swing.JPanel pnl_cuerpo;
     // End of variables declaration//GEN-END:variables
 }

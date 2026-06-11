@@ -5,10 +5,28 @@
 package proyectobd2.vista.vistassucursal.vistasreporte;
 
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import proyectobd2.modelo.DAO.PartidaPresupuestalDAO;
+import proyectobd2.modelo.DAO.ReporteEntradaDAO;
+import proyectobd2.modelo.DAO.ReporteSalidaDAO;
 import proyectobd2.modelo.beans.PartidaPresupuestal;
+import proyectobd2.modelo.beans.ReporteEntradas;
+import proyectobd2.modelo.beans.ReporteSalidas;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import javax.swing.JFileChooser;
 
 /**
  *
@@ -16,14 +34,21 @@ import proyectobd2.modelo.beans.PartidaPresupuestal;
  */
 public class GUIReportes extends javax.swing.JPanel {
     int idSucursal;
-    PartidaPresupuestalDAO partidaDao;
+    String rol;
+    private List<ReporteEntradas> listaIngresos;
+    private List<ReporteSalidas> listaEgresos;
+    PartidaPresupuestalDAO partidaDao = new PartidaPresupuestalDAO();
     private List<PartidaPresupuestal> listaParPre;
+    private SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
     /**
      * Creates new form GUIReportes
      */
-    public GUIReportes(int idSucursal) {
+    public GUIReportes(int idSucursal, String rol) {
         initComponents();
         this.idSucursal = idSucursal;
+        this.rol = rol;
+        llenarCombo();
+        cargarTodosLosDatos();
     }
 
     /**
@@ -49,6 +74,7 @@ public class GUIReportes extends javax.swing.JPanel {
         jLabel5 = new javax.swing.JLabel();
         cbxPartidaPresupuestal = new javax.swing.JComboBox();
         jPanel7 = new javax.swing.JPanel();
+        btnBuscar = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel8 = new javax.swing.JPanel();
@@ -90,8 +116,7 @@ public class GUIReportes extends javax.swing.JPanel {
         jLabel3.setText("Fecha inicio");
         jPanel4.add(jLabel3);
 
-        txfFechaInicio.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(java.text.DateFormat.getDateInstance(java.text.DateFormat.SHORT))));
-        txfFechaInicio.setText("dd/mm/aaaa");
+        txfFechaInicio.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("yyyy-MM-dd"))));
         txfFechaInicio.setAlignmentX(0.0F);
         jPanel4.add(txfFechaInicio);
 
@@ -104,8 +129,7 @@ public class GUIReportes extends javax.swing.JPanel {
         jLabel4.setText("Fecha fin");
         jPanel5.add(jLabel4);
 
-        txfFechaFin.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(java.text.DateFormat.getDateInstance(java.text.DateFormat.SHORT))));
-        txfFechaFin.setText("dd/mm/aaaa");
+        txfFechaFin.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("yyyy-MM-dd"))));
         txfFechaFin.setAlignmentX(0.0F);
         jPanel5.add(txfFechaFin);
 
@@ -125,6 +149,11 @@ public class GUIReportes extends javax.swing.JPanel {
 
         jPanel7.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
         jPanel7.setLayout(new java.awt.BorderLayout());
+
+        btnBuscar.setText("Buscar");
+        btnBuscar.addActionListener(this::btnBuscarActionPerformed);
+        jPanel7.add(btnBuscar, java.awt.BorderLayout.PAGE_START);
+
         jPanel2.add(jPanel7);
 
         add(jPanel2);
@@ -136,29 +165,23 @@ public class GUIReportes extends javax.swing.JPanel {
 
         btnExportarPdfIngresos.setText("Exportar a PDF");
         btnExportarPdfIngresos.setPreferredSize(new java.awt.Dimension(75, 40));
+        btnExportarPdfIngresos.addActionListener(this::btnExportarPdfIngresosActionPerformed);
         jPanel8.add(btnExportarPdfIngresos, java.awt.BorderLayout.PAGE_START);
 
         tblIngresos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Folio", "Fecha", "Proveedor", "Partida presupuestal", "Total"
+                "Folio", "Fecha", "Proveedor", "RFC", "Partida presupuestal", "Artículo", "Cantidad", "PrecioUnitario", "SubTotal"
             }
         ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class
-            };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false, false, false, false, false, false
             };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
@@ -180,25 +203,18 @@ public class GUIReportes extends javax.swing.JPanel {
 
         tblEgresos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Fecha", "Departamento", "Partida presupuestal", "Total"
+                "Fecha", "Departamento", "Encargado", "Descripcion", "Artículo", "Partida presupuestal", "Cantidad", "Precio Unitario", "Subtotal"
             }
         ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class
-            };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false, false, false, false, false
             };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
@@ -216,15 +232,42 @@ public class GUIReportes extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnExportarPdfEgresosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportarPdfEgresosActionPerformed
-        // TODO add your handling code here:
+        String titulo = generarTitulo("Egresos");
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Guardar reporte de Egresos");
+        fileChooser.setSelectedFile(new java.io.File("Reporte_Egresos.pdf"));
+        if (fileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
+            String ruta = fileChooser.getSelectedFile().getAbsolutePath();
+            if (!ruta.toLowerCase().endsWith(".pdf")) ruta += ".pdf";
+            exportarPDF((DefaultTableModel) tblEgresos.getModel(), titulo, ruta);
+        }
     }//GEN-LAST:event_btnExportarPdfEgresosActionPerformed
+
+    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+        aplicarFiltros();
+        txfFechaInicio.setText("");
+        txfFechaFin.setText("");
+    }//GEN-LAST:event_btnBuscarActionPerformed
+
+    private void btnExportarPdfIngresosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportarPdfIngresosActionPerformed
+        String titulo = generarTitulo("Ingresos");
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Guardar reporte de Ingresos");
+        fileChooser.setSelectedFile(new java.io.File("Reporte_Ingresos.pdf"));
+        if (fileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
+            String ruta = fileChooser.getSelectedFile().getAbsolutePath();
+            if (!ruta.toLowerCase().endsWith(".pdf")) ruta += ".pdf";
+            exportarPDF((DefaultTableModel) tblIngresos.getModel(), titulo, ruta);
+        }
+    }//GEN-LAST:event_btnExportarPdfIngresosActionPerformed
 
     private void llenarCombo(){
         try{
-            listaParPre = partidaDao.obtenerListaObjetos();
-        
-            for (PartidaPresupuestal partidaPresupuestal : listaParPre){
-                cbxPartidaPresupuestal.addItem(partidaPresupuestal);
+            cbxPartidaPresupuestal.removeAllItems();
+            cbxPartidaPresupuestal.addItem("Todas las partidas");
+            List<PartidaPresupuestal> lista = partidaDao.obtenerListaObjetos();
+            for (PartidaPresupuestal p : lista) {
+                cbxPartidaPresupuestal.addItem(p);
             }
         }catch (SQLException e){
             javax.swing.JOptionPane.showMessageDialog(this, "Error de base de datos: " + e.getMessage());
@@ -232,8 +275,145 @@ public class GUIReportes extends javax.swing.JPanel {
         }
     }
     
+    private void cargarTodosLosDatos() {
+        try {
+            if ("Usuario central".equals(rol)){
+                ReporteEntradaDAO daoEntrada = new ReporteEntradaDAO();
+                this.listaIngresos = daoEntrada.obtenerTodo();
+                actualizarTablaIngresos(this.listaIngresos);
+                ReporteSalidaDAO daoSalida = new ReporteSalidaDAO();
+                this.listaEgresos = daoSalida.obtenerTodo();
+                actualizarTablaEgresos(this.listaEgresos);
+            }
+            if ("Usuario sucursal".equals(rol) || "Usuario salidas".equals(rol)){
+                ReporteEntradaDAO daoEntrada = new ReporteEntradaDAO();
+                this.listaIngresos = daoEntrada.obtenerPorId(idSucursal);
+                actualizarTablaIngresos(this.listaIngresos);
+                ReporteSalidaDAO daoSalida = new ReporteSalidaDAO();
+                this.listaEgresos = daoSalida.obtenerPorId(idSucursal);
+                actualizarTablaEgresos(this.listaEgresos);
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Error al cargar datos: " + e.getMessage());
+        }
+    }
+    
+    private void actualizarTablaIngresos(List<ReporteEntradas> lista) {
+        DefaultTableModel model = (DefaultTableModel) tblIngresos.getModel();
+        model.setRowCount(0);
+        for (ReporteEntradas e : lista) {
+            model.addRow(new Object[]{
+                e.getFolio(), e.getFecha(), e.getProvedor(),  e.getRfc(),                
+                e.getPartidaPresupuestal(), e.getArticulo(), e.getCantidad(),           
+                e.getPrecioUnitario(), e.getSubtotal()            
+            });
+        }
+    }
+    
+    private void actualizarTablaEgresos(List<ReporteSalidas> lista) {
+        DefaultTableModel model = (DefaultTableModel) tblEgresos.getModel();
+        model.setRowCount(0);
+        for (ReporteSalidas s : lista) {
+            model.addRow(new Object[]{
+                s.getFecha(), s.getDepartamento(), s.getEncargado(),         
+                s.getDescripcion(), s.getArticulo(), s.getPartidaPresupuestal(),
+                s.getCatidad(), s.getPrecioUnitario(), s.getSubtotal()          
+            });
+        }
+    }
+
+    private void aplicarFiltros() {
+        try {
+            String textoFechaI = txfFechaInicio.getText().trim();
+            String textoFechaF = txfFechaFin.getText().trim();
+            Date fechaI = textoFechaI.isEmpty() ? null : formato.parse(textoFechaI);
+            Date fechaF = textoFechaF.isEmpty() ? null : formato.parse(textoFechaF);
+            Object obj = cbxPartidaPresupuestal.getSelectedItem();
+            String partidaFiltro = null;
+            if (obj instanceof PartidaPresupuestal) {
+                PartidaPresupuestal p = (PartidaPresupuestal) obj;
+                partidaFiltro = p.toString();
+            } else {
+                partidaFiltro = null;
+            };
+            
+            List<ReporteEntradas> listaIngresosFiltrada = new ArrayList<>();
+            for (ReporteEntradas e : listaIngresos) {
+                Date fechaDato = formato.parse(e.getFecha());
+                boolean cumpleFecha = (fechaI == null || !fechaDato.before(fechaI)) && 
+                                      (fechaF == null || !fechaDato.after(fechaF));
+                boolean cumplePartida = (partidaFiltro == null || e.getPartidaPresupuestal().equals(partidaFiltro));
+
+                if (cumpleFecha && cumplePartida) {
+                    listaIngresosFiltrada.add(e);
+                }
+            }
+            actualizarTablaIngresos(listaIngresosFiltrada);
+            
+            List<ReporteSalidas> listaEgresosFiltrada = new ArrayList<>();
+            for (ReporteSalidas s : listaEgresos) {
+                Date fechaDato = formato.parse(s.getFecha());
+                boolean cumpleFecha = (fechaI == null || !fechaDato.before(fechaI)) && 
+                                      (fechaF == null || !fechaDato.after(fechaF));
+                boolean cumplePartida = (partidaFiltro == null || s.getPartidaPresupuestal().equals(partidaFiltro));
+                if (cumpleFecha && cumplePartida) {
+                    listaEgresosFiltrada.add(s);
+                }
+            }
+            actualizarTablaEgresos(listaEgresosFiltrada);
+        } catch (ParseException e) {
+            JOptionPane.showMessageDialog(this, "Error: Formato de fecha incorrecto. Usa el formato aaaa-mm-dd");
+        }
+    }
+    
+    private String generarTitulo(String tipoReporte) {
+        String partida = cbxPartidaPresupuestal.getSelectedIndex() > 0 
+                         ? cbxPartidaPresupuestal.getSelectedItem().toString() : "";
+        String inicio = txfFechaInicio.getText().trim();
+        String fin = txfFechaFin.getText().trim();
+        
+        StringBuilder sb = new StringBuilder("Reporte de " + tipoReporte + " - ");
+        sb.append(partida.isEmpty() ? "Todas las partidas" : "Partida: " + partida);
+        sb.append("\n");
+
+        if (inicio.isEmpty() && fin.isEmpty()) sb.append("Periodo: Todos los tiempos");
+        else if (!inicio.isEmpty() && fin.isEmpty()) sb.append("Periodo: Desde el ").append(inicio);
+        else if (inicio.isEmpty() && !fin.isEmpty()) sb.append("Periodo: Hasta el ").append(fin);
+        else sb.append("Periodo: Desde el ").append(inicio).append(" hasta el ").append(fin);
+
+        return sb.toString();
+    }
+    
+    private void exportarPDF(DefaultTableModel modelo, String titulo, String nombreArchivo) {
+        try {
+            Document doc = new Document(PageSize.LETTER.rotate());
+            PdfWriter.getInstance(doc, new FileOutputStream(nombreArchivo));
+            doc.open();
+            doc.add(new Paragraph(titulo));
+            doc.add(new Paragraph(" "));
+            PdfPTable table = new PdfPTable(modelo.getColumnCount());
+            table.setWidthPercentage(100);
+            for (int i = 0; i < modelo.getColumnCount(); i++) {
+                table.addCell(modelo.getColumnName(i));
+            }
+            for (int i = 0; i < modelo.getRowCount(); i++) {
+                for (int j = 0; j < modelo.getColumnCount(); j++) {
+                    Object valor = modelo.getValueAt(i, j);
+                    table.addCell(valor != null ? valor.toString() : "");
+                }
+            }
+            doc.add(table);
+            doc.close();
+            JOptionPane.showMessageDialog(this, "PDF generado: " + nombreArchivo);
+        } catch (FileNotFoundException e) {
+            JOptionPane.showMessageDialog(this, "El archivo o la ruta no existe", "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (DocumentException e) {
+            JOptionPane.showMessageDialog(this, "Error interno al generar el formato PDF, inténtelo más tarde", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnExportarPdfEgresos;
     private javax.swing.JButton btnExportarPdfIngresos;
     private javax.swing.JComboBox cbxPartidaPresupuestal;

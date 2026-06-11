@@ -36,7 +36,7 @@ public class ItemDAO {
             ps.setDouble(5, item.getPrecioUnitario());
             ps.setInt(6, item.getIdPartidaPresupuestal());
             ps.setInt(7, item.getIdSucursal());
-            ps.setString(8, item.getEstado());
+            ps.setString(8, "ACTIVO");
             ps.setString(9, item.getDescripcionUso());
 
             valor = ps.executeUpdate();
@@ -77,24 +77,28 @@ public class ItemDAO {
 
     public static List<Item> obtenerListaPorSucursal(int idSucursal) throws SQLException {
         List<Item> listaItems = new ArrayList<>();
-        String statement = "SELECT idItem, existencias, stockMinimo, stockMaximo, nombreItem, precioUnitario, "
-                + "PartidaPresupuestal_idPartidaPresupuestal, Sucursal_idSucursal, estado, descripcionUso FROM item WHERE Sucursal_idSucursal = ? AND estado = 'ACTIVO'";
+        String statement = "SELECT i.idItem, i.existencias, i.stockMinimo, i.stockMaximo, i.nombreItem, i.precioUnitario, "
+                + "i.PartidaPresupuestal_idPartidaPresupuestal, i.Sucursal_idSucursal, i.estado, i.descripcionUso, p.nombrePartida "
+                + "FROM item i "
+                + "INNER JOIN partidapresupuestal p ON p.idPartidaPresupuestal = i.PartidaPresupuestal_idPartidaPresupuestal "
+                + "WHERE i.Sucursal_idSucursal = ? AND i.estado = 'ACTIVO'";
 
         try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
             ps.setInt(1, idSucursal);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 Item item = new Item();
-                item.setIdItem(rs.getInt("idItem"));
-                item.setExistencias(rs.getInt("existencias"));
-                item.setStockMinimo(rs.getInt("stockMinimo"));
-                item.setStockMaximo(rs.getInt("stockMaximo"));
-                item.setNombreItem(rs.getString("nombreItem"));
-                item.setPrecioUnitario(rs.getDouble("precioUnitario"));
-                item.setIdPartidaPresupuestal(rs.getInt("PartidaPresupuestal_idPartidaPresupuestal"));
-                item.setIdSucursal(rs.getInt("Sucursal_idSucursal"));
-                item.setEstado(rs.getString("estado"));
-                item.setDescripcionUso(rs.getString("descripcionUso"));
+                item.setIdItem(rs.getInt("i.idItem"));
+                item.setExistencias(rs.getInt("i.existencias"));
+                item.setStockMinimo(rs.getInt("i.stockMinimo"));
+                item.setStockMaximo(rs.getInt("i.stockMaximo"));
+                item.setNombreItem(rs.getString("i.nombreItem"));
+                item.setPrecioUnitario(rs.getDouble("i.precioUnitario"));
+                item.setIdPartidaPresupuestal(rs.getInt("i.PartidaPresupuestal_idPartidaPresupuestal"));
+                item.setIdSucursal(rs.getInt("i.Sucursal_idSucursal"));
+                item.setEstado(rs.getString("i.estado"));
+                item.setDescripcionUso(rs.getString("i.descripcionUso"));
+                item.setNombrePartida(rs.getString("p.nombrePartida"));
 
                 listaItems.add(item);
             }
@@ -175,6 +179,18 @@ public class ItemDAO {
         }
         return valor;
     }
+    public static int eliminarLogico (int idItem) {
+        int valor = 0;
+        String statement = "UPDATE item SET estado = 'INACTIVO' WHERE idItem = ?";
+        try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
+            ps.setInt(1, idItem);
+            valor = ps.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(ItemDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return valor;
+    }
+
 
     public static int modificar(Item item) {
         int valor = 0;
@@ -194,6 +210,31 @@ public class ItemDAO {
             ps.setString(8, item.getEstado());
             ps.setString(9, item.getDescripcionUso());
             ps.setInt(10, item.getIdItem());
+
+            valor = ps.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(ItemDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return valor;
+    }
+    
+    public static int modificarsinEstado(Item item) {
+        int valor = 0;
+        String statement = "UPDATE item SET existencias=?, stockMinimo=?, stockMaximo=?, nombreItem=?, "
+                + "precioUnitario=?, PartidaPresupuestal_idPartidaPresupuestal=?, Sucursal_idSucursal=?, "
+                + "descripcionUso=? WHERE idItem=?";
+
+        try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
+
+            ps.setInt(1, item.getExistencias());
+            ps.setInt(2, item.getStockMinimo());
+            ps.setInt(3, item.getStockMaximo());
+            ps.setString(4, item.getNombreItem());
+            ps.setDouble(5, item.getPrecioUnitario());
+            ps.setInt(6, item.getIdPartidaPresupuestal());
+            ps.setInt(7, item.getIdSucursal());
+            ps.setString(8, item.getDescripcionUso());
+            ps.setInt(9, item.getIdItem());
 
             valor = ps.executeUpdate();
         } catch (SQLException ex) {

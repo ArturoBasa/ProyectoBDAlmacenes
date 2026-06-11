@@ -27,10 +27,10 @@ public class Conexion {
     private String password;
     private String url;
 
-    private static Conexion conexion;
+    //private static Conexion conexion;
 
     public Conexion() {
-        try (InputStream input = Conexion.class.getClassLoader().getResourceAsStream("resources/database.properties")) {
+        try (InputStream input = Conexion.class.getClassLoader().getResourceAsStream("database.properties")) {
             if (input == null) {
                 throw new RuntimeException("Unable to find database properties.");
             }
@@ -57,7 +57,7 @@ public class Conexion {
         } catch (Exception e) {
             System.out.println("Se produjo un error inesperado: " + e.getMessage());
         }
-        conexion = this;
+        //conexion = this;
     }
 
     
@@ -68,7 +68,7 @@ public class Conexion {
         this.username = username;
         this.password = password;
         conn = DriverManager.getConnection("jdbc:mysql://" + host + "/" + db, username, password);
-        conexion = this;
+        //conexion = this;
     }
 
     public String getHost() {
@@ -115,12 +115,12 @@ public class Conexion {
         }
     }
 
-    public static Conexion getConexion() {
-        return conexion;
-
+    public  Connection getConexion() throws SQLException {
+        return DriverManager.getConnection(url, username, password);
     }
-
+    
+    /*
     public static void setConexion(Conexion conexion) {
         Conexion.conexion = conexion;
-    }
+    }*/
 }

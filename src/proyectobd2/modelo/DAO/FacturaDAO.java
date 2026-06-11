@@ -192,7 +192,7 @@ public class FacturaDAO {
 
     public static List<Object[]> obtenerEntradas(int idSucursal) {
         List<Object[]> listaFilas = new ArrayList<>();
-        String statement = "SELECT folio, fechaFactura, proveedor, rfc, total FROM entradasView WHERE sucursal = ?";
+        String statement = "SELECT folio, fecha, proveedor, rfc, total FROM entradasView WHERE idSucursal = ?";
 
         try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
             ps.setInt(1, idSucursal);
@@ -218,7 +218,7 @@ public class FacturaDAO {
 
     public static List<Object[]> obtenerEntradasGlobales() {
         List<Object[]> listaFilas = new ArrayList<>();
-        String statement = "SELECT v.folio, v.fechaFactura, v.proveedor, v.rfc, v.total, s.nombreSucursal FROM entradasView v JOIN sucursal s ON v.sucursal = s.idSucursal";
+        String statement = "SELECT v.folio, v.fecha, v.proveedor, v.rfc, v.total, s.nombreSucursal FROM entradasView v JOIN sucursal s ON v.idSucursal = s.idSucursal";
 
         try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
 
@@ -240,6 +240,7 @@ public class FacturaDAO {
         
         return listaFilas;
     }
+    
 
     public static List<Object[]> obtenerArticulosFolio(String folio) {
         List<Object[]> listaFilas = new ArrayList<>();

@@ -22,7 +22,13 @@ public class Empleado {
     private String contrasenia;
 
     private int idSucursal;
+    private int idRol;
     private String rol;
+    
+    private String sucursal;
+    private Departamento departamento;
+    private String descripcionRol;
+    private int idDepartamentoEncar;
 
     public Empleado() {
     }
@@ -107,4 +113,49 @@ public class Empleado {
         this.rol = rol;
     }
 
+    public Departamento getDepartamento() {
+        return departamento;
+    }
+
+    public void setDepartamento(Departamento departamento) {
+        this.departamento = departamento;
+    }
+
+    public int getIdRol() {
+        return idRol;
+    }
+
+    public void setIdRol(int idRol) {
+        this.idRol = idRol;
+    }
+
+    public String getSucursal() {
+        return sucursal;
+    }
+
+    public void setSucursal(String sucursal) {
+        this.sucursal = sucursal;
+    }
+
+    public String getDescripcionRol() {
+        return descripcionRol;
+    }
+
+    public void setDescripcionRol(String descripcionRol) {
+        this.descripcionRol = descripcionRol;
+    }
+
+    public int getIdDepartamentoEncar() {
+        return idDepartamentoEncar;
+    }
+
+    public void setIdDepartamentoEncar(int idDepartamentoEncar) {
+        this.idDepartamentoEncar = idDepartamentoEncar;
+    }
+    
+    @Override
+    public String toString() {
+        return this.nombre;
+    }
+    
 }

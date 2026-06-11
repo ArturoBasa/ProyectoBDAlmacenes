@@ -19,7 +19,7 @@ public class ProveedorDAO {
 
     public static int insertar(Proveedor proveedor) {
         int valor = 0;
-        String statement = "INSERT INTO proveedor (razonSocial, RFCProveedor, domicilioFiscal, telefono) values (?,?,?,?)";
+        String statement = "INSERT INTO proveedor (razonSocial, RFCProveedor, domicilioFiscal, telefono, estado) values (?,?,?,?,'ACTIVO')";
         try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
             ps.setString(1, proveedor.getRazonSocial());
             ps.setString(2, proveedor.getRFCProveedor());
@@ -34,7 +34,7 @@ public class ProveedorDAO {
 
     public static List<Proveedor> obtenerListaObjetos() throws SQLException {
         List<Proveedor> listaProveedores = new ArrayList<>();
-        String statement = "SELECT idProveedor, razonSocial, RFCProveedor, domicilioFiscal, telefono FROM proveedor";
+        String statement = "SELECT idProveedor, razonSocial, RFCProveedor, domicilioFiscal, telefono, estado FROM proveedor WHERE estado = 'ACTIVO';";
         try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement); ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 Proveedor p = new Proveedor();
@@ -95,7 +95,7 @@ public class ProveedorDAO {
 
     public static int eliminar(int idProveedor) {
         int valor = 0;
-        String statement = "DELETE FROM proveedor WHERE idProveedor=?";
+        String statement = "UPDATE proveedor SET estado = 'INACTIVO' WHERE idProveedor = ?;";
         try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
             ps.setInt(1, idProveedor);
             valor = ps.executeUpdate();

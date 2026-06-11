@@ -24,7 +24,7 @@ public class DepartamentoDAO {
     public static int insertar(Departamento departamento) {
         int valor = 0;
         
-        String statement = "INSERT INTO departamento (nombreDepartamento, Sucursal_idSucursal, Empleado_idEncargado) VALUES (?,?,?)";
+        String statement = "INSERT INTO departamento (nombreDepartamento, Sucursal_idSucursal, Empleado_idEncargado, estado) VALUES (?,?,?, 'ACTIVO')";
 
         try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
 
@@ -105,8 +105,7 @@ public class DepartamentoDAO {
 
     public static int eliminar(int idDepartamento) {
         int valor = 0;
-        String statement = "DELETE FROM departamento WHERE idDepartamento = ?";
-
+        String statement = "UPDATE departamento SET estado = 'INACTIVO' WHERE idDepartamento = ?;";
         try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
 
             ps.setInt(1, idDepartamento);
@@ -134,4 +133,61 @@ public class DepartamentoDAO {
         }
         return valor;
     }
+    
+    public static List<Departamento> obtenerListaObjetosCatalogo() throws SQLException {
+        List<Departamento> listaDepartamentos = new ArrayList<>();
+        String statement = "SELECT d.idDepartamento, d.nombreDepartamento, d.Sucursal_idSucursal, d.Empleado_idEncargado, " +
+                            "s.nombreSucursal, e.nombre, e.apellidos, d.estado " +
+                            "FROM departamento d " +
+                            "INNER JOIN sucursal s ON d.sucursal_idSucursal = s.idSucursal " +
+                            "INNER JOIN empleado e ON d.Empleado_idEncargado = e.idEmpleado " +
+                            "WHERE  d.estado = 'ACTIVO';";
+        try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement); ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                Departamento d = new Departamento();
+                d.setIdDepartamento(rs.getInt("d.idDepartamento"));
+                d.setNombreDepartamento(rs.getString("d.nombreDepartamento"));
+                d.setIdSucursal(rs.getInt("d.Sucursal_idSucursal"));
+                d.setIdEncargado(rs.getInt("d.Empleado_idEncargado"));
+                d.setNombreSucursal(rs.getString("s.nombreSucursal"));
+                d.setNombreEncargado(rs.getString("e.nombre")+" "+rs.getString("e.apellidos"));
+                listaDepartamentos.add(d);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DepartamentoDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return listaDepartamentos;
+    }
+
+    public static List<Departamento> obtenerPorSucursalCatalogo(int idSucursal) throws SQLException {
+        List<Departamento> listaDepartamentos = new ArrayList<>();
+        String statement = "SELECT d.idDepartamento, d.nombreDepartamento, d.Sucursal_idSucursal, d.Empleado_idEncargado, " +
+                            "s.nombreSucursal, e.nombre, e.apellidos, d.estado " +
+                            "FROM departamento d " +
+                            "INNER JOIN sucursal s ON d.sucursal_idSucursal = s.idSucursal " +
+                            "INNER JOIN empleado e ON d.Empleado_idEncargado = e.idEmpleado " +
+                            "WHERE d.Sucursal_idSucursal = ?"
+                            + " AND d.estado = 'ACTIVO';";
+
+        try (Connection conn = new Conexion().getConnection(); PreparedStatement ps = conn.prepareStatement(statement)) {
+            ps.setInt(1, idSucursal);
+                try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Departamento d = new Departamento();
+                    d.setIdDepartamento(rs.getInt("d.idDepartamento"));
+                    d.setNombreDepartamento(rs.getString("d.nombreDepartamento"));
+                    d.setIdSucursal(rs.getInt("d.Sucursal_idSucursal"));
+                    d.setIdEncargado(rs.getInt("d.Empleado_idEncargado"));
+                    d.setNombreSucursal(rs.getString("s.nombreSucursal"));
+                    d.setNombreEncargado(rs.getString("e.nombre")+" "+rs.getString("e.apellidos"));
+                    listaDepartamentos.add(d);
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DepartamentoDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return listaDepartamentos;
+    }
+
 }

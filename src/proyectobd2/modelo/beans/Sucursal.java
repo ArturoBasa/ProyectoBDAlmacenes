@@ -50,4 +50,8 @@ public class Sucursal {
         this.direccion = direccion;
     }
 
+    @Override
+    public String toString() {
+        return this.nombreSucursal;
+    }
 }

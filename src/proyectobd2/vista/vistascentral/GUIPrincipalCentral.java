@@ -9,6 +9,9 @@ import proyectobd2.vista.vistascentral.almacen.GUIItemsStockMaximoCentral;
 import proyectobd2.vista.vistascentral.almacen.GUIItemsStockMinimoCentral;
 import proyectobd2.vista.vistascentral.entradas.GUIEntradasCentral;
 import proyectobd2.vista.vistascentral.salidas.GUISalidasCentral;
+import proyectobd2.vista.vistassucursal.vistascatalogos.GUICatalogo;
+import proyectobd2.vista.vistassucursal.vistaskardex.GUIKardex;
+import proyectobd2.vista.vistassucursal.vistasreporte.GUIReportes;
 
 
 /**
@@ -34,15 +37,20 @@ public class GUIPrincipalCentral extends javax.swing.JFrame {
         GUIItemsStockMaximoCentral panelItemsMaximo = new GUIItemsStockMaximoCentral();
         GUIBajasRegistradasCentral panelBajasRegistradas = new GUIBajasRegistradasCentral();
 
+        GUIReportes panelReportes = new GUIReportes(idSucursal, empleado.getRol());
+        GUIKardex panelKardex = new GUIKardex(idSucursal, empleado.getRol());
+        GUICatalogo panelCatalogo = new GUICatalogo(idSucursal, empleado.getRol());
+
+        pnl_cuerpo.add(panelReportes, "CARD_REPORTES");
+        pnl_cuerpo.add(panelKardex, "CARD_KARDEX");
+        pnl_cuerpo.add(panelCatalogo, "CARD_CATALOGOS");
+        
         pnl_cuerpo.add(panelItemsMinimo, "itemsStockMinimo");
         pnl_cuerpo.add(panelItemsMaximo, "itemsStockMaximo");
         pnl_cuerpo.add(panelBajasRegistradas, "bajasRegistradas");
         pnl_cuerpo.add(panelEntradas, "entradas");
         pnl_cuerpo.add(panelSalidas, "salidas");
 
-//        pnl_cuerpo.add(new GUIReportes(), "CARD_REPORTES");
-//        pnl_cuerpo.add(new GUIKardex(), "CARD_KARDEX");
-//        pnl_cuerpo.add(new GUICatalogo(), "CARD_CATALOGOS");
         
         card.show(pnl_cuerpo, "entradas");
     }
@@ -165,7 +173,7 @@ public class GUIPrincipalCentral extends javax.swing.JFrame {
 
     private void mi_kardexActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mi_kardexActionPerformed
         card = (CardLayout) pnl_cuerpo.getLayout();
-        card.show(pnl_cuerpo, "CARD_kARDEX");
+        card.show(pnl_cuerpo, "CARD_KARDEX");
     }//GEN-LAST:event_mi_kardexActionPerformed
 
     private void mi_reportesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mi_reportesActionPerformed
@@ -175,7 +183,7 @@ public class GUIPrincipalCentral extends javax.swing.JFrame {
 
     private void mi_catalogosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mi_catalogosActionPerformed
         card = (CardLayout) pnl_cuerpo.getLayout();
-        card.show(pnl_cuerpo, "CARD_CATALOGO");
+        card.show(pnl_cuerpo, "CARD_CATALOGOS");
     }//GEN-LAST:event_mi_catalogosActionPerformed
 
     private void mi_cerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mi_cerrarSesionActionPerformed
